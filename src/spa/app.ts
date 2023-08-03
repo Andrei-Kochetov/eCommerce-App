@@ -1,5 +1,6 @@
 import { IApp } from "./types"; // TODO change relative paths to absolute with @src
 
+// The main class of the application that provides app functionality to the entry point - index.ts
 export default class App {
   private static readonly instance: IApp = new App();
 
