@@ -1,4 +1,4 @@
-The repository has a main **development** branch - _develop_, into which the results of each sprint are merged from *sprint_#* branch after pull request(PR) and approval of **EVERY** team member. Then PR into _main_ branch and deploy of the task on the _gh-pages_ are created.
+The repository has a main **development** branch - _develop_, into which the results of each sprint are merged from *sprint_#* branch after pull request(PR) and approval of **EVERY** team member. Then PR into _main_ branch and deploy of the task on the _gh-pages_ or _netlify_ are created.
 
 At the each sprint _Team Lead_ creates a *sprint_#* branch from _develop_ branch into which team members merge their results of *feature* branch after PR and approval of **EVERY** team member.
 
