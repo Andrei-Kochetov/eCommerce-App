@@ -41,8 +41,8 @@ If there were no errors or they were fixed, a commit is created; if there are er
 
 ## Instructions for setting up the project:
 * Clone the repository to your computer using the command in the terminal: git clone https://github.com/LeanidRymkevich/eCommerce-App.git
-* Заходим в папку проекта командой: cd eCommerce-App
+* Go to the project folder: cd eCommerce-App
+* Install project dependencies via terminal command: npm install --force
 * See the full list of command repository branches: git branch -a
 * Go to the desired command branch: git checkout (branch name)
-* Install project dependencies via terminal command: npm install --force
 * Your local project is ready to use.
