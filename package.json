@@ -52,8 +52,7 @@
   },
   "dependencies": {
     "@types/jest": "^29.5.3",
-    "file-loader": "^6.2.0",
-    "gh-pages": "^5.0.0"
+    "file-loader": "^6.2.0"
   },
   "lint-staged": {
     "*.ts": [
