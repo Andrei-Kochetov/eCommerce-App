@@ -1,5 +1,5 @@
-import App from "./spa/app"; // TODO change relative paths to absolute with @src
-import { IApp } from "./spa/types";
+import App from '@src/spa/app';
+import { IApp } from '@src/spa/types';
 
 // creating entry point for app launching
 const app: IApp = App.getInstance();
