@@ -1,3 +1,4 @@
+import '@src/spa/common.scss';
 import { IApp } from '@src/spa/types';
 
 // The main class of the application that provides app functionality to the entry point - index.ts
