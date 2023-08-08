@@ -3,7 +3,7 @@ import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCre
 import View from '@src/spa/view/view';
 import IView from '@src/spa/view/types';
 import ContainerView from '@src/spa/view/container/containerView';
-//import { IHeaderView } from '@src/spa/view/header/types';
+import { IHeaderView } from '@src/spa/view/header/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 
 // header properties
@@ -25,47 +25,51 @@ const LOGO_IMG_ATTRIBUTES = {
   src: './assets/logo.png',
 };
 
-export default class HeaderView extends View /*implements  IHeaderView */ {
-  private container!: IView;
-  private readonly creatingLink: IElementCreator;
-  private readonly creatingImg: IElementCreator;
+export default class HeaderView extends View implements IHeaderView {
+  protected readonly container: IView;
+  private readonly homePageLink: IElementCreator;
   public constructor() {
     const params: ElementCreatorParams = {
       tag: HEADER_TAG,
       classNames: [HEADER_CLASS_NAME],
     };
     super(params);
-    this.creatingLink = this.createLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
-    this.creatingImg = this.createImg(LOGO_IMG_ATTRIBUTES, LOGO_IMG_CLASS_NAME);
+    this.container = new ContainerView();
+    this.homePageLink = this.createHomePageLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
     this.configureView();
   }
 
+  public getHomePageLink(): IElementCreator {
+    return this.homePageLink;
+  }
+  public getHeaderContainer(): IView {
+    return this.container;
+  }
+
   private configureView(): void {
-    this.container = new ContainerView();
     this.container.getViewCreator().setClasses(HEADER_CONTAINER_CLASS_NAME);
-
-    this.creatingLink.addInnerElement(this.creatingImg.getElement());
-    this.container.getViewCreator().addInnerElement(this.creatingLink.getElement());
-
+    this.homePageLink.addInnerElement(this.createLogoImg(LOGO_IMG_ATTRIBUTES, LOGO_IMG_CLASS_NAME).getElement());
+    this.container.getViewCreator().addInnerElement(this.homePageLink.getElement());
     this.getViewCreator().addInnerElement(this.container.getViewCreator());
   }
 
-  private createLink(linkAttributes: Record<string, string>, ...classes: string[]): IElementCreator {
+  private createHomePageLink(linkAttributes: Record<string, string>, ...classes: string[]): IElementCreator {
     const params: ElementCreatorParams = {
       tag: LOGO_LINK_TAG,
       classNames: classes,
       attributes: linkAttributes,
     };
-    const link: IElementCreator = new ElementCreator(params);
-    return link;
+    const homePageLink: IElementCreator = new ElementCreator(params);
+    return homePageLink;
   }
-  private createImg(imgAttributes: Record<string, string>, ...classes: string[]): IElementCreator {
+
+  private createLogoImg(imgAttributes: Record<string, string>, ...classes: string[]): IElementCreator {
     const params: ElementCreatorParams = {
       tag: LOGO_IMG_TAG,
       classNames: classes,
       attributes: imgAttributes,
     };
-    const img: IElementCreator = new ElementCreator(params);
-    return img;
+    const logoImg: IElementCreator = new ElementCreator(params);
+    return logoImg;
   }
 }
