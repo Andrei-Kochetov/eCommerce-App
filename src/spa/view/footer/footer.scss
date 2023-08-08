@@ -1,9 +1,6 @@
 @import '@src/spa/basic-styles/mixins';
 
 .footer{
-    position: fixed;
-    left: 0; 
-    bottom: 0;
     width: 100%;
     &__container {
         @include flex;
