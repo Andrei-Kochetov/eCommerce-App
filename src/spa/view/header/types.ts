@@ -5,3 +5,5 @@ export interface IHeaderView {
   getHomePageLink(): IElementCreator;
   getHeaderContainer(): IView;
 }
+
+export type IHeader = IHeaderView & IView;
