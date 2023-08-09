@@ -9,16 +9,8 @@ export interface IInputView {
 
 export type IInput = IInputView & IView;
 
-export type IInputParams = {
+export type IInputViewParams = {
   attributes: Record<string, string>;
-  classes: string;
-};
-export type ILabelParams = {
-  attributes: Record<string, string>;
-  classes: string;
-  textContent: string;
-};
-
-export type ISpanErrorParams = {
-  classes: string;
+  classes: string[];
+  textLabel: string;
 };

@@ -2,8 +2,12 @@
     font-size: 1.8rem;
     display: flex;
     flex-direction: column;
+    position: relative;
+    margin-bottom: 2.5rem;
 }
 
 .span-error{
     color: red;
+    position: absolute;
+    top: 4rem;
 }
