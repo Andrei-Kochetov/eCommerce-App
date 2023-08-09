@@ -22,7 +22,7 @@ const LOGO_LINK_ATTRIBUTES = {
 const LOGO_IMG_TAG = 'img';
 const LOGO_IMG_CLASS_NAME = 'header__logo-img';
 const LOGO_IMG_ATTRIBUTES = {
-  src: './assets/logo.png',
+  src: './assets/onPlug.png',
 };
 
 export default class HeaderView extends View implements IHeaderView {
