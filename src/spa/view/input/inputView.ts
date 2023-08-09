@@ -30,7 +30,7 @@ export default class InputView extends View implements IInputView {
       classNames: [INPUT_WRAPPER_CLASS_NAME],
     };
     super(params);
-    this.label = this.createLabel(inputParams.textLabel);
+    this.label = this.createLabel(inputParams.textLabel, inputParams.attributes.id);
     this.input = this.createInput(inputParams.attributes, inputParams.classes);
     this.spanError = this.createSpanError();
     this.configureView();
@@ -60,20 +60,23 @@ export default class InputView extends View implements IInputView {
     );
   }
 
-  private createInput(inputAttributes: Record<string, string>, classes: string[]): IElementCreator {
+  private createInput(inputAttributes: Record<string, string>, classes?: string[]): IElementCreator {
     const params: ElementCreatorParams = {
       tag: INPUT_TAG,
-      classNames: [INPUT_CLASS_NAME, ...classes],
+      classNames: classes ? [INPUT_CLASS_NAME, ...classes] : [INPUT_CLASS_NAME],
       attributes: inputAttributes,
     };
     const input: IElementCreator = new ElementCreator(params);
     return input;
   }
-  private createLabel(textLabel: string): IElementCreator {
+  private createLabel(textLabel: string, forAttribute: string): IElementCreator {
     const params: ElementCreatorParams = {
       tag: LABEL_TAG,
       classNames: [LABEL_CLASS_NAME],
       textContent: textLabel,
+      attributes: {
+        for: forAttribute,
+      },
     };
     const label: IElementCreator = new ElementCreator(params);
     return label;

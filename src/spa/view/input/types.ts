@@ -10,7 +10,10 @@ export interface IInputView {
 export type IInput = IInputView & IView;
 
 export type IInputViewParams = {
-  attributes: Record<string, string>;
-  classes: string[];
+  attributes: {
+    id: string;
+    [key: string]: string;
+  };
   textLabel: string;
+  classes?: string[];
 };
