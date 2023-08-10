@@ -1,0 +1,6 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.main__container {
+  @include flex($justify: center, $align: center);
+  padding: 3rem;
+}

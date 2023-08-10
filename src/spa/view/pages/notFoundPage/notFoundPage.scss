@@ -1,0 +1,19 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.not-found {
+  @include flex($direction: column, $justify: center, $align: center);
+  height: 100%;
+
+  &__img {
+    height: 25rem;
+    width: 25rem;
+  }
+
+  &__title {
+    font-size: 3rem;
+  }
+
+  &__subtitle {
+    font-size: 2rem;
+  }
+}

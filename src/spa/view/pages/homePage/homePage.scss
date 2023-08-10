@@ -1,0 +1,18 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.main__img {
+  height: 40rem;
+}
+
+.main__content-container {
+  @include flex($gap: 2rem, $direction: column);
+}
+
+.main__title {
+  font-size: 3rem;
+  color: #BE1010;
+}
+
+.main__content {
+  font-size: 2rem;
+}
