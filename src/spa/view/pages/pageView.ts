@@ -4,7 +4,7 @@ import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 
 const PAGE_WRAPPER_TAG = 'div';
 
-export default abstract class Page extends View {
+export default abstract class PageView extends View {
   constructor(pageName: PageNames, ...pageWrapperClasses: string[]) {
     const params: ElementCreatorParams = {
       tag: PAGE_WRAPPER_TAG,

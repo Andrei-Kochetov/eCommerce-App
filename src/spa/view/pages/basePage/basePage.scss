@@ -1,0 +1,7 @@
+@import '@src/spa/basic-styles/mixins';
+
+.spa {
+  width: 100%;
+  @include flex(column, 0);
+  min-height: 100vh;
+}
