@@ -19,24 +19,40 @@ const NAV_TAG = 'nav';
 const NAV_CLASS_NAME = 'nav';
 
 // nav BTN properties
-const NAV_BTN_CLASS = 'btn_nav';
-const CONTACT_US_BTN_TEXT = 'Contact us';
-const PICKUP_POINTS_BTN_TEXT = 'Pickup points';
-const DELIVERY_BTN_TEXT = 'Delivery';
-const PAYMENT_BTN_TEXT = 'Payment';
+const NAV_BTN_CLASS_NAME = 'btn_nav';
+const MAIN_BTN_TEXT = 'Main';
+const CATALOG_BTN_TEXT = 'Catalog';
+const ABOUT_US_BTN_TEXT = 'About Us';
 
 // BTN properties
-const AUTHORIZATION_BTN_CLASS = 'btn_authorization';
+const AUTHORIZATION_BTN_CLASS_NAME = 'btn_authorization';
+const BASKET_BTN_CLASS_NAME = 'btn_basket';
 const SING_IN_BTN_TEXT = 'Sing in';
 const SING_OUT_BTN_TEXT = 'Sing out';
-const JOIN_TEXT = 'Join';
+const REGISTER_TEXT = 'Register';
+const BASKET_TEXT = '';
 
 export default class TopMenuView extends ContainerView implements ITopMenuView {
+  private readonly mainBTN: IElementCreator;
+  private readonly catalogBTN: IElementCreator;
+  private readonly aboutUsBTN: IElementCreator;
+  private readonly singInBTN: IElementCreator;
+  private readonly singOutBTN: IElementCreator;
+  private readonly registerBTN: IElementCreator;
   private readonly userBar: IElementCreator;
+  private readonly basket: IElementCreator;
 
   constructor() {
     super();
+    this.mainBTN = this.createMainBTN();
+    this.catalogBTN = this.createCatalogBTN();
+    this.aboutUsBTN = this.createAboutUsBTN();
+    this.singInBTN = this.createSingInBTN();
+    this.singOutBTN = this.createSingOutBTN();
+    this.registerBTN = this.createRegisterBTN();
     this.userBar = this.createUserBar();
+    this.basket = this.createBasket();
+
     this.changeСaption();
 
     this.configureView();
@@ -48,53 +64,78 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [NAV_CLASS_NAME],
     };
     const nav = new ElementCreator(navParams);
-    nav.addInnerElement(
-      this.createContactUsBTN(),
-      this.createPickupPointBTN(),
-      this.createDeliverytBTN(),
-      this.createPaymentBTN()
-    );
-
-    const singInBTN = this.createSingInBTN();
-    const singOutBTN = this.createSingOutBTN();
-    const joinBTN = this.createJoinBTN();
-    singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
+    nav.addInnerElement(this.mainBTN, this.catalogBTN, this.aboutUsBTN);
 
     this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
-    this.getViewCreator().addInnerElement(nav, singInBTN, singOutBTN, joinBTN, this.userBar);
+    this.singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
+    this.getViewCreator().addInnerElement(
+      nav,
+      this.singInBTN,
+      this.singOutBTN,
+      this.registerBTN,
+      this.basket,
+      this.userBar
+    );
   }
 
-  private createContactUsBTN(): IElementCreator {
+  public getMainBTN(): IElementCreator {
+    return this.mainBTN;
+  }
+
+  public getCatalogBTN(): IElementCreator {
+    return this.catalogBTN;
+  }
+
+  public getAboutUsBTN(): IElementCreator {
+    return this.aboutUsBTN;
+  }
+
+  public getSingInBTN(): IElementCreator {
+    return this.singInBTN;
+  }
+
+  public getSingOutBTN(): IElementCreator {
+    return this.singOutBTN;
+  }
+
+  public getRegisterBTN(): IElementCreator {
+    return this.registerBTN;
+  }
+
+  public getUserBar(): IElementCreator {
+    return this.userBar;
+  }
+
+  public getBasket(): IElementCreator {
+    return this.basket;
+  }
+
+  public changeСaption(userName = DEFAULT_USER_NAME): void {
+    this.userBar.setTextContent(userName[0]);
+  }
+
+  private createMainBTN(): IElementCreator {
     const params: btnParams = {
-      textContent: CONTACT_US_BTN_TEXT,
-      classNames: [NAV_BTN_CLASS],
+      textContent: MAIN_BTN_TEXT,
+      classNames: [NAV_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
   }
 
-  private createPickupPointBTN(): IElementCreator {
+  private createCatalogBTN(): IElementCreator {
     const params: btnParams = {
-      textContent: PICKUP_POINTS_BTN_TEXT,
-      classNames: [NAV_BTN_CLASS],
+      textContent: CATALOG_BTN_TEXT,
+      classNames: [NAV_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
   }
 
-  private createDeliverytBTN(): IElementCreator {
+  private createAboutUsBTN(): IElementCreator {
     const params: btnParams = {
-      textContent: DELIVERY_BTN_TEXT,
-      classNames: [NAV_BTN_CLASS],
-    };
-
-    return new ButtonView(params).getViewCreator();
-  }
-
-  private createPaymentBTN(): IElementCreator {
-    const params: btnParams = {
-      textContent: PAYMENT_BTN_TEXT,
-      classNames: [NAV_BTN_CLASS],
+      textContent: ABOUT_US_BTN_TEXT,
+      classNames: [NAV_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
@@ -103,7 +144,7 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
   private createSingInBTN(): IElementCreator {
     const params: btnParams = {
       textContent: SING_IN_BTN_TEXT,
-      classNames: [AUTHORIZATION_BTN_CLASS],
+      classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
@@ -112,16 +153,16 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
   private createSingOutBTN(): IElementCreator {
     const params: btnParams = {
       textContent: SING_OUT_BTN_TEXT,
-      classNames: [AUTHORIZATION_BTN_CLASS],
+      classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
   }
 
-  private createJoinBTN(): IElementCreator {
+  private createRegisterBTN(): IElementCreator {
     const params: btnParams = {
-      textContent: JOIN_TEXT,
-      classNames: [AUTHORIZATION_BTN_CLASS],
+      textContent: REGISTER_TEXT,
+      classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
     return new ButtonView(params).getViewCreator();
@@ -136,7 +177,12 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
     return new ElementCreator(userBarParams);
   }
 
-  public changeСaption(userName = DEFAULT_USER_NAME) {
-    this.userBar.setTextContent(userName[0]);
+  private createBasket(): IElementCreator {
+    const params: btnParams = {
+      textContent: BASKET_TEXT,
+      classNames: [BASKET_BTN_CLASS_NAME],
+    };
+
+    return new ButtonView(params).getViewCreator();
   }
 }

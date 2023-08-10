@@ -7,7 +7,6 @@
 .top-menu,
 .nav {
   @include flex($gap: 1rem, $align: center);
-  padding: 1rem;
 }
 
 .top-menu__user-bar {
@@ -21,5 +20,6 @@
 
   &:hover {
     border: solid 1px #000000;
+    background-color: #d1f77f;
   }
 }

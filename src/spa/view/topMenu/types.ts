@@ -1,6 +1,15 @@
+import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import IView from '@src/spa/view/types';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ITopMenuView {}
+export interface ITopMenuView {
+  getMainBTN(): IElementCreator;
+  getCatalogBTN(): IElementCreator;
+  getAboutUsBTN(): IElementCreator;
+  getSingInBTN(): IElementCreator;
+  getSingOutBTN(): IElementCreator;
+  getRegisterBTN(): IElementCreator;
+  getUserBar(): IElementCreator;
+  getBasket(): IElementCreator;
+}
 
 export type ITopMenu = ITopMenuView & IView;
