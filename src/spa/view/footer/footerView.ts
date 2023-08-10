@@ -44,6 +44,7 @@ const linkRS: IImgLinkParams = {
   },
   linkAttributes: {
     href: LINK_RS_HREH,
+    target: '_blank',
   },
   imgClasses: [IMG_RS_CLASS_NAME],
 };
@@ -54,6 +55,7 @@ const linkGHL: IImgLinkParams = {
   },
   linkAttributes: {
     href: LINK_GH_L_HREF,
+    target: '_blank',
   },
   imgClasses: [IMG_GH_CLASS_NAME],
 };
@@ -64,6 +66,7 @@ const linkGHV: IImgLinkParams = {
   },
   linkAttributes: {
     href: LINK_GH_V_HREF,
+    target: '_blank',
   },
   imgClasses: [IMG_GH_CLASS_NAME],
 };
@@ -74,39 +77,38 @@ const linkGHA: IImgLinkParams = {
   },
   linkAttributes: {
     href: LINK_GH_A_HREF,
+    target: '_blank',
   },
   imgClasses: [IMG_GH_CLASS_NAME],
 };
 
 export default class FooterView extends View implements IView {
-  protected readonly container: IView;
-  private readonly wrapperLinkGH: IElementCreator;
   public constructor() {
     const params: ElementCreatorParams = {
       tag: FOOTER_TAG,
       classNames: [FOOTER_CLASS_NAME],
     };
     super(params);
-    this.container = new ContainerView();
-    this.wrapperLinkGH = this.createWrapper(LINK_GH_WRAPPER_CLASS_NAME);
     this.configureView();
   }
 
   private configureView(): void {
-    this.container.getViewCreator().setClasses(FOOTER_CONTAINER_CLASS_NAME);
-    this.wrapperLinkGH.addInnerElement(
+    const container = new ContainerView();
+    container.getViewCreator().setClasses(FOOTER_CONTAINER_CLASS_NAME);
+    const wrapperLinkGitHub = this.createWrapper(LINK_GH_WRAPPER_CLASS_NAME);
+    wrapperLinkGitHub.addInnerElement(
       new ImgLinkView(linkGHL).getView(),
       new ImgLinkView(linkGHV).getView(),
       new ImgLinkView(linkGHA).getView()
     );
-    this.container
+    container
       .getViewCreator()
       .addInnerElement(
         new ImgLinkView(linkRS).getView(),
         this.createParagraph().getElement(),
-        this.wrapperLinkGH.getElement()
+        wrapperLinkGitHub.getElement()
       );
-    this.getViewCreator().addInnerElement(this.container.getViewCreator());
+    this.getViewCreator().addInnerElement(container.getViewCreator());
   }
 
   private createWrapper(...classes: string[]): IElementCreator {
