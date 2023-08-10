@@ -1,0 +1,14 @@
+.input-wrapper{
+    font-size: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 2.5rem;
+}
+
+.span-error{
+    font-size: 1.4rem;
+    color: red;
+    position: absolute;
+    top: 4rem;
+}

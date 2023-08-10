@@ -4,10 +4,9 @@
   width: 100%;
   &__container {
     @include flex;
-    padding: 10px 0 20px;
+    padding: 1rem 0 2rem;
   }
   &__logo-img{
-    height: 40px;
-    width: 40px;
+    width: 8rem;
   }
 }
