@@ -1,0 +1,23 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.home-page {
+  @include flex($justify: center, $align: center);
+}
+
+.home-page__img {
+  height: 40rem;
+}
+
+.home-page__content-container {
+  @include flex($gap: 2rem, $direction: column);
+  max-width: 40rem;
+}
+
+.home-page__title {
+  font-size: 3rem;
+  color: #BE1010;
+}
+
+.home-page__content {
+  font-size: 2rem;
+}
