@@ -1,0 +1,17 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.registration-page {
+    @include flex ($direction: column, $gap: 10px, $justify: center, $align: center);
+    margin: 0 auto;
+    &__address-name{
+        font-size: 2.4rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.registration-page__title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #78a9f3;
+}
+
