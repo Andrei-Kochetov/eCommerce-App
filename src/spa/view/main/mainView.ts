@@ -3,13 +3,14 @@ import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import View from '@src/spa/view/view';
 import IView from '@src/spa/view/types';
 import ContainerView from '@src/spa/view/container/containerView';
+import { IMainView } from '@src/spa/view/main/types';
 
 // mainSection properties
 const MAIN_TAG = 'main';
 const MAIN_CLASS_NAME = 'main';
 const MAIN_CONTAINER_CLASS_NAME = 'main__container';
 
-export default class MainView extends View {
+export default class MainView extends View implements IMainView {
   private readonly container: IView;
   public constructor() {
     const params: ElementCreatorParams = {
