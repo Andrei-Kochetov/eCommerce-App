@@ -4,89 +4,14 @@ import View from '@src/spa/view/view';
 import IView from '@src/spa/view/types';
 import ContainerView from '@src/spa/view/container/containerView';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
-import ImgLinkView from '../img_link/imgLinkView';
-import { IImgLinkParams } from '@src/spa/view/img_link/types';
-
-// wrapper properties
-const WRAPPER_TAG = 'div';
-
-// paragraph properties
-const PARAGRAPH_TAG = 'p';
-const FOOTER_YEAR_CLASS_NAME = 'footer__year';
-const PARAGRAPH_TEXT_CONTENT = '2023';
-
-// footer properties
-const FOOTER_TAG = 'footer';
-const FOOTER_CLASS_NAME = 'footer';
-const FOOTER_CONTAINER_CLASS_NAME = 'footer__container';
-
-// link GH wrapper properties
-const LINK_GH_WRAPPER_CLASS_NAME = 'footer__wrapper-link-gh';
-
-// link properties
-const LINK_RS_HREH = 'https://rs.school/js/';
-const LINK_GH_L_HREF = 'https://github.com/leanidrymkevich';
-const LINK_GH_V_HREF = 'https://github.com/kushalvova';
-const LINK_GH_A_HREF = 'https://github.com/andrei-kochetov';
-
-// img properties
-const IMG_RS_CLASS_NAME = 'footer-rs-img';
-const IMG_GH_CLASS_NAME = 'footer-gh-img';
-
-const IMG_RS_SRC = './assets/rs_school.svg';
-const IMG_GH1_SRC = './assets/github_1.svg';
-const IMG_GH2_SRC = './assets/github_2.svg';
-
-// imgLink parameters properties
-const linkRS: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_RS_SRC,
-  },
-  linkAttributes: {
-    href: LINK_RS_HREH,
-    target: '_blank',
-  },
-  imgClasses: [IMG_RS_CLASS_NAME],
-};
-
-const linkGHL: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH1_SRC,
-  },
-  linkAttributes: {
-    href: LINK_GH_L_HREF,
-    target: '_blank',
-  },
-  imgClasses: [IMG_GH_CLASS_NAME],
-};
-
-const linkGHV: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH2_SRC,
-  },
-  linkAttributes: {
-    href: LINK_GH_V_HREF,
-    target: '_blank',
-  },
-  imgClasses: [IMG_GH_CLASS_NAME],
-};
-
-const linkGHA: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH1_SRC,
-  },
-  linkAttributes: {
-    href: LINK_GH_A_HREF,
-    target: '_blank',
-  },
-  imgClasses: [IMG_GH_CLASS_NAME],
-};
+import ImgLinkView from '@src/spa/view/img_link/imgLinkView';
+import * as constants from '@src/spa/view/footer/constants';
 
 export default class FooterView extends View implements IView {
   public constructor() {
     const params: ElementCreatorParams = {
-      tag: FOOTER_TAG,
-      classNames: [FOOTER_CLASS_NAME],
+      tag: constants.FOOTER_TAG,
+      classNames: [constants.FOOTER_CLASS_NAME],
     };
     super(params);
     this.configureView();
@@ -94,17 +19,17 @@ export default class FooterView extends View implements IView {
 
   private configureView(): void {
     const container = new ContainerView();
-    container.getViewCreator().setClasses(FOOTER_CONTAINER_CLASS_NAME);
-    const wrapperLinkGitHub = this.createWrapper(LINK_GH_WRAPPER_CLASS_NAME);
+    container.getViewCreator().setClasses(constants.FOOTER_CONTAINER_CLASS_NAME);
+    const wrapperLinkGitHub = this.createWrapper(constants.LINK_GH_WRAPPER_CLASS_NAME);
     wrapperLinkGitHub.addInnerElement(
-      new ImgLinkView(linkGHL).getView(),
-      new ImgLinkView(linkGHV).getView(),
-      new ImgLinkView(linkGHA).getView()
+      new ImgLinkView(constants.linkGHL).getView(),
+      new ImgLinkView(constants.linkGHV).getView(),
+      new ImgLinkView(constants.linkGHA).getView()
     );
     container
       .getViewCreator()
       .addInnerElement(
-        new ImgLinkView(linkRS).getView(),
+        new ImgLinkView(constants.linkRS).getView(),
         this.createParagraph().getElement(),
         wrapperLinkGitHub.getElement()
       );
@@ -113,7 +38,7 @@ export default class FooterView extends View implements IView {
 
   private createWrapper(...classes: string[]): IElementCreator {
     const params: ElementCreatorParams = {
-      tag: WRAPPER_TAG,
+      tag: constants.WRAPPER_TAG,
       classNames: classes,
     };
     const wrapper: IElementCreator = new ElementCreator(params);
@@ -122,11 +47,11 @@ export default class FooterView extends View implements IView {
 
   private createParagraph(): IElementCreator {
     const params: ElementCreatorParams = {
-      tag: PARAGRAPH_TAG,
-      classNames: [FOOTER_YEAR_CLASS_NAME],
+      tag: constants.PARAGRAPH_TAG,
+      classNames: [constants.FOOTER_YEAR_CLASS_NAME],
     };
     const paragraph: IElementCreator = new ElementCreator(params);
-    paragraph.setTextContent(PARAGRAPH_TEXT_CONTENT);
+    paragraph.setTextContent(constants.PARAGRAPH_TEXT_CONTENT);
     return paragraph;
   }
 }
