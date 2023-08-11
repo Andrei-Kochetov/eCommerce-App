@@ -3,11 +3,12 @@ import HeaderView from '@src/spa/view/header/headerView';
 import IView from '@src/spa/view/types';
 import FooterView from '@src/spa/view/footer/footerView';
 import { PageNames } from '@src/spa/view/pages/types';
+import LoginPageView from '../loginPage/loginPageView';
 
 export default class IBasePage {
   private readonly defaultPage: PageNames = PageNames.MAIN;
   private readonly header: IHeader;
-  // private main: IMain;
+  // private readonly main: IMain;
   private readonly pages: Map<PageNames, IView> = new Map();
   private currentPage: PageNames = this.defaultPage;
 
@@ -38,7 +39,7 @@ export default class IBasePage {
   }
 
   public renderPage(pageName: PageNames): void {
-    const page: IView | undefined = this.pages.get(pageName);
+    let page: IView | undefined = this.pages.get(pageName);
     this.currentPage = pageName;
 
     if (!page) {
@@ -48,8 +49,8 @@ export default class IBasePage {
           // this.pages.set(PageNames.MAIN, page);
           break;
         case PageNames.LOGIN:
-          // page = new LoginPage();
-          // this.pages.set(PageNames.LOGIN, page);
+          page = new LoginPageView();
+          this.pages.set(PageNames.LOGIN, page);
           break;
         case PageNames.REGISTRATION:
           // page = new RegistrationPage();
