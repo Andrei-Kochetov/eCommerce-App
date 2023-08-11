@@ -5,6 +5,7 @@ import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCre
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
+import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 
 const DEFAULT_USER_NAME = '?';
 
@@ -120,7 +121,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [NAV_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    return button;
   }
 
   private createCatalogBTN(): IElementCreator {
@@ -129,7 +132,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [NAV_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.CATALOG });
+    return button;
   }
 
   private createAboutUsBTN(): IElementCreator {
@@ -138,7 +143,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [NAV_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.ABOUT_US });
+    return button;
   }
 
   private createSingInBTN(): IElementCreator {
@@ -147,7 +154,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
+    return button;
   }
 
   private createSingOutBTN(): IElementCreator {
@@ -156,7 +165,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
+    return button;
   }
 
   private createRegisterBTN(): IElementCreator {
@@ -165,7 +176,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [AUTHORIZATION_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.REGISTRATION });
+    return button;
   }
 
   private createUserBar(): IElementCreator {
@@ -174,7 +187,9 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [USER_BAR_CLASS_NAME],
     };
 
-    return new ElementCreator(userBarParams);
+    const button: IElementCreator = new ElementCreator(userBarParams);
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.PROFILE });
+    return button;
   }
 
   private createBasket(): IElementCreator {
@@ -183,6 +198,8 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       classNames: [BASKET_BTN_CLASS_NAME],
     };
 
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.BASKET });
+    return button;
   }
 }

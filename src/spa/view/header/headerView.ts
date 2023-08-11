@@ -7,6 +7,7 @@ import { IHeaderView } from '@src/spa/view/header/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import TopMenuView from '@src/spa/view/topMenu/topMenuView';
 import { ITopMenu } from '@src/spa/view/topMenu/types';
+import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 
 // header properties
 const HEADER_TAG = 'header';
@@ -18,6 +19,7 @@ const LOGO_LINK_TAG = 'a';
 const LOGO_LINK_CLASS_NAME = 'header__logo-link';
 const LOGO_LINK_ATTRIBUTES = {
   href: '#',
+  [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN,
 };
 
 // logoImg properties
@@ -25,6 +27,7 @@ const LOGO_IMG_TAG = 'img';
 const LOGO_IMG_CLASS_NAME = 'header__logo-img';
 const LOGO_IMG_ATTRIBUTES = {
   src: './assets/onPlug.png',
+  [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN,
 };
 
 export default class HeaderView extends View implements IHeaderView {
