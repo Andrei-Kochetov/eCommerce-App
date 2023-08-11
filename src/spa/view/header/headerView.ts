@@ -5,6 +5,8 @@ import IView from '@src/spa/view/types';
 import ContainerView from '@src/spa/view/container/containerView';
 import { IHeaderView } from '@src/spa/view/header/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
+import TopMenuView from '@src/spa/view/topMenu/topMenuView';
+import { ITopMenu } from '@src/spa/view/topMenu/types';
 
 // header properties
 const HEADER_TAG = 'header';
@@ -26,8 +28,10 @@ const LOGO_IMG_ATTRIBUTES = {
 };
 
 export default class HeaderView extends View implements IHeaderView {
-  protected readonly container: IView;
+  private readonly container: IView;
   private readonly homePageLink: IElementCreator;
+  private readonly navigation: ITopMenu;
+
   public constructor() {
     const params: ElementCreatorParams = {
       tag: HEADER_TAG,
@@ -36,6 +40,7 @@ export default class HeaderView extends View implements IHeaderView {
     super(params);
     this.container = new ContainerView();
     this.homePageLink = this.createHomePageLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
+    this.navigation = new TopMenuView();
     this.configureView();
   }
 
@@ -49,7 +54,7 @@ export default class HeaderView extends View implements IHeaderView {
   private configureView(): void {
     this.container.getViewCreator().setClasses(HEADER_CONTAINER_CLASS_NAME);
     this.homePageLink.addInnerElement(this.createLogoImg(LOGO_IMG_ATTRIBUTES, LOGO_IMG_CLASS_NAME).getElement());
-    this.container.getViewCreator().addInnerElement(this.homePageLink.getElement());
+    this.container.getViewCreator().addInnerElement(this.homePageLink.getElement(), this.navigation.getView());
     this.getViewCreator().addInnerElement(this.container.getViewCreator());
   }
 
