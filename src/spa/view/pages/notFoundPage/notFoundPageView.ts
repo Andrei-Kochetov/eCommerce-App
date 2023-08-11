@@ -1,10 +1,11 @@
 import '@src/spa/view/pages/notFoundPage/notFoundPage.scss';
-import ContainerView from '@src/spa/view/container/containerView';
+import View from '@src/spa/view/view';
 import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 
 // notFoundPage properties
 const CONTAINER_CLASS_NAME = 'not-found';
+const CONTAINER_TAG = 'div';
 const TEXT_TAG = 'p';
 const TITLE_CLASS_NAME = 'not-found__title';
 const SUBTITLE_CLASS_NAME = 'not-found__subtitle';
@@ -19,9 +20,13 @@ const IMG_ATTRIBUTES = {
   alt: '404 error image',
 };
 
-export default class NotFoundPageView extends ContainerView {
+export default class NotFoundPageView extends View {
   constructor() {
-    super();
+    const params: ElementCreatorParams = {
+      tag: CONTAINER_TAG,
+      classNames: [CONTAINER_CLASS_NAME],
+    };
+    super(params);
 
     this.configureView();
   }

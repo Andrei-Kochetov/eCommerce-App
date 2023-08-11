@@ -1,18 +1,24 @@
 @import '@src/spa/basic-styles/_mixins.scss';
 
-.main__img {
+.home-page {
+  @include flex($justify: center, $align: center);
+  padding: 3rem;
+}
+
+.home-page__img {
   height: 40rem;
 }
 
-.main__content-container {
+.home-page__content-container {
   @include flex($gap: 2rem, $direction: column);
+  max-width: 40rem;
 }
 
-.main__title {
+.home-page__title {
   font-size: 3rem;
   color: #BE1010;
 }
 
-.main__content {
+.home-page__content {
   font-size: 2rem;
 }

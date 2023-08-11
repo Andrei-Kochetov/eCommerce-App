@@ -1,25 +1,27 @@
 import '@src/spa/view/pages/homePage/homePage.scss';
-import ContainerView from '@src/spa/view/container/containerView';
+import View from '@src/spa/view/view';
 import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 
 // container properties
-const CONTAINER_CLASS_NAME = 'main__container';
+const CONTAINER_CLASS_NAME = 'home-page';
+const CONTAINER_TAG = 'div';
 
 // img properties
 const IMG_TAG = 'img';
-const IMG_CLASS_NAME = 'main__img';
+const IMG_CLASS_NAME = 'home-page__img';
 const IMG_ATTRIBUTES = {
   src: './assets/mainPageImg.png',
   alt: 'Happy shopper image',
 };
 
 // Content properties
-const CONTENT_CONTAINER_CLASS_NAME = 'main__content-container';
+const CONTENT_CONTAINER_CLASS_NAME = 'home-page__content-container';
+const CONTENT_CONTAINER_TAG = 'div';
 const TITLE_TAG = 'p';
-const TITLE_CLASS_NAME = 'main__title';
+const TITLE_CLASS_NAME = 'home-page__title';
 const CONTENT_TAG = 'p';
-const CONTENT_CLASS_NAME = 'main__content';
+const CONTENT_CLASS_NAME = 'home-page__content';
 
 // text content
 const TEXT_TITLE = 'Hello!';
@@ -27,9 +29,13 @@ const TEXT_CONTENT_FIRST = `We are glad to welcome you on the pages of our onlin
 Here you can find quality products for every taste.`;
 const TEXT_CONTENT_SECOND = 'We hope that shopping in our store will leave you only positive impressions.';
 
-export default class HomePage extends ContainerView {
+export default class HomePageView extends View {
   constructor() {
-    super();
+    const params: ElementCreatorParams = {
+      tag: CONTAINER_TAG,
+      classNames: [CONTAINER_CLASS_NAME],
+    };
+    super(params);
 
     this.configureView();
   }
@@ -42,14 +48,17 @@ export default class HomePage extends ContainerView {
     };
     const img = new ElementCreator(imgParams);
 
-    const container = new ContainerView();
+    const contentContainerParams: ElementCreatorParams = {
+      tag: CONTENT_CONTAINER_TAG,
+      classNames: [CONTENT_CONTAINER_CLASS_NAME],
+    };
+    const contentContainer = new ElementCreator(contentContainerParams);
 
     const titleParams: ElementCreatorParams = {
       tag: TITLE_TAG,
       classNames: [TITLE_CLASS_NAME],
     };
     const title = new ElementCreator(titleParams);
-
     title.setTextContent(TEXT_TITLE);
 
     const contentFirstParams: ElementCreatorParams = {
@@ -66,10 +75,8 @@ export default class HomePage extends ContainerView {
     const contentSecond = new ElementCreator(contentSecondParams);
     contentSecond.setTextContent(TEXT_CONTENT_SECOND);
 
-    container.getViewCreator().setClasses(CONTENT_CONTAINER_CLASS_NAME);
-    container.getViewCreator().addInnerElement(title, contentFirst, contentSecond);
-
+    contentContainer.addInnerElement(title, contentFirst, contentSecond);
     this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
-    this.getViewCreator().addInnerElement(img, container.getViewCreator());
+    this.getViewCreator().addInnerElement(img, contentContainer);
   }
 }
