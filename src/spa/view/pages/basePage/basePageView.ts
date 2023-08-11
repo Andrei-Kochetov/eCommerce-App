@@ -14,7 +14,7 @@ export default class IBasePage {
   private readonly header: IHeader;
   private readonly main: IMain;
   private readonly pages: Map<string, IView> = new Map();
-  private currentPage: string = this.defaultPage;
+  private currentPage = '';
 
   public constructor() {
     this.header = new HeaderView();
@@ -43,6 +43,7 @@ export default class IBasePage {
 
   public renderPage(pageName: string): void {
     let page: IView | undefined = this.pages.get(pageName);
+    if (pageName === this.currentPage) return; // blocking rendering same page
     this.currentPage = pageName;
 
     if (!page) {
