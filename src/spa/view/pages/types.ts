@@ -10,3 +10,4 @@ export enum PageNames {
 }
 
 export const PAGE_NAME_ATTRIBUTE = 'data-page-name';
+export const ELEMENT_PAGE_NAME_ATTRIBUTE = 'pageName';

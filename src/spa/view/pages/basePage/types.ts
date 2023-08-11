@@ -1,10 +1,10 @@
 import { IHeader } from '@src/spa/view/header/types';
 import IView from '@src/spa/view/types';
-import { PageNames } from '@src/spa/view/pages/types';
+import { IMain } from '@src/spa/view/main/types';
 
 export interface IBasePage {
   getHeader(): IHeader;
-  // getMain(): IMain;
+  getMain(): IMain;
   startRendering(): void;
   renderPage(pageName: string): void;
   getCurrentPage(): IView;
