@@ -134,6 +134,34 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return this.toLoginBTN;
   }
 
+  private configureBillingAddressView(): IElementCreator {
+    const wrapper = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
+    const titleBillingAddress = this.createParagraph('Billing address');
+    wrapper.addInnerElement(
+      titleBillingAddress.getElement(),
+      this.billingAddressDefault.getView(),
+      this.billingCountryField.getView(),
+      this.billingCityField.getView(),
+      this.billingAddressField.getView(),
+      this.billingPostCodeField.getView()
+    );
+    return wrapper;
+  }
+
+  private configureShippingAddressView(): IElementCreator {
+    const wrapper = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
+    const titleShippingAddress = this.createParagraph('Shipping address');
+    wrapper.addInnerElement(
+      titleShippingAddress.getElement(),
+      this.shippingAddressDefault.getView(),
+      this.shippingCountryField.getView(),
+      this.shippingCityField.getView(),
+      this.shippingAddressField.getView(),
+      this.shippingPostCodeField.getView()
+    );
+    return wrapper;
+  }
+
   private configureView(): void {
     const form: IElementCreator = new FormView().getViewCreator();
     const params: ElementCreatorParams = {
@@ -142,27 +170,8 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       textContent: constants.TITLE_TEXT,
     };
     const title: IElementCreator = new ElementCreator(params);
-    const wrapperBillingAddress = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
-    const titleBillingAddress = this.createParagraph('Billing address');
-    wrapperBillingAddress.addInnerElement(
-      titleBillingAddress.getElement(),
-      this.billingAddressDefault.getView(),
-      this.billingCountryField.getView(),
-      this.billingCityField.getView(),
-      this.billingAddressField.getView(),
-      this.billingPostCodeField.getView()
-    );
-
-    const wrapperShippingAddress = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
-    const titleShippingAddress = this.createParagraph('Shipping address');
-    wrapperShippingAddress.addInnerElement(
-      titleShippingAddress.getElement(),
-      this.shippingAddressDefault.getView(),
-      this.shippingCountryField.getView(),
-      this.shippingCityField.getView(),
-      this.shippingAddressField.getView(),
-      this.shippingPostCodeField.getView()
-    );
+    const wrapperBillingAddress = this.configureBillingAddressView();
+    const wrapperShippingAddress = this.configureShippingAddressView();
 
     form.setClasses(constants.LOGIN_FORM_CLASS);
     form.addInnerElement(
@@ -272,7 +281,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'number',
         name: 'billing-postcode',
       },
-      textLabel: 'Postcode',
+      textLabel: 'Post code',
     };
     return new InputView(params);
   }
@@ -331,7 +340,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'number',
         name: 'shipping-postcode',
       },
-      textLabel: 'Postcode',
+      textLabel: 'Post code',
     };
     return new InputView(params);
   }
