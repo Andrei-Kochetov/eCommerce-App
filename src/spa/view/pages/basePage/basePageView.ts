@@ -49,6 +49,12 @@ export default class IBasePage {
       page = this.getPage(pageName);
     }
 
+    if (pageName === PageNames.LOGIN || pageName === PageNames.REGISTRATION) {
+      this.header.hideNavigation();
+    } else {
+      this.header.showNavigation();
+    }
+
     this.main.addPage(page);
   }
 

@@ -5,6 +5,10 @@
   &__container {
     @include flex;
     padding: 1rem 0 2rem;
+
+    &_hidden {
+      display: none !important; // don't delete, this is for navigation hiding
+    }
   }
   &__logo-img{
     width: 8rem;

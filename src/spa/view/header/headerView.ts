@@ -13,6 +13,7 @@ import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 const HEADER_TAG = 'header';
 const HEADER_CLASS_NAME = 'header';
 const HEADER_CONTAINER_CLASS_NAME = 'header__container';
+const HEADER_CONTAINER_HIDDEN_CLASS = 'header__container_hidden';
 
 // logoLink properties
 const LOGO_LINK_TAG = 'a';
@@ -52,6 +53,20 @@ export default class HeaderView extends View implements IHeaderView {
   }
   public getHeaderContainer(): IView {
     return this.container;
+  }
+
+  public getNavigation(): ITopMenu {
+    return this.navigation;
+  }
+
+  public hideNavigation(): void {
+    console.log('LOGIN/REGISTRATION');
+    this.navigation.getViewCreator().setClasses(HEADER_CONTAINER_HIDDEN_CLASS);
+  }
+
+  public showNavigation(): void {
+    console.log('OTHER');
+    this.navigation.getViewCreator().removeClasses(HEADER_CONTAINER_HIDDEN_CLASS);
   }
 
   private configureView(): void {

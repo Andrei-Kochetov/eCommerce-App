@@ -33,5 +33,13 @@ export default class App {
       if (!pageName) return;
       this.basePage.renderPage(pageName);
     });
+
+    const main: HTMLElement = this.basePage.getMain().getView();
+    main.addEventListener('click', (event: MouseEvent): void => {
+      if (!(event.target instanceof HTMLElement)) return;
+      const pageName: string | undefined = event.target.dataset[ELEMENT_PAGE_NAME_ATTRIBUTE];
+      if (!pageName) return;
+      this.basePage.renderPage(pageName);
+    });
   }
 }
