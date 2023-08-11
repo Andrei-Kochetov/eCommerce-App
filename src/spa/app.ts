@@ -19,10 +19,6 @@ export default class App {
   }
 
   public start(): void {
-    this.renderStartPage();
-  }
-
-  private renderStartPage(): void {
-    document.body.append(this.basePage.getView());
+    this.basePage.startRendering();
   }
 }

@@ -1,26 +1,20 @@
-import View from '@src/spa/view/view';
 import { IHeader } from '@src/spa/view/header/types';
 import HeaderView from '@src/spa/view/header/headerView';
-import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import IView from '@src/spa/view/types';
 import FooterView from '@src/spa/view/footer/footerView';
+import { PageNames } from '@src/spa/view/pages/types';
 
-const SPA_WRAPPER_TAG = 'div';
-const SPA_WRAPPER_CLASSES = ['spa'];
-
-export default class BasePageView extends View {
-  private header: IHeader;
+export default class IBasePage {
+  private readonly defaultPage: PageNames = PageNames.MAIN;
+  private readonly header: IHeader;
   // private main: IMain;
+  private readonly pages: Map<PageNames, IView> = new Map();
+  private currentPage: PageNames = this.defaultPage;
+
   // pass here a main page
   public constructor() {
-    const params: ElementCreatorParams = {
-      tag: SPA_WRAPPER_TAG,
-      classNames: SPA_WRAPPER_CLASSES,
-    };
-    super(params);
     this.header = new HeaderView();
     // this.main = new MainView();
-    this.configureView();
   }
 
   public getHeader(): IHeader {
@@ -31,8 +25,45 @@ export default class BasePageView extends View {
   //   return this.main;
   // }
 
-  private configureView(): void {
+  public getCurrentPage(): IView {
+    const page: IView | undefined = this.pages.get(this.currentPage);
+    if (!page) throw new Error('App Error! Current page is missing!');
+    return page;
+  }
+
+  public startRendering(): void {
     const footer: IView = new FooterView();
-    this.getViewCreator().addInnerElement(this.header.getView(), footer.getView()); // insert this.main
+    document.body.append(this.header.getView(), footer.getView()); // insert this.main
+    this.renderPage(this.defaultPage);
+  }
+
+  public renderPage(pageName: PageNames): void {
+    const page: IView | undefined = this.pages.get(pageName);
+    this.currentPage = pageName;
+
+    if (!page) {
+      switch (pageName) {
+        case PageNames.MAIN:
+          // page = new HomePage();
+          // this.pages.set(PageNames.MAIN, page);
+          break;
+        case PageNames.LOGIN:
+          // page = new LoginPage();
+          // this.pages.set(PageNames.LOGIN, page);
+          break;
+        case PageNames.REGISTRATION:
+          // page = new RegistrationPage();
+          // this.pages.set(PageNames.REGISTRATION, page);
+          break;
+        case PageNames.NOT_FOUND:
+          // page = new NotFoundPageView();
+          // this.pages.set(PageNames.NOT_FOUND, page);
+          break;
+        // TODO add other pages
+      }
+    }
+
+    // this.main.addPage(page);
+    console.log(this.currentPage);
   }
 }
