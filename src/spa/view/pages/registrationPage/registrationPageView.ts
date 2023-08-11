@@ -399,7 +399,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.REGISTRATION });
+    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
     return button;
   }
 
