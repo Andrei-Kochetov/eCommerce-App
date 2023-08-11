@@ -1,0 +1,26 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.btn_nav {
+
+  &:hover {
+    color: #ff0000;
+  }
+}
+
+.btn_authorization {  
+  height: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: #fff07f;
+  border-radius: 0.5rem;
+
+  &:hover {
+    background-color: #d1f77f;
+  }
+}
+
+.btn_basket {
+  height: 2.2rem;
+  width: 2.2rem;
+  @include background($src: '@src/assets/basket.png');
+}
