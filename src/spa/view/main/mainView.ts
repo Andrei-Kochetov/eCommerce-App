@@ -1,42 +1,30 @@
 import '@src/spa/view/main/main.scss';
 import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import View from '@src/spa/view/view';
-import HomePageView from '@src/spa/view/pages/homePage/homePageView';
-import NotFoundPageView from '@src/spa/view/pages/notFoundPage/notFoundPageView';
-import IView from '@src/spa/view/types';
+import IView from '../types';
+import ContainerView from '../container/containerView';
 
 // mainSection properties
 const MAIN_TAG = 'main';
 const MAIN_CLASS_NAME = 'main';
+const MAIN_CONTAINER_CLASS_NAME = 'container_main';
 
 export default class MainView extends View {
-  private readonly homePage: IView;
-  private readonly notFoundPage: IView;
-
+  protected readonly container: IView;
   public constructor() {
     const params: ElementCreatorParams = {
       tag: MAIN_TAG,
       classNames: [MAIN_CLASS_NAME],
     };
     super(params);
-
-    this.homePage = new HomePageView();
-    this.notFoundPage = new NotFoundPageView();
-
-    this.configureView();
+    this.container = new ContainerView();
   }
 
-  private configureView(): void {
-    this.setHomePage();
-  }
-
-  public setHomePage(): void {
+  public addPage(component: IView): void {
+    const mainContainer = this.container.getViewCreator();
+    mainContainer.setClasses(MAIN_CONTAINER_CLASS_NAME);
+    mainContainer.addInnerElement(component.getView());
     this.getViewCreator().clearInnerHTML();
-    this.getViewCreator().addInnerElement(this.homePage.getView());
-  }
-
-  public setNotFoundPage(): void {
-    this.getViewCreator().clearInnerHTML();
-    this.getViewCreator().addInnerElement(this.notFoundPage.getView());
+    this.getViewCreator().addInnerElement(mainContainer);
   }
 }
