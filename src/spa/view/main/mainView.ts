@@ -10,7 +10,7 @@ const MAIN_CLASS_NAME = 'main';
 const MAIN_CONTAINER_CLASS_NAME = 'main__container';
 
 export default class MainView extends View {
-  readonly container: IView;
+  private readonly container: IView;
   public constructor() {
     const params: ElementCreatorParams = {
       tag: MAIN_TAG,
