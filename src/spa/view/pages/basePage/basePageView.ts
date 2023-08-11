@@ -6,8 +6,9 @@ import { PageNames } from '@src/spa/view/pages/types';
 import LoginPageView from '../loginPage/loginPageView';
 import { IMain } from '@src/spa/view/main/types';
 import MainView from '@src/spa/view/main/mainView';
-import HomePageView from '../homePage/homePageView';
-import NotFoundPageView from '../notFoundPage/notFoundPageView';
+import HomePageView from '@src/spa/view/pages/homePage/homePageView';
+import NotFoundPageView from '@src/spa/view/pages/notFoundPage/notFoundPageView';
+import RegistrationPageView from '@src/spa/view/pages/registrationPage/registrationPageView';
 
 export default class IBasePage {
   private readonly defaultPage: string = PageNames.MAIN;
@@ -71,7 +72,7 @@ export default class IBasePage {
         this.pages.set(PageNames.LOGIN, page);
         return page;
       case PageNames.REGISTRATION:
-        page = this.getNotFoundPage(); // later change on register page
+        page = new RegistrationPageView();
         this.pages.set(PageNames.REGISTRATION, page);
         return page;
       case PageNames.CATALOG:
