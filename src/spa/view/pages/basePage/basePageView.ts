@@ -6,11 +6,11 @@ import { PageNames } from '@src/spa/view/pages/types';
 import LoginPageView from '../loginPage/loginPageView';
 
 export default class IBasePage {
-  private readonly defaultPage: PageNames = PageNames.MAIN;
+  private readonly defaultPage: string = PageNames.MAIN;
   private readonly header: IHeader;
   // private readonly main: IMain;
-  private readonly pages: Map<PageNames, IView> = new Map();
-  private currentPage: PageNames = this.defaultPage;
+  private readonly pages: Map<string, IView> = new Map();
+  private currentPage: string = this.defaultPage;
 
   // pass here a main page
   public constructor() {
@@ -38,7 +38,7 @@ export default class IBasePage {
     this.renderPage(this.defaultPage);
   }
 
-  public renderPage(pageName: PageNames): void {
+  public renderPage(pageName: string): void {
     let page: IView | undefined = this.pages.get(pageName);
     this.currentPage = pageName;
 
@@ -65,6 +65,5 @@ export default class IBasePage {
     }
 
     // this.main.addPage(page);
-    console.log(this.currentPage);
   }
 }

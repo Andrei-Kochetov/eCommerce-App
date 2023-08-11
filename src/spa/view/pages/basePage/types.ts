@@ -6,6 +6,6 @@ export interface IBasePage {
   getHeader(): IHeader;
   // getMain(): IMain;
   startRendering(): void;
-  renderPage(pageName: PageNames): void;
+  renderPage(pageName: string): void;
   getCurrentPage(): IView;
 }
