@@ -1,0 +1,25 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+
+.top-menu {
+  width: max-content;
+}
+
+.top-menu,
+.nav {
+  @include flex($gap: 1rem, $align: center);
+}
+
+.top-menu__user-bar {
+  @include flex($align: center, $justify: center);
+  height: 3rem;
+  width: 3rem;
+  background-color: #fff07f;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+
+  &:hover {
+    border: solid 1px #000000;
+    background-color: #d1f77f;
+  }
+}
