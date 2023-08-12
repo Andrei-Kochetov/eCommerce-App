@@ -60,12 +60,10 @@ export default class HeaderView extends View implements IHeaderView {
   }
 
   public hideNavigation(): void {
-    console.log('LOGIN/REGISTRATION');
     this.navigation.getViewCreator().setClasses(HEADER_CONTAINER_HIDDEN_CLASS);
   }
 
   public showNavigation(): void {
-    console.log('OTHER');
     this.navigation.getViewCreator().removeClasses(HEADER_CONTAINER_HIDDEN_CLASS);
   }
 

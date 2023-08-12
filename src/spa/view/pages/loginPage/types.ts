@@ -9,4 +9,4 @@ export interface ILoginPageView {
   getToRegistrationBTN(): IView;
 }
 
-export type IHeader = ILoginPageView & IView;
+export type ILoginPage = ILoginPageView & IView;
