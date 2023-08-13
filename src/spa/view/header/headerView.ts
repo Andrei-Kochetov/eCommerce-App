@@ -9,6 +9,7 @@ import TopMenuView from '@src/spa/view/topMenu/topMenuView';
 import { ITopMenu } from '@src/spa/view/topMenu/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
+import State from '@src/spa/logic/state/state';
 
 // header properties
 const HEADER_TAG = 'header';
@@ -35,15 +36,13 @@ export default class HeaderView extends View implements IHeaderView {
   private readonly container: IView;
   private readonly homePageLink: IElementCreator;
   private readonly navigation: ITopMenu;
-  private readonly state: IState;
 
-  public constructor(state: IState) {
+  public constructor() {
     const params: ElementCreatorParams = {
       tag: HEADER_TAG,
       classNames: [HEADER_CLASS_NAME],
     };
     super(params);
-    this.state = state;
     this.container = new ContainerView();
     this.homePageLink = this.createHomePageLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
     this.navigation = new TopMenuView();
@@ -62,18 +61,19 @@ export default class HeaderView extends View implements IHeaderView {
   }
 
   public updateHeader(): void {
-    if (this.state.getRecord(APP_STATE_KEYS.IS_SPECIAL_PAGE) === 'false') {
+    const state: IState = State.getInstance();
+    if (state.getRecord(APP_STATE_KEYS.IS_SPECIAL_PAGE) === 'false') {
       this.showNavigation();
     } else {
       this.hideNavigation();
     }
 
-    if (this.state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'false') {
+    if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'false') {
       this.navigation.showRegisterBTN();
       this.navigation.changeCaption();
     } else {
       this.navigation.hideRegisterBTN();
-      this.navigation.changeCaption(this.state.getRecord(APP_STATE_KEYS.USER_LOGIN)[0].toUpperCase());
+      this.navigation.changeCaption(state.getRecord(APP_STATE_KEYS.USER_LOGIN)[0].toUpperCase());
     }
   }
 
