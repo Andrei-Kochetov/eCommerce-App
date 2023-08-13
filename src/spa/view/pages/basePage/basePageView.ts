@@ -9,6 +9,7 @@ import MainView from '@src/spa/view/main/mainView';
 import HomePageView from '@src/spa/view/pages/homePage/homePageView';
 import NotFoundPageView from '@src/spa/view/pages/notFoundPage/notFoundPageView';
 import RegistrationPageView from '@src/spa/view/pages/registrationPage/registrationPageView';
+import { IState } from '@src/spa/logic/state/types';
 
 export default class IBasePage {
   private readonly defaultPage: string = PageNames.MAIN;
@@ -17,7 +18,7 @@ export default class IBasePage {
   private readonly pages: Map<string, IView> = new Map();
   private currentPage = '';
 
-  public constructor() {
+  public constructor(state: IState) {
     this.header = new HeaderView();
     this.main = new MainView();
   }

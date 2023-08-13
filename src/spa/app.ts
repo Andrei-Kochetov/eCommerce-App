@@ -11,12 +11,11 @@ export default class App {
   private static readonly instance: IApp = new App();
 
   private readonly basePage: IBasePage;
-  private readonly state: IState;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
-    this.state = State.getInstance();
-    this.basePage = new BasePageView();
+    const state: IState = State.getInstance();
+    this.basePage = new BasePageView(state);
   }
 
   public static getInstance(): IApp {
