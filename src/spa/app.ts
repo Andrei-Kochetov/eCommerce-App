@@ -3,15 +3,19 @@ import { IApp } from '@src/spa/types';
 import { IBasePage } from '@src/spa/view/pages/basePage/types';
 import BasePageView from '@src/spa/view/pages/basePage/basePageView';
 import { ELEMENT_PAGE_NAME_ATTRIBUTE } from '@src/spa/view/pages/types';
+import { IState } from '@src/spa/logic/state/types';
+import State from './logic/state/state';
 
 // The main class of the application that provides app functionality to the entry point - index.ts
 export default class App {
   private static readonly instance: IApp = new App();
 
   private readonly basePage: IBasePage;
+  private readonly state: IState;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
+    this.state = State.getInstance();
     this.basePage = new BasePageView();
   }
 
