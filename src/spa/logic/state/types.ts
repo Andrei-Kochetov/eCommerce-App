@@ -1,6 +1,7 @@
 export interface IState {
   setRecord(key: string, value: string): void;
   getRecord(key: string): string;
+  resetState(): void;
 }
 
 export enum APP_STATE_KEYS {
