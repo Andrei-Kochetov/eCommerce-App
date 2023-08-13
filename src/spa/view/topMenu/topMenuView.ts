@@ -6,6 +6,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
+import { HIDDEN_CLASS } from '../header/types';
 
 const DEFAULT_USER_NAME = '?';
 
@@ -54,7 +55,7 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
     this.userBar = this.createUserBar();
     this.basket = this.createBasket();
 
-    this.changeСaption();
+    this.changeCaption();
 
     this.configureView();
   }
@@ -77,6 +78,14 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       this.basket,
       this.userBar
     );
+  }
+
+  public hideRegisterBTN(): void {
+    this.registerBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showRegisterBTN(): void {
+    this.registerBTN.removeClasses(HIDDEN_CLASS);
   }
 
   public getMainBTN(): IElementCreator {
@@ -111,7 +120,7 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
     return this.basket;
   }
 
-  public changeСaption(userName = DEFAULT_USER_NAME): void {
+  public changeCaption(userName: string = DEFAULT_USER_NAME): void {
     this.userBar.setTextContent(userName[0]);
   }
 

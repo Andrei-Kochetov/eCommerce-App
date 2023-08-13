@@ -9,18 +9,20 @@ import MainView from '@src/spa/view/main/mainView';
 import HomePageView from '@src/spa/view/pages/homePage/homePageView';
 import NotFoundPageView from '@src/spa/view/pages/notFoundPage/notFoundPageView';
 import RegistrationPageView from '@src/spa/view/pages/registrationPage/registrationPageView';
-import { IState } from '@src/spa/logic/state/types';
+import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 
 export default class IBasePage {
   private readonly defaultPage: string = PageNames.MAIN;
   private readonly header: IHeader;
   private readonly main: IMain;
   private readonly pages: Map<string, IView> = new Map();
+  private readonly state: IState;
   private currentPage = '';
 
   public constructor(state: IState) {
-    this.header = new HeaderView();
+    this.header = new HeaderView(state);
     this.main = new MainView();
+    this.state = state;
   }
 
   public getHeader(): IHeader {
@@ -52,12 +54,13 @@ export default class IBasePage {
       page = this.getPage(pageName);
     }
 
-    if (pageName === PageNames.LOGIN || pageName === PageNames.REGISTRATION) {
-      this.header.hideNavigation();
+    if (page instanceof LoginPageView || page instanceof RegistrationPageView) {
+      this.state.setRecord(APP_STATE_KEYS.IS_SPECIAL_PAGE, 'true');
     } else {
-      this.header.showNavigation();
+      this.state.setRecord(APP_STATE_KEYS.IS_SPECIAL_PAGE, 'false');
     }
 
+    this.header.updateHeader();
     this.main.addPage(page);
   }
 
