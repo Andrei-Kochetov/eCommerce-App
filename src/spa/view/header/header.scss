@@ -4,8 +4,6 @@
 .header {
   width: 100%;
   background-color: $backgraund-dark;
-  border-top: 0.1rem solid $corporate-color;
-  border-bottom: 0.1rem solid $corporate-color;
   &__container {
     @include flex($justify: space-between, $align: center);
     padding: 1.5rem 0;
