@@ -71,9 +71,13 @@ export default class HeaderView extends View implements IHeaderView {
     if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'false') {
       this.navigation.showRegisterBTN();
       this.navigation.changeCaption();
+      this.navigation.showSignInBTN();
+      this.navigation.hideSignOutBTN();
     } else {
       this.navigation.hideRegisterBTN();
       this.navigation.changeCaption(state.getRecord(APP_STATE_KEYS.USER_LOGIN)[0].toUpperCase());
+      this.navigation.hideSignInBTN();
+      this.navigation.showSignOutBTN();
     }
   }
 

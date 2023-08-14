@@ -14,7 +14,6 @@ const DEFAULT_USER_NAME = '?';
 const CONTAINER_CLASS_NAME = 'top-menu';
 const USER_BAR_TAG = 'div';
 const USER_BAR_CLASS_NAME = 'top-menu__user-bar';
-const NOT_ACTIV_CLASS_NAME = 'not-active';
 
 // nav properties
 const NAV_TAG = 'nav';
@@ -69,7 +68,6 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
     nav.addInnerElement(this.mainBTN, this.catalogBTN, this.aboutUsBTN);
 
     this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
-    this.singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
     this.getViewCreator().addInnerElement(
       nav,
       this.singInBTN,
@@ -78,6 +76,22 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
       this.basket,
       this.userBar
     );
+  }
+
+  public hideSignOutBTN(): void {
+    this.singOutBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showSignOutBTN(): void {
+    this.singOutBTN.removeClasses(HIDDEN_CLASS);
+  }
+
+  public hideSignInBTN(): void {
+    this.singInBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showSignInBTN(): void {
+    this.singInBTN.removeClasses(HIDDEN_CLASS);
   }
 
   public hideRegisterBTN(): void {
