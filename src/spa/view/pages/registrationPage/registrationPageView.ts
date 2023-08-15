@@ -13,6 +13,8 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/registrationPage/constants';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
+import SelectView from '@src/spa/view/select/selectView';
+import { ISelect } from '@src/spa/view/select/types';
 
 export default class RegistrationPageView extends PageView implements IRegistrationPageView {
   private readonly passwordField: IInput;
@@ -22,12 +24,12 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly dateBirthField: IInput;
   private readonly singleAddress: IInput;
   private readonly billingAddressDefault: IInput;
-  private readonly billingCountryField: IInput;
+  private readonly billingCountryField: ISelect;
   private readonly billingCityField: IInput;
   private readonly billingAddressField: IInput;
   private readonly billingPostCodeField: IInput;
   private readonly shippingAddressDefault: IInput;
-  private readonly shippingCountryField: IInput;
+  private readonly shippingCountryField: ISelect;
   private readonly shippingCityField: IInput;
   private readonly shippingAddressField: IInput;
   private readonly shippingPostCodeField: IInput;
@@ -87,7 +89,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return this.billingAddressDefault;
   }
 
-  public getBillingCountryField(): IInput {
+  public getBillingCountryField(): ISelect {
     return this.billingCountryField;
   }
 
@@ -107,7 +109,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return this.shippingAddressDefault;
   }
 
-  public getShippingCountryField(): IInput {
+  public getShippingCountryField(): ISelect {
     return this.shippingCountryField;
   }
 
@@ -236,22 +238,18 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         id: 'date-birth',
         type: 'date',
         name: 'date-birth',
+        value: '2011-01-01',
       },
       textLabel: 'Date of birth',
     };
     return new InputView(params);
   }
 
-  private createBillingСountryField(): IInput {
-    const params: IInputViewParams = {
-      attributes: {
-        id: 'billing-country',
-        type: 'text',
-        name: 'billing-country',
-      },
-      textLabel: 'Сountry',
+  private createBillingСountryField(): ISelect {
+    const selectAttributes = {
+      name: 'billind-country',
     };
-    return new InputView(params);
+    return new SelectView(selectAttributes);
   }
   private createBillingCityField(): IInput {
     const params: IInputViewParams = {
@@ -279,7 +277,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     const params: IInputViewParams = {
       attributes: {
         id: 'billing-postcode',
-        type: 'number',
+        type: 'text',
         name: 'billing-postcode',
       },
       textLabel: 'Post code',
@@ -301,17 +299,13 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return checkbox;
   }
 
-  private createShippingСountryField(): IInput {
-    const params: IInputViewParams = {
-      attributes: {
-        id: 'shipping-country',
-        type: 'text',
-        name: 'shipping-country',
-      },
-      textLabel: 'Сountry',
+  private createShippingСountryField(): ISelect {
+    const selectAttributes = {
+      name: 'shipping-country',
     };
-    return new InputView(params);
+    return new SelectView(selectAttributes);
   }
+
   private createShippingCityField(): IInput {
     const params: IInputViewParams = {
       attributes: {
@@ -338,7 +332,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     const params: IInputViewParams = {
       attributes: {
         id: 'shipping-postcode',
-        type: 'number',
+        type: 'text',
         name: 'shipping-postcode',
       },
       textLabel: 'Post code',
@@ -381,8 +375,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     };
     const button: IView = new ButtonView(params);
     button.getView().addEventListener('click', () => {
-      const val = new RegistrationValidator(this).validate();
-      console.log(val);
+      new RegistrationValidator(this).validate();
     });
     return button;
   }

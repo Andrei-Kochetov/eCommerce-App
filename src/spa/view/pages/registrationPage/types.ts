@@ -1,5 +1,7 @@
 import { IInput } from '@src/spa/view/input/types';
 import IView from '@src/spa/view/types';
+import { IElementCreator } from '@src/spa/utils/elementCreator/types';
+import { ISelect } from '@src/spa/view/select/types';
 
 export interface IRegistrationPageView {
   getPasswordField(): IInput;
@@ -9,12 +11,12 @@ export interface IRegistrationPageView {
   getDateBirthField(): IInput;
   getSingleAddress(): IInput;
   getBillingAddressDefault(): IInput;
-  getBillingCountryField(): IInput;
+  getBillingCountryField(): ISelect;
   getBillingCityField(): IInput;
   getBillingAddressField(): IInput;
   getBillingPostCodeField(): IInput;
   getShippingAddressDefault(): IInput;
-  getShippingCountryField(): IInput;
+  getShippingCountryField(): ISelect;
   getShippingCityField(): IInput;
   getShippingAddressField(): IInput;
   getShippingPostCodeField(): IInput;
