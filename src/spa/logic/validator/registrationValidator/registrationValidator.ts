@@ -12,54 +12,67 @@ export default class RegistrationValidator extends Validator {
     this.page = registrationPage;
   }
   public passwordCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
   }
 
   public emailCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
 
   public firstNameCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
   public lastNameCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
   public dateBirthCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minDateBirthCheck(input);
   }
 
   public billingCountryCheck(select: ISelect): boolean {
+    select.setTextError(' ');
     return this.countryCheck(select);
   }
 
   public billingCityCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
   public billingAddressCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
   public billingPostCodeCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
   }
 
   public shippingCountryCheck(select: ISelect): boolean {
+    select.setTextError(' ');
     return this.countryCheck(select);
   }
 
   public shippingCityCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
   public shippingAddressCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
   public shippingPostCodeCheck(input: IInputView): boolean {
+    input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
   }
 

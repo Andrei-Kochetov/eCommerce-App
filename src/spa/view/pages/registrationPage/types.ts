@@ -1,6 +1,5 @@
 import { IInput } from '@src/spa/view/input/types';
 import IView from '@src/spa/view/types';
-import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import { ISelect } from '@src/spa/view/select/types';
 
 export interface IRegistrationPageView {
