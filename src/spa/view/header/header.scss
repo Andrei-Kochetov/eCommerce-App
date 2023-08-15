@@ -7,6 +7,12 @@
     padding: 1rem 0 2rem;
   }
 
+  &__logo-link {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   &__logo-img{
     width: 8rem;
   }

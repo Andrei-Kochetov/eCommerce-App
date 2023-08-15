@@ -20,7 +20,6 @@ const HEADER_CONTAINER_CLASS_NAME = 'header__container';
 const LOGO_LINK_TAG = 'a';
 const LOGO_LINK_CLASS_NAME = 'header__logo-link';
 const LOGO_LINK_ATTRIBUTES = {
-  href: '#',
   [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN,
 };
 

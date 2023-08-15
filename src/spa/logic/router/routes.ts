@@ -9,28 +9,28 @@ export interface IRoute {
 export const routes: IRoute[] = [
   {
     path: ``,
-    callback: async (basePage: IBasePage) => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: HomePageView } = await import('@src/spa/view/pages/homePage/homePageView');
       basePage.renderPage(new HomePageView());
     },
   },
   {
     path: `${PageNames.MAIN}`,
-    callback: async (basePage: IBasePage) => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: HomePageView } = await import('@src/spa/view/pages/homePage/homePageView');
       basePage.renderPage(new HomePageView());
     },
   },
   {
     path: `${PageNames.LOGIN}`,
-    callback: async (basePage: IBasePage) => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: LoginPageView } = await import('@src/spa/view/pages/loginPage/loginPageView');
       basePage.renderPage(new LoginPageView());
     },
   },
   {
     path: `${PageNames.REGISTRATION}`,
-    callback: async (basePage: IBasePage) => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: RegistrationPageView } = await import(
         '@src/spa/view/pages/registrationPage/registrationPageView'
       );
@@ -39,9 +39,10 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.NOT_FOUND}`,
-    callback: async (basePage: IBasePage) => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: NotFoundPageView } = await import('@src/spa/view/pages/notFoundPage/notFoundPageView');
       basePage.renderPage(new NotFoundPageView());
     },
   },
+  // TODO add paths for other pages by its templates
 ];
