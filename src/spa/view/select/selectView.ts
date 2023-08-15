@@ -2,26 +2,29 @@ import '@src/spa/view/select/select.scss';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import View from '@src/spa/view/view';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
-import IView from '@src/spa/view/types';
 import { country } from '@src/spa/view/select/country';
+import { ISelectView } from '@src/spa/view/select/types';
 
-// input wrapper properties
+// select wrapper properties
 const SELECT_WRAPPER_TAG = 'div';
 const SELECT_WRAPPER_CLASS_NAME = 'select-wrapper';
 
+// select properties
 const SELECT_TAG = 'select';
 const SELECT_CLASS_NAME = 'select-country';
 
+// option properties
 const OPTION_TAG = 'option';
 
 // span error properties
 const SPAN_ERROR_TAG = 'span';
 const SPAN_ERROR_CLASS_NAME = 'span-error';
 
+// paragraph properties
 const PARAGRAPH_TAG = 'p';
 const ADDRESS_PARAGRAPH_CLASS_NAME = 'label';
 
-export default class SelectView extends View implements IView {
+export default class SelectView extends View implements ISelectView {
   private readonly spanError: IElementCreator;
   private readonly select: IElementCreator;
   public constructor(selectAttr: Record<string, string>) {

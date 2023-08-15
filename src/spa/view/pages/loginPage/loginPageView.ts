@@ -90,8 +90,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     };
     const button: IView = new ButtonView(params);
     button.getView().addEventListener('click', () => {
-      const val = new LoginValidator(this).validate();
-      console.log(val);
+      new LoginValidator(this).validate();
     });
     return button;
   }
