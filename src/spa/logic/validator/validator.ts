@@ -1,8 +1,49 @@
+import { IInputView } from '@src/spa/view/input/types';
+import { ErrorMessages } from '@src/spa/logic/validator/types';
+
 export default abstract class Validator {
   public abstract validate(): boolean;
-
-  // protected emptyFieldCheck(): string {
-  //   if field is empty return string with error description
-  //   else return empty string ''
-  // }
+  public abstract passwordCheck(input: IInputView): boolean;
+  public abstract emailCheck(input: IInputView): boolean;
+  protected emailFieldCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement() as HTMLInputElement;
+    const regExp = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i;
+    if (!regExp.test(input.value)) {
+      inputView.setTextError(ErrorMessages.EMAIL);
+      return false;
+    } else {
+      return true;
+    }
+  }
+  protected minMaxLengthCheck(inputView: IInputView, minLength: number, maxLength: number): boolean {
+    const input = inputView.getInput().getElement() as HTMLInputElement;
+    if (+input.value.length < minLength) {
+      inputView.setTextError(`Minimum length ${minLength} characters`);
+      return false;
+    } else if (+input.value.length > maxLength) {
+      inputView.setTextError(`Maximum length ${maxLength} characters`);
+      return false;
+    } else {
+      return true;
+    }
+  }
+  protected weakPasswordCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement() as HTMLInputElement;
+    const regExp = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/;
+    if (!regExp.test(input.value)) {
+      inputView.setTextError(ErrorMessages.WEAK_PASSWORD);
+      return false;
+    } else {
+      return true;
+    }
+  }
+  protected emptyFieldCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement() as HTMLInputElement;
+    if (!input.value) {
+      inputView.setTextError(ErrorMessages.EMPTY_FIELD);
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

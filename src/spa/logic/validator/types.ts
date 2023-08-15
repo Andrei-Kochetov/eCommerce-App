@@ -1,5 +1,7 @@
-// enum ErrorMessages {
-//   EMPTY_FIELD = 'This field is empty',
-// }
-
-// and other types, interfaces or constants
+export enum ErrorMessages {
+  EMPTY_FIELD = 'This field is empty',
+  WEAK_PASSWORD = 'Up/Lowcase latin letters, numbers, special char',
+  EMAIL = 'Invalid email',
+  ONLY_TEXT = 'First letter capital, latin and cyrillic letters',
+  ADDRESS = 'Letters, numbers, special char - . , /',
+}

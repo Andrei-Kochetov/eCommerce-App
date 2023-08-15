@@ -23,4 +23,4 @@ export interface IRegistrationPageView {
   getToLoginBTN(): IView;
 }
 
-export type IHeader = IRegistrationPageView & IView;
+export type IRegistrationPage = IRegistrationPageView & IView;

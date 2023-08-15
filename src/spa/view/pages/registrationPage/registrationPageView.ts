@@ -12,6 +12,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/registrationPage/constants';
+import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 
 export default class RegistrationPageView extends PageView implements IRegistrationPageView {
   private readonly passwordField: IInput;
@@ -35,7 +36,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly toLoginBTN: IView;
 
   public constructor() {
-    super(PageNames.LOGIN, constants.PAGE_CLASS);
+    super(PageNames.REGISTRATION, constants.PAGE_CLASS);
     this.passwordField = new PasswordInputView();
     this.emailField = this.createEmailField();
     this.firstNameField = this.createFirstNameField();
@@ -379,7 +380,10 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.getView().addEventListener('click', () => {
+      const val = new RegistrationValidator(this).validate();
+      console.log(val);
+    });
     return button;
   }
 
