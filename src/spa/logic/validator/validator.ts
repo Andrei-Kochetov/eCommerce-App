@@ -7,7 +7,7 @@ export default abstract class Validator {
   public abstract emailCheck(input: IInputView): boolean;
   protected emailFieldCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement() as HTMLInputElement;
-    const regExp = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i;
+    const regExp = /[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+/;
     if (!regExp.test(input.value)) {
       inputView.setTextError(ErrorMessages.EMAIL);
       return false;
@@ -29,7 +29,7 @@ export default abstract class Validator {
   }
   protected weakPasswordCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement() as HTMLInputElement;
-    const regExp = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/;
+    const regExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-#!$@%^&*_+~=:;?/])[-\w#!$@%^&*+~=:;?/]{8,}$/;
     if (!regExp.test(input.value)) {
       inputView.setTextError(ErrorMessages.WEAK_PASSWORD);
       return false;

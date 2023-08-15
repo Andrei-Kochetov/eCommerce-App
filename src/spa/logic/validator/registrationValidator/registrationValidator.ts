@@ -128,7 +128,6 @@ export default class RegistrationValidator extends Validator {
   }
   private countryCheck(selectView: ISelect): boolean {
     const select = selectView.getSelect().getElement() as HTMLSelectElement;
-    console.log(select);
     if (select.options.selectedIndex === 0) {
       selectView.setTextError(ErrorMessages.COUNTRY);
       return false;
