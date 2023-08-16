@@ -24,12 +24,8 @@ const LOGO_LINK_ATTRIBUTES = {
 };
 
 // logoImg properties
-const LOGO_IMG_TAG = 'img';
+const LOGO_IMG_TAG = 'span';
 const LOGO_IMG_CLASS_NAME = 'header__logo-img';
-const LOGO_IMG_ATTRIBUTES = {
-  src: './assets/onPlug.png',
-  [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN,
-};
 
 export default class HeaderView extends View implements IHeaderView {
   private readonly container: IView;
@@ -90,7 +86,7 @@ export default class HeaderView extends View implements IHeaderView {
 
   private configureView(): void {
     this.container.getViewCreator().setClasses(HEADER_CONTAINER_CLASS_NAME);
-    this.homePageLink.addInnerElement(this.createLogoImg(LOGO_IMG_ATTRIBUTES, LOGO_IMG_CLASS_NAME).getElement());
+    this.homePageLink.addInnerElement(this.createLogoImg(LOGO_IMG_CLASS_NAME).getElement());
     this.updateHeader();
     this.container.getViewCreator().addInnerElement(this.homePageLink.getElement(), this.navigation.getView());
     this.getViewCreator().addInnerElement(this.container.getViewCreator());
@@ -106,11 +102,11 @@ export default class HeaderView extends View implements IHeaderView {
     return homePageLink;
   }
 
-  private createLogoImg(imgAttributes: Record<string, string>, ...classes: string[]): IElementCreator {
+  private createLogoImg(...classes: string[]): IElementCreator {
     const params: ElementCreatorParams = {
       tag: LOGO_IMG_TAG,
       classNames: classes,
-      attributes: imgAttributes,
+      attributes: { [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN },
     };
     const logoImg: IElementCreator = new ElementCreator(params);
     return logoImg;
