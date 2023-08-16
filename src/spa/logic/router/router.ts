@@ -25,7 +25,7 @@ export default class Router implements IRouter {
     let pathForFind = '';
 
     if (params.queryParams) {
-      pathForFind = QUERY_TEMPLATE;
+      pathForFind = `?${QUERY_TEMPLATE}`;
     }
 
     if (params.resource) {
@@ -33,7 +33,7 @@ export default class Router implements IRouter {
     }
 
     pathForFind = `${params.path}${pathForFind}`;
-
+    console.log(pathForFind);
     const route = routes.find((item) => item.path === pathForFind);
 
     if (!route) {

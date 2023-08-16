@@ -10,7 +10,7 @@ export const routes: IRoute[] = [
   {
     path: ``,
     callback: async (basePage: IBasePage): Promise<void> => {
-      const { default: HomePageView } = await import('@src/spa/view/pages/homePage/homePageView');
+      const { default: HomePageView } = await import('@src/spa/view/pages/homePage/homePageView'); // async import for lazy loading
       basePage.renderPage(new HomePageView());
     },
   },

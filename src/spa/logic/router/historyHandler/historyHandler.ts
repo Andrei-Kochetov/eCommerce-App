@@ -2,7 +2,8 @@ import {
   HistoryHandlerCallback,
   HistoryHandlerEvent,
   IHistoryHandler,
-  WindowLocationField,
+  LocationPathname,
+  LocationSearch,
 } from '@src/spa/logic/router/historyHandler/types';
 import { URLParams } from '@src/spa/logic/router/types';
 
@@ -19,7 +20,6 @@ export default class HistoryHandler implements IHistoryHandler {
       this.setHistoryRecord(url);
     }
 
-    let pathname: string = window.location[WindowLocationField].slice(1);
     const params: URLParams = {
       path: '',
       resource: '',
@@ -27,12 +27,12 @@ export default class HistoryHandler implements IHistoryHandler {
       queryParams: null,
     };
 
-    const queryStringStart: number = pathname.indexOf('?');
-    if (queryStringStart >= 0) {
-      const queryString: string = pathname.slice(queryStringStart + 1);
+    const pathname: string = window.location[LocationPathname].slice(1);
+    const queryString: string = window.location[LocationSearch].slice(1);
+
+    if (queryString) {
       params.queryString = queryString;
       params.queryParams = this.parseQueryString(queryString);
-      pathname = pathname.slice(0, queryStringStart);
     }
 
     const lastSlashIdx: number = pathname.lastIndexOf('/');
