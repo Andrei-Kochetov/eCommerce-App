@@ -23,6 +23,7 @@ export default class Router implements IRouter {
 
   private onURLChangeHandler(params: URLParams): void {
     let pathForFind = '';
+    let relativePath = '';
 
     if (params.queryParams) {
       pathForFind = `?${QUERY_TEMPLATE}`;
@@ -30,24 +31,26 @@ export default class Router implements IRouter {
 
     if (params.resource) {
       pathForFind = `/${ID_TEMPLATE}${pathForFind}`;
+      relativePath = `/${params.resource}`;
     }
 
     pathForFind = `${params.path}${pathForFind}`;
-    console.log(pathForFind);
+    relativePath = `${params.path}${relativePath}`;
     const route = routes.find((item) => item.path === pathForFind);
 
     if (!route) {
-      this.redirectToNotFoundPage();
+      this.redirectToNotFoundPage(relativePath);
       return;
     }
 
     route.callback(this.basePage);
   }
 
-  redirectToNotFoundPage() {
+  redirectToNotFoundPage(url: string) {
     const notFoundPage = routes.find((item) => item.path === PageNames.NOT_FOUND);
     if (notFoundPage) {
-      this.navigate(notFoundPage.path);
+      window.history.pushState(null, '', `/${url}`);
+      notFoundPage.callback(this.basePage);
     }
   }
 }

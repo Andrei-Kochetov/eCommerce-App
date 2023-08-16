@@ -8,12 +8,8 @@ const CONTAINER_CLASS_NAME = 'home-page';
 const CONTAINER_TAG = 'div';
 
 // img properties
-const IMG_TAG = 'img';
+const IMG_TAG = 'div';
 const IMG_CLASS_NAME = 'home-page__img';
-const IMG_ATTRIBUTES = {
-  src: './assets/mainPageImg.png',
-  alt: 'Happy shopper image',
-};
 
 // Content properties
 const CONTENT_CONTAINER_CLASS_NAME = 'home-page__content-container';
@@ -44,7 +40,6 @@ export default class HomePageView extends View {
     const imgParams: ElementCreatorParams = {
       tag: IMG_TAG,
       classNames: [IMG_CLASS_NAME],
-      attributes: IMG_ATTRIBUTES,
     };
     const img = new ElementCreator(imgParams);
 

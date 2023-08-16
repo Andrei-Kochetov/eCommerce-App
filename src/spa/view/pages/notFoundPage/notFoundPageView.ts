@@ -13,12 +13,8 @@ const TITLE_TEXT = 'Whoops!';
 const SUBTITLE_TEXT = '404 Page Not Found';
 
 // img properties
-const IMG_TAG = 'img';
+const IMG_TAG = 'div';
 const IMG_CLASS_NAME = 'not-found__img';
-const IMG_ATTRIBUTES = {
-  src: './assets/404.png',
-  alt: '404 error image',
-};
 
 export default class NotFoundPageView extends View {
   constructor() {
@@ -35,7 +31,6 @@ export default class NotFoundPageView extends View {
     const imgParams: ElementCreatorParams = {
       tag: IMG_TAG,
       classNames: [IMG_CLASS_NAME],
-      attributes: IMG_ATTRIBUTES,
     };
     const img = new ElementCreator(imgParams);
 
