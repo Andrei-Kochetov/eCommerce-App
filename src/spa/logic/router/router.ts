@@ -27,11 +27,12 @@ export default class Router implements IRouter {
 
     if (params.queryParams) {
       pathForFind = `?${QUERY_TEMPLATE}`;
-    }
+      relativePath = `?${params.queryString}`;
+    } // most likely not to be used
 
     if (params.resource) {
       pathForFind = `/${ID_TEMPLATE}${pathForFind}`;
-      relativePath = `/${params.resource}`;
+      relativePath = `/${params.resource}${relativePath}`;
     }
 
     pathForFind = `${params.path}${pathForFind}`;
