@@ -6,7 +6,7 @@ const EslingPlugin = require('eslint-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
-  entry: path.resolve(__dirname, './src/index.ts'),
+  entry: path.resolve(__dirname, './src/index'),
   mode: 'development',
   module: {
     rules: [
@@ -40,6 +40,10 @@ const baseConfig = {
         {
           from: path.resolve(__dirname, 'src/assets'),
           to: path.resolve(__dirname, 'dist', 'assets'),
+        },
+        {
+          from: path.resolve(__dirname, 'src/404.html'),
+          to: path.resolve(__dirname, 'dist', '404.html'),
         },
       ],
     }),
