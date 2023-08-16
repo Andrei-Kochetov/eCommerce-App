@@ -11,11 +11,18 @@ const baseConfig = {
   module: {
     rules: [
       {
+        test: /\.html$/,
+        use: 'html-loader',
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       { test: /\.ts$/i, use: 'ts-loader' },
-      { test: /\.(jpe?g|png|svg|gif|ico)$/, use: 'file-loader' },
+      {
+        test: /\.(jpg|png|svg|jpeg|gif)$/,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {
@@ -37,10 +44,6 @@ const baseConfig = {
     new EslingPlugin({ extensions: 'ts' }),
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: path.resolve(__dirname, 'src/assets'),
-          to: path.resolve(__dirname, 'dist', 'assets'),
-        },
         {
           from: path.resolve(__dirname, 'src/404.html'),
           to: path.resolve(__dirname, 'dist', '404.html'),
