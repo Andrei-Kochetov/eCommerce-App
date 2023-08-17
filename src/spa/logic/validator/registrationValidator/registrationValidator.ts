@@ -11,67 +11,67 @@ export default class RegistrationValidator extends Validator {
     super();
     this.page = registrationPage;
   }
-  public passwordCheck(input: IInputView): boolean {
+  protected passwordCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
   }
 
-  public emailCheck(input: IInputView): boolean {
+  protected emailCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
 
-  public firstNameCheck(input: IInputView): boolean {
+  protected firstNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
-  public lastNameCheck(input: IInputView): boolean {
+  protected lastNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
-  public dateBirthCheck(input: IInputView): boolean {
+  protected dateBirthCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minDateBirthCheck(input);
   }
 
-  public billingCountryCheck(select: ISelect): boolean {
+  protected billingCountryCheck(select: ISelect): boolean {
     select.setTextError(' ');
     return this.countryCheck(select);
   }
 
-  public billingCityCheck(input: IInputView): boolean {
+  protected billingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
-  public billingAddressCheck(input: IInputView): boolean {
+  protected billingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
-  public billingPostCodeCheck(input: IInputView): boolean {
+  protected billingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
   }
 
-  public shippingCountryCheck(select: ISelect): boolean {
+  protected shippingCountryCheck(select: ISelect): boolean {
     select.setTextError(' ');
     return this.countryCheck(select);
   }
 
-  public shippingCityCheck(input: IInputView): boolean {
+  protected shippingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
   }
 
-  public shippingAddressCheck(input: IInputView): boolean {
+  protected shippingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
-  public shippingPostCodeCheck(input: IInputView): boolean {
+  protected shippingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
   }
@@ -96,56 +96,76 @@ export default class RegistrationValidator extends Validator {
   }
 
   private onlyTextCheck(inputView: IInputView): boolean {
-    const input = inputView.getInput().getElement() as HTMLInputElement;
-    const regExp = /^[А-ЯЁA-Z][а-яА-ЯёЁa-zA-Z-]+$/;
-    if (!regExp.test(input.value)) {
-      inputView.setTextError(ErrorMessages.ONLY_TEXT);
-      return false;
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const regExp = /^[А-ЯЁA-Z][а-яА-ЯёЁa-zA-Z-]+$/;
+      if (!regExp.test(input.value)) {
+        inputView.setTextError(ErrorMessages.ONLY_TEXT);
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
   private addessCheck(inputView: IInputView): boolean {
-    const input = inputView.getInput().getElement() as HTMLInputElement;
-    const regExp = /^[а-яА-ЯёЁa-zA-Z0-9- .,/]+$/;
-    if (!regExp.test(input.value)) {
-      inputView.setTextError(ErrorMessages.ADDRESS);
-      return false;
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const regExp = /^[а-яА-ЯёЁa-zA-Z0-9- .,/]+$/;
+      if (!regExp.test(input.value)) {
+        inputView.setTextError(ErrorMessages.ADDRESS);
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
   private minDateBirthCheck(inputView: IInputView): boolean {
-    const input = inputView.getInput().getElement() as HTMLInputElement;
-    const dateNow = new Date();
-    const date13YearsAgo = new Date(
-      `${+dateNow.getFullYear() - 13}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
-    ).getTime();
-    const dateValue = new Date(input.value).getTime();
-    if (date13YearsAgo < dateValue) {
-      inputView.setTextError(ErrorMessages.MIN_DATE_BIRTH);
-      return false;
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const dateNow = new Date();
+      const date13YearsAgo = new Date(
+        `${+dateNow.getFullYear() - 13}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
+      ).getTime();
+      const dateValue = new Date(input.value).getTime();
+      if (date13YearsAgo < dateValue) {
+        inputView.setTextError(ErrorMessages.MIN_DATE_BIRTH);
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
   private postCodeCheck(inputView: IInputView): boolean {
-    const input = inputView.getInput().getElement() as HTMLInputElement;
-    const regExp = /^[A-Z0-9 ]+$/;
-    if (!regExp.test(input.value)) {
-      inputView.setTextError(ErrorMessages.POST_CODE);
-      return false;
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const regExp = /^[A-Z0-9 ]+$/;
+      if (!regExp.test(input.value)) {
+        inputView.setTextError(ErrorMessages.POST_CODE);
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
   private countryCheck(selectView: ISelect): boolean {
-    const select = selectView.getSelect().getElement() as HTMLSelectElement;
-    if (select.options.selectedIndex === 0) {
-      selectView.setTextError(ErrorMessages.COUNTRY);
-      return false;
+    const select = selectView.getSelect().getElement();
+    if (select instanceof HTMLSelectElement) {
+      if (select.options.selectedIndex === 0) {
+        selectView.setTextError(ErrorMessages.COUNTRY);
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return false;
     }
   }
 }
