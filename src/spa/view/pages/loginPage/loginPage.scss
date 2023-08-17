@@ -1,4 +1,5 @@
 @import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
 
 .login-page {
     @include flex ($direction: column, $gap: 10px, $justify: center, $align: center);
@@ -6,21 +7,23 @@
 }
 
 .btn_for-form {
-  width: 100%;
+  width: 28rem;
   height: 2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  background-color: #fff07f;
+  background-color: $btn-backgraund;
   border-radius: 0.5rem;
+  border: 1px solid $corporate-color;
+  color: $corporate-color;
 
   &:hover {
     cursor: pointer;
-    background-color: #d1f77f;
+    background-color: $btn-backgraund-hover;
   }
 }
 
 .login-page__title {
   font-size: 3rem;
   font-weight: 700;
-  color: #dc9454;
+  color: $corporate-color;
 }

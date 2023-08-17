@@ -1,21 +1,54 @@
 @import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
 
 .home-page {
   @include flex($justify: center, $align: center);
+  width: 100%;
+
+  @media screen and (max-width: 959px) {
+    @include flex($direction: column, $gap: 2rem, $align: center);
+  }
+}
+
+.home-page__img-container {
+  @include flex($justify: center, $align: center);
+  width: 50%;
+
+  @media screen and (max-width: 959px) {
+    width: 80%;
+  }
 }
 
 .home-page__img {
-  height: 40rem;
+  width: 70%;
 }
 
 .home-page__content-container {
-  @include flex($gap: 2rem, $direction: column);
-  max-width: 40rem;
+  @include flex($gap: 2rem, $direction: column, $align: center);
+  width: 50%;
+
+  @media screen and (max-width: 959px) {
+    width: 70%;
+    order: -1;
+  }
+}
+
+.home-page__title,
+.home-page__content {
+  width: 80%;
+
+  @media screen and (max-width: 1280px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 959px) {
+    text-align: center;
+  }
 }
 
 .home-page__title {
   font-size: 3rem;
-  color: #BE1010;
+  color: $corporate-color;
 }
 
 .home-page__content {

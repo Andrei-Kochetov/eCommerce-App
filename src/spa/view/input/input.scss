@@ -1,3 +1,11 @@
+@import '@src/spa/basic-styles/variables.scss';
+
+.input {
+    height: 2rem;
+    background-color: $backgraund-light;
+    border-radius: 0.5rem;
+}
+
 .input-wrapper{
     font-size: 1.8rem;
     display: flex;
