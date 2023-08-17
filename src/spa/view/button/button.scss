@@ -41,3 +41,16 @@
   @include background($src: '@src/assets/basket.png');
   background-color: transparent;
 }
+
+.btn_to-main-page {
+  height: 2.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: $corporate-color;
+  border-radius: 0.8rem;
+  color: $backgraund-light;
+
+  &:hover {
+    color: $backgraund-dark;
+  }
+}

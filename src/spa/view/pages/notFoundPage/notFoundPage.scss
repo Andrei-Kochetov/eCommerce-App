@@ -9,7 +9,6 @@
     height: 25rem;
     width: 25rem;
     @include background ($src: '@src/assets/404.png');
-    margin-bottom: 3rem;
   }
 
   &__title {

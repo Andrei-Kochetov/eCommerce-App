@@ -1,7 +1,10 @@
 import '@src/spa/view/pages/notFoundPage/notFoundPage.scss';
 import View from '@src/spa/view/view';
-import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
+import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
+import ButtonView from '../../button/buttonView';
+import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
+import { btnParams } from '@src/spa/view/button/types';
 
 // notFoundPage properties
 const CONTAINER_CLASS_NAME = 'not-found';
@@ -16,7 +19,13 @@ const SUBTITLE_TEXT = '404 Page Not Found';
 const IMG_TAG = 'div';
 const IMG_CLASS_NAME = 'not-found__img';
 
+// BTN properties
+const MAIN_BTN_TEXT = 'Main';
+const MAIN_BTN_CLASS_NAME = 'btn_to-main-page';
+
 export default class NotFoundPageView extends View {
+  private readonly mainBTN: IElementCreator;
+
   constructor() {
     const params: ElementCreatorParams = {
       tag: CONTAINER_TAG,
@@ -24,6 +33,7 @@ export default class NotFoundPageView extends View {
     };
     super(params);
 
+    this.mainBTN = this.createMainBTN();
     this.configureView();
   }
 
@@ -50,6 +60,17 @@ export default class NotFoundPageView extends View {
     subTitle.setTextContent(SUBTITLE_TEXT);
 
     this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
-    this.getViewCreator().addInnerElement(img, title, subTitle);
+    this.getViewCreator().addInnerElement(img, title, subTitle, this.mainBTN);
+  }
+
+  private createMainBTN(): IElementCreator {
+    const params: btnParams = {
+      textContent: MAIN_BTN_TEXT,
+      classNames: [MAIN_BTN_CLASS_NAME],
+    };
+
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    return button;
   }
 }
