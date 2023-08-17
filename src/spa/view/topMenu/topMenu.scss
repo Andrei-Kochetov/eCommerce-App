@@ -1,10 +1,16 @@
 @import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
 
 .top-menu {
+  @include flex($gap: 1rem, $align: center);
   width: max-content;
+
+  @media screen and (max-width: 500px) {
+    @include flex($justify: center, $align: center);
+    width: 100%;
+  }
 }
 
-.top-menu,
 .nav {
   @include flex($gap: 1rem, $align: center);
 }
@@ -13,13 +19,13 @@
   @include flex($align: center, $justify: center);
   height: 3rem;
   width: 3rem;
-  background-color: #fff07f;
+  background-color: $corporate-color;
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
+  color: $backgraund-dark;
 
   &:hover {
-    border: solid 1px #000000;
-    background-color: #d1f77f;
+    color: white;
   }
 }

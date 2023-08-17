@@ -1,4 +1,5 @@
 @import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
 
 .not-found {
   @include flex($direction: column, $justify: center, $align: center);
@@ -8,10 +9,12 @@
     height: 25rem;
     width: 25rem;
     @include background ($src: '@src/assets/404.png');
+    margin-bottom: 3rem;
   }
 
   &__title {
     font-size: 3rem;
+    color: $corporate-color;
   }
 
   &__subtitle {

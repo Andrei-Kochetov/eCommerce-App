@@ -1,16 +1,16 @@
 import '@src/spa/view/topMenu/topMenu.scss';
-import { ITopMenuView } from '@src/spa/view/topMenu/types';
-import ContainerView from '@src/spa/view/container/containerView';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import { HIDDEN_CLASS } from '../header/types';
+import View from '@src/spa/view/view';
 
 const DEFAULT_USER_NAME = '?';
 
 // topMenu properties
+const CONTAINER_TAG = 'div';
 const CONTAINER_CLASS_NAME = 'top-menu';
 const USER_BAR_TAG = 'div';
 const USER_BAR_CLASS_NAME = 'top-menu__user-bar';
@@ -33,7 +33,7 @@ const SING_OUT_BTN_TEXT = 'Sing out';
 const REGISTER_TEXT = 'Register';
 const BASKET_TEXT = '';
 
-export default class TopMenuView extends ContainerView implements ITopMenuView {
+export default class TopMenuView extends View {
   private readonly mainBTN: IElementCreator;
   private readonly catalogBTN: IElementCreator;
   private readonly aboutUsBTN: IElementCreator;
@@ -44,7 +44,12 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
   private readonly basket: IElementCreator;
 
   constructor() {
-    super();
+    const params: ElementCreatorParams = {
+      tag: CONTAINER_TAG,
+      classNames: [CONTAINER_CLASS_NAME],
+    };
+    super(params);
+
     this.mainBTN = this.createMainBTN();
     this.catalogBTN = this.createCatalogBTN();
     this.aboutUsBTN = this.createAboutUsBTN();
@@ -67,7 +72,8 @@ export default class TopMenuView extends ContainerView implements ITopMenuView {
     const nav = new ElementCreator(navParams);
     nav.addInnerElement(this.mainBTN, this.catalogBTN, this.aboutUsBTN);
 
-    this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
+    this.singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
+
     this.getViewCreator().addInnerElement(
       nav,
       this.singInBTN,

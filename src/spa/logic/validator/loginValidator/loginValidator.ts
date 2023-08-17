@@ -1,26 +1,23 @@
 import { ILoginPage } from '@src/spa/view/pages/loginPage/types';
 import Validator from '@src/spa/logic/validator/validator';
+import { IInputView } from '@src/spa/view/input/types';
 
 export default class LoginValidator extends Validator {
-  private readonly page: ILoginPage; // needed page
+  private readonly page: ILoginPage;
 
-  // is passing here
   public constructor(loginPage: ILoginPage) {
     super();
     this.page = loginPage;
   }
-
-  public passwordCheck(): boolean {
-    // empty field check
-    // special symbols check
-    // ...... and so on
-    // if any of the checks return not empty string method should return false and show appropriate error, given from check method,
-    // below appropriate input field
-    return false;
+  public emailCheck(input: IInputView): boolean {
+    return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
+  }
+  public passwordCheck(input: IInputView): boolean {
+    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
   }
 
   public validate(): boolean {
-    // validation of each field
-    return false;
+    const arrFunc = [this.passwordCheck(this.page.getPasswordField()), this.emailCheck(this.page.getEmailField())];
+    return arrFunc.every((el) => el === true);
   }
 }

@@ -67,6 +67,9 @@ export default class InputView extends View implements IInputView {
       attributes: inputAttributes,
     };
     const input: IElementCreator = new ElementCreator(params);
+    input.getElement().addEventListener('focus', () => {
+      this.setTextError(' ');
+    });
     return input;
   }
   private createLabel(textLabel: string, forAttribute: string): IElementCreator {

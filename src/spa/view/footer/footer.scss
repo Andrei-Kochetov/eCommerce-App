@@ -1,7 +1,10 @@
 @import '@src/spa/basic-styles/mixins';
+@import '@src/spa/basic-styles/variables.scss';
 
 .footer{
     width: 100%;
+    background-color: $backgraund-dark;
+
     &-rs-img {
         width: 10rem;
         height: 4rem;
@@ -12,14 +15,14 @@
         height: 4rem;
     }
     &__container {
-        @include flex(row, 0, space-between);
-        padding: 1rem 0 2rem;
+        @include flex($justify: space-between, $align: center);
+        padding: 1.5rem 0;
     }
     &__wrapper-link-gh{
         @include flex(row, 10px);
     }
     &__year{
-        font-size: 2.4rem;
+        font-size: 2rem;
     }
 }
 
