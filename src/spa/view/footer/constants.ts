@@ -26,15 +26,12 @@ const LINK_GH_A_HREF = 'https://github.com/andrei-kochetov';
 const IMG_RS_CLASS_NAME = 'footer-rs-img';
 const IMG_GH_CLASS_NAME = 'footer-gh-img';
 
-const IMG_RS_SRC = './assets/rs_school.svg';
-const IMG_GH1_SRC = './assets/github_1.svg';
-const IMG_GH2_SRC = './assets/github_2.svg';
+// const IMG_RS_SRC = './assets/rs_school.svg';
+// const IMG_GH1_SRC = './assets/github_1.svg';
+// const IMG_GH2_SRC = './assets/github_2.svg';
 
 // imgLink parameters properties
 const linkRS: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_RS_SRC,
-  },
   linkAttributes: {
     href: LINK_RS_HREH,
     target: '_blank',
@@ -43,9 +40,6 @@ const linkRS: IImgLinkParams = {
 };
 
 const linkGHL: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH1_SRC,
-  },
   linkAttributes: {
     href: LINK_GH_L_HREF,
     target: '_blank',
@@ -54,9 +48,6 @@ const linkGHL: IImgLinkParams = {
 };
 
 const linkGHV: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH2_SRC,
-  },
   linkAttributes: {
     href: LINK_GH_V_HREF,
     target: '_blank',
@@ -65,9 +56,6 @@ const linkGHV: IImgLinkParams = {
 };
 
 const linkGHA: IImgLinkParams = {
-  imgAttributes: {
-    src: IMG_GH1_SRC,
-  },
   linkAttributes: {
     href: LINK_GH_A_HREF,
     target: '_blank',

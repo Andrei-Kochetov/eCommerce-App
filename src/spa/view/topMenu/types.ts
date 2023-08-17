@@ -10,6 +10,13 @@ export interface ITopMenuView {
   getRegisterBTN(): IElementCreator;
   getUserBar(): IElementCreator;
   getBasket(): IElementCreator;
+  hideRegisterBTN(): void;
+  showRegisterBTN(): void;
+  hideSignOutBTN(): void;
+  showSignOutBTN(): void;
+  hideSignInBTN(): void;
+  showSignInBTN(): void;
+  changeCaption(userName?: string): void;
 }
 
 export type ITopMenu = ITopMenuView & IView;

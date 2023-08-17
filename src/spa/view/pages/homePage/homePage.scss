@@ -20,7 +20,9 @@
 }
 
 .home-page__img {
-  width: 70%;
+  width: 43rem;
+  height: 40rem;
+  @include background ($src: '@src/assets/mainPageImg.png', );
 }
 
 .home-page__content-container {

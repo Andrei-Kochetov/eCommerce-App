@@ -5,9 +5,10 @@ import { ITopMenu } from '@src/spa/view/topMenu/types';
 export interface IHeaderView {
   getHomePageLink(): IElementCreator;
   getHeaderContainer(): IView;
-  hideNavigation(): void;
-  showNavigation(): void;
   getNavigation(): ITopMenu;
+  updateHeader(): void;
 }
 
 export type IHeader = IHeaderView & IView;
+
+export const HIDDEN_CLASS = '_hidden';

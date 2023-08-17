@@ -4,6 +4,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
+import { HIDDEN_CLASS } from '../header/types';
 import View from '@src/spa/view/view';
 
 const DEFAULT_USER_NAME = '?';
@@ -13,7 +14,6 @@ const CONTAINER_TAG = 'div';
 const CONTAINER_CLASS_NAME = 'top-menu';
 const USER_BAR_TAG = 'div';
 const USER_BAR_CLASS_NAME = 'top-menu__user-bar';
-const NOT_ACTIV_CLASS_NAME = 'not-active';
 
 // nav properties
 const NAV_TAG = 'nav';
@@ -59,7 +59,7 @@ export default class TopMenuView extends View {
     this.userBar = this.createUserBar();
     this.basket = this.createBasket();
 
-    this.changeСaption();
+    this.changeCaption();
 
     this.configureView();
   }
@@ -73,6 +73,7 @@ export default class TopMenuView extends View {
     nav.addInnerElement(this.mainBTN, this.catalogBTN, this.aboutUsBTN);
 
     this.singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
+
     this.getViewCreator().addInnerElement(
       nav,
       this.singInBTN,
@@ -81,6 +82,30 @@ export default class TopMenuView extends View {
       this.basket,
       this.userBar
     );
+  }
+
+  public hideSignOutBTN(): void {
+    this.singOutBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showSignOutBTN(): void {
+    this.singOutBTN.removeClasses(HIDDEN_CLASS);
+  }
+
+  public hideSignInBTN(): void {
+    this.singInBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showSignInBTN(): void {
+    this.singInBTN.removeClasses(HIDDEN_CLASS);
+  }
+
+  public hideRegisterBTN(): void {
+    this.registerBTN.setClasses(HIDDEN_CLASS);
+  }
+
+  public showRegisterBTN(): void {
+    this.registerBTN.removeClasses(HIDDEN_CLASS);
   }
 
   public getMainBTN(): IElementCreator {
@@ -115,7 +140,7 @@ export default class TopMenuView extends View {
     return this.basket;
   }
 
-  public changeСaption(userName = DEFAULT_USER_NAME): void {
+  public changeCaption(userName: string = DEFAULT_USER_NAME): void {
     this.userBar.setTextContent(userName[0]);
   }
 
