@@ -44,49 +44,4 @@ export default class BasePage implements IBasePage {
     this.header.updateHeader();
     this.main.addPage(page);
   }
-
-  // private getPage(pageName: string): IView {
-  //   let page: IView;
-  //   switch (pageName) {
-  //     case PageNames.MAIN:
-  //       page = new HomePageView();
-  //       this.pages.set(PageNames.MAIN, page);
-  //       return page;
-  //     case PageNames.LOGIN:
-  //       page = new LoginPageView();
-  //       this.pages.set(PageNames.LOGIN, page);
-  //       return page;
-  //     case PageNames.REGISTRATION:
-  //       page = new RegistrationPageView();
-  //       this.pages.set(PageNames.REGISTRATION, page);
-  //       return page;
-  //     case PageNames.CATALOG:
-  //       page = this.getNotFoundPage(); // later change on catalog page
-  //       this.pages.set(PageNames.CATALOG, page);
-  //       return page;
-  //     case PageNames.PROFILE:
-  //       page = this.getNotFoundPage(); // later change on PROFILE page
-  //       this.pages.set(PageNames.PROFILE, page);
-  //       return page;
-  //     case PageNames.BASKET:
-  //       page = this.getNotFoundPage(); // later change on BASKET page
-  //       this.pages.set(PageNames.BASKET, page);
-  //       return page;
-  //     case PageNames.ABOUT_US:
-  //       page = this.getNotFoundPage(); // later change on ABOUT_US page
-  //       this.pages.set(PageNames.ABOUT_US, page);
-  //       return page;
-  //     default:
-  //       return this.getNotFoundPage();
-  //   }
-  // }
-
-  // private getNotFoundPage(): IView {
-  //   let page: IView | undefined = this.pages.get(PageNames.NOT_FOUND);
-  //   if (!page) {
-  //     page = new NotFoundPageView();
-  //     this.pages.set(PageNames.NOT_FOUND, page);
-  //   }
-  //   return page;
-  // }
 }
