@@ -12,6 +12,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/loginPage/constants';
+import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
 
 export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly passwordField: IInput;
@@ -88,7 +89,9 @@ export default class LoginPageView extends PageView implements ILoginPageView {
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.getView().addEventListener('click', () => {
+      new LoginValidator(this).validate();
+    });
     return button;
   }
 
