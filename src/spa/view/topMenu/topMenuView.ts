@@ -72,7 +72,7 @@ export default class TopMenuView extends View {
     const nav = new ElementCreator(navParams);
     nav.addInnerElement(this.mainBTN, this.catalogBTN, this.aboutUsBTN);
 
-    this.singOutBTN.setClasses(NOT_ACTIV_CLASS_NAME);
+    this.singOutBTN.setClasses(HIDDEN_CLASS);
 
     this.getViewCreator().addInnerElement(
       nav,

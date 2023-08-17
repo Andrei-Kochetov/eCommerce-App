@@ -12,6 +12,9 @@
 }
 
 .btn_nav {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 0.5rem;
 
   &:hover {
     color: $corporate-color;
@@ -36,4 +39,5 @@
   height: 2.2rem;
   width: 2.2rem;
   @include background($src: '@src/assets/basket.png');
+  background-color: transparent;
 }
