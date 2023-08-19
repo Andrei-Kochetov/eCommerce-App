@@ -1,5 +1,5 @@
 export interface IRouter {
-  navigate(url: string): void;
+  navigate(url: string, replace?: boolean): void;
 }
 
 export const ID_TEMPLATE = '{id}';

@@ -31,7 +31,7 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: LoginPageView } = await import('@src/spa/view/pages/loginPage/loginPageView');
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
-        router.navigate(PageNames.MAIN);
+        router.navigate(PageNames.MAIN, true);
       } else {
         basePage.renderPage(new LoginPageView(router));
       }
@@ -44,7 +44,7 @@ export const routes: IRoute[] = [
         '@src/spa/view/pages/registrationPage/registrationPageView'
       );
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
-        router.navigate(PageNames.MAIN);
+        router.navigate(PageNames.MAIN, true);
       } else {
         basePage.renderPage(new RegistrationPageView(router));
       }
@@ -76,7 +76,7 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
-        router.navigate(PageNames.LOGIN);
+        router.navigate(PageNames.LOGIN, true);
       } else {
         basePage.renderPage(new BasketPageView());
       }
@@ -87,7 +87,7 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: ProfilePageView } = await import('@src/spa/view/pages/profilePage/profilePageView');
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
-        router.navigate(PageNames.LOGIN);
+        router.navigate(PageNames.LOGIN, true);
       } else {
         basePage.renderPage(new ProfilePageView());
       }

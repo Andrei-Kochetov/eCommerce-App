@@ -17,8 +17,9 @@ export default class Router implements IRouter {
     });
   }
 
-  public navigate(url: string): void {
-    this.handler.navigate(url);
+  // parameter replace is for correct back and forward logic after redirecting
+  public navigate(url: string, replace?: boolean): void {
+    this.handler.navigate(url, replace);
   }
 
   private onURLChangeHandler(params: URLParams): void {
