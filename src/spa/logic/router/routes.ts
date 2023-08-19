@@ -1,6 +1,10 @@
 import { IBasePage } from '@src/spa/view/pages/basePage/types';
 import { PageNames } from '@src/spa/view/pages/types';
 import { IRouter } from '@src/spa/logic/router/types';
+import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
+import State from '@src/spa/logic/state/state';
+
+const state: IState = State.getInstance();
 
 export interface IRoute {
   path: string;
@@ -26,7 +30,11 @@ export const routes: IRoute[] = [
     path: `${PageNames.LOGIN}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: LoginPageView } = await import('@src/spa/view/pages/loginPage/loginPageView');
-      basePage.renderPage(new LoginPageView(router));
+      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
+        router.navigate(PageNames.MAIN);
+      } else {
+        basePage.renderPage(new LoginPageView(router));
+      }
     },
   },
   {
@@ -35,7 +43,11 @@ export const routes: IRoute[] = [
       const { default: RegistrationPageView } = await import(
         '@src/spa/view/pages/registrationPage/registrationPageView'
       );
-      basePage.renderPage(new RegistrationPageView(router));
+      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
+        router.navigate(PageNames.MAIN);
+      } else {
+        basePage.renderPage(new RegistrationPageView(router));
+      }
     },
   },
   {
