@@ -10,6 +10,9 @@ import { ITopMenu } from '@src/spa/view/topMenu/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
+import { IRouter } from '@src/spa/logic/router/types';
+import { IController } from '@src/spa/logic/controller/types';
+import Controller from '@src/spa/logic/controller/controller';
 
 // header properties
 const HEADER_TAG = 'header';
@@ -31,6 +34,7 @@ export default class HeaderView extends View implements IHeaderView {
   private readonly container: IView;
   private readonly homePageLink: IElementCreator;
   private readonly navigation: ITopMenu;
+  private controller: IController | null = null;
 
   public constructor() {
     const params: ElementCreatorParams = {
@@ -42,6 +46,11 @@ export default class HeaderView extends View implements IHeaderView {
     this.homePageLink = this.createHomePageLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
     this.navigation = new TopMenuView();
     this.configureView();
+  }
+
+  public setControllers(router: IRouter): void {
+    this.controller = new Controller(router);
+    this.navigation.setController(router);
   }
 
   public getHomePageLink(): IElementCreator {
@@ -99,6 +108,13 @@ export default class HeaderView extends View implements IHeaderView {
       attributes: linkAttributes,
     };
     const homePageLink: IElementCreator = new ElementCreator(params);
+    homePageLink.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in header view!');
+        this.controller.goTo(homePageLink.getElement());
+      },
+    });
     return homePageLink;
   }
 
@@ -106,7 +122,6 @@ export default class HeaderView extends View implements IHeaderView {
     const params: ElementCreatorParams = {
       tag: LOGO_IMG_TAG,
       classNames: classes,
-      attributes: { [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN },
     };
     const logoImg: IElementCreator = new ElementCreator(params);
     return logoImg;

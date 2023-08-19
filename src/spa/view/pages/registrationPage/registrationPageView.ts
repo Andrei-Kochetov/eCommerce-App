@@ -15,6 +15,9 @@ import * as constants from '@src/spa/view/pages/registrationPage/constants';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import SelectView from '@src/spa/view/select/selectView';
 import { ISelect } from '@src/spa/view/select/types';
+import IRegistrationController from '@src/spa/logic/controller/registrationController/types';
+import { IRouter } from '@src/spa/logic/router/types';
+import RegistrationController from '@src/spa/logic/controller/registrationController/registrationController';
 
 export default class RegistrationPageView extends PageView implements IRegistrationPageView {
   private readonly passwordField: IInput;
@@ -36,8 +39,9 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly enterBTN: IView;
   private readonly homeBTN: IView;
   private readonly toLoginBTN: IView;
+  private readonly controller: IRegistrationController;
 
-  public constructor() {
+  public constructor(router: IRouter) {
     super(PageNames.REGISTRATION, constants.PAGE_CLASS);
     this.passwordField = new PasswordInputView();
     this.emailField = this.createEmailField();
@@ -59,6 +63,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     this.homeBTN = this.createHomeBTN();
     this.toLoginBTN = this.createToLoginBTN();
     this.configureView();
+    this.controller = new RegistrationController(router, this);
   }
 
   public getPasswordField(): IInput {
@@ -385,6 +390,10 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     button.getView().addEventListener('click', () => {
       new RegistrationValidator(this).validate();
     });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.register(button.getView()),
+    });
     return button;
   }
 
@@ -395,6 +404,10 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     };
     const button: IView = new ButtonView(params);
     button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.goTo(button.getView()),
+    });
     return button;
   }
 
@@ -405,6 +418,10 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     };
     const button: IView = new ButtonView(params);
     button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.goTo(button.getView()),
+    });
     return button;
   }
 
@@ -455,6 +472,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     paragraph.setTextContent(textContent);
     return paragraph;
   }
+
   private addSingleAddressListeners(): void {
     this.billingCityField.getInput().getElement().addEventListener('input', this.equalInputCityBillingToShipping);
     this.shippingCityField.getInput().getElement().addEventListener('input', this.equalInputCityShippingToBilling);
@@ -488,6 +506,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalInputCityShippingToBilling = (): void => {
     (this.billingCityField
       .getInput()
@@ -495,6 +514,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalInputAddressBillingToShipping = (): void => {
     (this.shippingAddressField
       .getInput()
@@ -502,6 +522,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalInputAddressShippingToBilling = (): void => {
     (this.billingAddressField
       .getInput()
@@ -509,6 +530,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalInputPostCodeBillingToShipping = (): void => {
     (this.shippingPostCodeField
       .getInput()
@@ -516,6 +538,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalInputPostCodeShippingToBilling = (): void => {
     (this.billingPostCodeField
       .getInput()
@@ -523,6 +546,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getInput()
       .getElement() as HTMLInputElement).value;
   };
+
   private equalSelectCountryBillingToShipping = (): void => {
     (this.shippingCountryField
       .getSelect()
@@ -530,6 +554,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getSelect()
       .getElement() as HTMLSelectElement).selectedIndex;
   };
+
   private equalSelectCountryShippingToBilling = (): void => {
     (this.billingCountryField
       .getSelect()

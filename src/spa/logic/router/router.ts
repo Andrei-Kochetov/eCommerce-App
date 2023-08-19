@@ -44,14 +44,14 @@ export default class Router implements IRouter {
       return;
     }
 
-    route.callback(this.basePage);
+    route.callback(this.basePage, this);
   }
 
   redirectToNotFoundPage(url: string) {
     const notFoundPage = routes.find((item) => item.path === PageNames.NOT_FOUND);
     if (notFoundPage) {
       window.history.pushState(null, '', `/${url}`);
-      notFoundPage.callback(this.basePage);
+      notFoundPage.callback(this.basePage, this);
     }
   }
 }

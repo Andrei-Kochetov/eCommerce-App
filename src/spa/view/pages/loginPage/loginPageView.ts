@@ -12,7 +12,9 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/loginPage/constants';
-import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
+import { IRouter } from '@src/spa/logic/router/types';
+import { ILoginController } from '@src/spa/logic/controller/loginController/types';
+import LoginController from '@src/spa/logic/controller/loginController/loginController';
 
 export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly passwordField: IInput;
@@ -20,8 +22,9 @@ export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly enterBTN: IView;
   private readonly homeBTN: IView;
   private readonly toRegistrationBTN: IView;
+  private readonly controller: ILoginController;
 
-  public constructor() {
+  public constructor(router: IRouter) {
     super(PageNames.LOGIN, constants.PAGE_CLASS);
     this.passwordField = new PasswordInputView();
     this.emailField = this.createEmailField();
@@ -29,6 +32,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     this.homeBTN = this.createHomeBTN();
     this.toRegistrationBTN = this.createToRegistrationBTN();
     this.configureView();
+    this.controller = new LoginController(router, this);
   }
 
   public getPasswordField(): IInput {
@@ -89,8 +93,10 @@ export default class LoginPageView extends PageView implements ILoginPageView {
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getView().addEventListener('click', () => {
-      new LoginValidator(this).validate();
+    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.login(button.getView()),
     });
     return button;
   }
@@ -102,6 +108,10 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     };
     const button: IView = new ButtonView(params);
     button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.goTo(button.getView()),
+    });
     return button;
   }
 
@@ -112,6 +122,10 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     };
     const button: IView = new ButtonView(params);
     button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.REGISTRATION });
+    button.getViewCreator().setListeners({
+      event: 'click',
+      callback: (): void => this.controller.goTo(button.getView()),
+    });
     return button;
   }
 }

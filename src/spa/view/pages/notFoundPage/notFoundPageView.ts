@@ -2,9 +2,12 @@ import '@src/spa/view/pages/notFoundPage/notFoundPage.scss';
 import View from '@src/spa/view/view';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
-import ButtonView from '../../button/buttonView';
+import ButtonView from '@src/spa/view/button/buttonView';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import { btnParams } from '@src/spa/view/button/types';
+import { IRouter } from '@src/spa/logic/router/types';
+import { IController } from '@src/spa/logic/controller/types';
+import Controller from '@src/spa/logic/controller/controller';
 
 // notFoundPage properties
 const CONTAINER_CLASS_NAME = 'not-found';
@@ -25,8 +28,9 @@ const MAIN_BTN_CLASS_NAME = 'btn_to-main-page';
 
 export default class NotFoundPageView extends View {
   private readonly mainBTN: IElementCreator;
+  private readonly controller: IController;
 
-  constructor() {
+  constructor(router: IRouter) {
     const params: ElementCreatorParams = {
       tag: CONTAINER_TAG,
       classNames: [CONTAINER_CLASS_NAME],
@@ -35,6 +39,7 @@ export default class NotFoundPageView extends View {
 
     this.mainBTN = this.createMainBTN();
     this.configureView();
+    this.controller = new Controller(router);
   }
 
   private configureView(): void {
@@ -71,6 +76,10 @@ export default class NotFoundPageView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => this.controller.goTo(button.getElement()),
+    });
     return button;
   }
 }
