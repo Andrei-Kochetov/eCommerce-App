@@ -73,16 +73,24 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.BASKET}`,
-    callback: async (basePage: IBasePage): Promise<void> => {
+    callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
-      basePage.renderPage(new BasketPageView());
+      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
+        router.navigate(PageNames.LOGIN);
+      } else {
+        basePage.renderPage(new BasketPageView());
+      }
     },
   },
   {
     path: `${PageNames.PROFILE}`,
-    callback: async (basePage: IBasePage): Promise<void> => {
+    callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: ProfilePageView } = await import('@src/spa/view/pages/profilePage/profilePageView');
-      basePage.renderPage(new ProfilePageView());
+      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
+        router.navigate(PageNames.LOGIN);
+      } else {
+        basePage.renderPage(new ProfilePageView());
+      }
     },
   },
   // TODO add paths for other pages by its templates
