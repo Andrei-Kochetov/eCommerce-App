@@ -34,6 +34,7 @@ const baseConfig = {
     chunkFilename: '[name].js',
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
+    assetModuleFilename: '[path][name].[ext]',
   },
   plugins: [
     new HtmlWebpackPlugin({
