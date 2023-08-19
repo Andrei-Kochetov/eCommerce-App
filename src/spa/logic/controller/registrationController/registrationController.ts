@@ -4,6 +4,7 @@ import { IRegistrationPage } from '@src/spa/view/pages/registrationPage/types';
 import IRegistrationController from '@src/spa/logic/controller/registrationController/types';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
+import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -16,7 +17,13 @@ export default class RegistrationController extends Controller implements IRegis
   public register(element: HTMLElement): void {
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     if (!validator.validate()) return;
+
+    // test logic to check registration working
+    this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
+    this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
+    // end of test logic
     // TODO: add registration logic
+
     this.goTo(element);
   }
 }

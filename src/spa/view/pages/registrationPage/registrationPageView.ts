@@ -12,7 +12,6 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/registrationPage/constants';
-import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import SelectView from '@src/spa/view/select/selectView';
 import { ISelect } from '@src/spa/view/select/types';
 import IRegistrationController from '@src/spa/logic/controller/registrationController/types';
@@ -387,9 +386,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getView().addEventListener('click', () => {
-      new RegistrationValidator(this).validate();
-    });
+    button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
     button.getViewCreator().setListeners({
       event: 'click',
       callback: (): void => this.controller.register(button.getView()),
