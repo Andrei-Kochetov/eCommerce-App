@@ -1,18 +1,21 @@
 import { ILoginPage } from '@src/spa/view/pages/loginPage/types';
 import Validator from '@src/spa/logic/validator/validator';
 import { IInputView } from '@src/spa/view/input/types';
+import ILoginValidator from '@src/spa/logic/validator/loginValidator/types';
 
-export default class LoginValidator extends Validator {
+export default class LoginValidator extends Validator implements ILoginValidator {
   private readonly page: ILoginPage;
 
   public constructor(loginPage: ILoginPage) {
     super();
     this.page = loginPage;
   }
-  public emailCheck(input: IInputView): boolean {
+
+  protected emailCheck(input: IInputView): boolean {
     return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
-  public passwordCheck(input: IInputView): boolean {
+
+  protected passwordCheck(input: IInputView): boolean {
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
   }
 
