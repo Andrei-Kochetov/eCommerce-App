@@ -57,5 +57,33 @@ export const routes: IRoute[] = [
       basePage.renderPage(new NotFoundPageView(router));
     },
   },
+  {
+    path: `${PageNames.ABOUT_US}`,
+    callback: async (basePage: IBasePage): Promise<void> => {
+      const { default: AboutUsPageView } = await import('@src/spa/view/pages/aboutUsPage/aboutUsPageView');
+      basePage.renderPage(new AboutUsPageView());
+    },
+  },
+  {
+    path: `${PageNames.CATALOG}`,
+    callback: async (basePage: IBasePage): Promise<void> => {
+      const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
+      basePage.renderPage(new CatalogPageView());
+    },
+  },
+  {
+    path: `${PageNames.BASKET}`,
+    callback: async (basePage: IBasePage): Promise<void> => {
+      const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
+      basePage.renderPage(new BasketPageView());
+    },
+  },
+  {
+    path: `${PageNames.PROFILE}`,
+    callback: async (basePage: IBasePage): Promise<void> => {
+      const { default: ProfilePageView } = await import('@src/spa/view/pages/profilePage/profilePageView');
+      basePage.renderPage(new ProfilePageView());
+    },
+  },
   // TODO add paths for other pages by its templates
 ];
