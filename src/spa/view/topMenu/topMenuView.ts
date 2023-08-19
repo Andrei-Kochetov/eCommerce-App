@@ -272,7 +272,7 @@ export default class TopMenuView extends View {
       event: 'click',
       callback: (): void => {
         if (!this.controller) throw new Error('There is no controller in top menu view!');
-        this.controller.goToProfile();
+        this.controller.goTo(button.getElement());
       },
     });
     return button;
@@ -290,7 +290,7 @@ export default class TopMenuView extends View {
       event: 'click',
       callback: (): void => {
         if (!this.controller) throw new Error('There is no controller in top menu view!');
-        this.controller.goToBasket();
+        this.controller.goTo(button.getElement());
       },
     });
     return button;
