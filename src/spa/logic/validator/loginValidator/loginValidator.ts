@@ -13,6 +13,7 @@ export default class LoginValidator extends Validator implements ILoginValidator
 
   public emailCheck(input: IInputView): boolean {
     input.setTextError(' ');
+
     return this.spaceStartEndFieldCheck(input) && this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
 
