@@ -7,6 +7,8 @@ import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidat
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
+import { Customer } from '@commercetools/platform-sdk';
+import { TokenStore } from '@commercetools/sdk-client-v2';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
@@ -27,8 +29,8 @@ export default class LoginController extends Controller implements ILoginControl
         .authorization(emailInput.value, passwordInput.value)
         .then((response) => {
           // This is the token and the client data that you requested to withdraw
-          const customerToken = loginClient.getToken();
-          const customerData = response.body.customer;
+          const customerToken: TokenStore = loginClient.getToken();
+          const customerData: Customer = response.body.customer;
 
           this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
           this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
