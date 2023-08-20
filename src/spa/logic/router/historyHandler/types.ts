@@ -5,7 +5,7 @@ export const LocationPathname = 'pathname';
 export const LocationSearch = 'search';
 
 export interface IHistoryHandler {
-  navigate(url: PopStateEvent | string | null): void;
+  navigate(url: PopStateEvent | string | null, replace: boolean): void;
 }
 
 export type HistoryHandlerCallback = (params: URLParams) => void;

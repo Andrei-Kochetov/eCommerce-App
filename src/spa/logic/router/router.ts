@@ -17,8 +17,9 @@ export default class Router implements IRouter {
     });
   }
 
-  public navigate(url: string): void {
-    this.handler.navigate(url);
+  // parameter replace is for correct back and forward logic after redirecting
+  public navigate(url: string, replace?: boolean): void {
+    this.handler.navigate(url, replace);
   }
 
   private onURLChangeHandler(params: URLParams): void {
@@ -44,14 +45,14 @@ export default class Router implements IRouter {
       return;
     }
 
-    route.callback(this.basePage);
+    route.callback(this.basePage, this);
   }
 
   redirectToNotFoundPage(url: string) {
     const notFoundPage = routes.find((item) => item.path === PageNames.NOT_FOUND);
     if (notFoundPage) {
       window.history.pushState(null, '', `/${url}`);
-      notFoundPage.callback(this.basePage);
+      notFoundPage.callback(this.basePage, this);
     }
   }
 }

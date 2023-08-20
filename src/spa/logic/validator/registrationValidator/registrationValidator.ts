@@ -3,14 +3,16 @@ import Validator from '@src/spa/logic/validator/validator';
 import { IInputView } from '@src/spa/view/input/types';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
 import { ISelect } from '@src/spa/view/select/types';
+import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
 
-export default class RegistrationValidator extends Validator {
+export default class RegistrationValidator extends Validator implements IRegistrationValidator {
   private readonly page: IRegistrationPage;
 
   public constructor(registrationPage: IRegistrationPage) {
     super();
     this.page = registrationPage;
   }
+
   protected passwordCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
@@ -48,7 +50,7 @@ export default class RegistrationValidator extends Validator {
 
   protected billingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
+    return this.emptyFieldCheck(input) && this.addressCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
   protected billingPostCodeCheck(input: IInputView): boolean {
@@ -68,7 +70,7 @@ export default class RegistrationValidator extends Validator {
 
   protected shippingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.addessCheck(input) && this.minMaxLengthCheck(input, 4, 30);
+    return this.emptyFieldCheck(input) && this.addressCheck(input) && this.minMaxLengthCheck(input, 4, 30);
   }
 
   protected shippingPostCodeCheck(input: IInputView): boolean {
@@ -109,7 +111,8 @@ export default class RegistrationValidator extends Validator {
       return false;
     }
   }
-  private addessCheck(inputView: IInputView): boolean {
+
+  private addressCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^[а-яА-ЯёЁa-zA-Z0-9- .,/]+$/;
@@ -123,6 +126,7 @@ export default class RegistrationValidator extends Validator {
       return false;
     }
   }
+
   private minDateBirthCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
@@ -141,6 +145,7 @@ export default class RegistrationValidator extends Validator {
       return false;
     }
   }
+
   private postCodeCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
@@ -155,6 +160,7 @@ export default class RegistrationValidator extends Validator {
       return false;
     }
   }
+
   private countryCheck(selectView: ISelect): boolean {
     const select = selectView.getSelect().getElement();
     if (select instanceof HTMLSelectElement) {

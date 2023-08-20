@@ -1,3 +1,4 @@
+import { IRouter } from '@src/spa/logic/router/types';
 import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import IView from '@src/spa/view/types';
 
@@ -17,6 +18,7 @@ export interface ITopMenuView {
   hideSignInBTN(): void;
   showSignInBTN(): void;
   changeCaption(userName?: string): void;
+  setController(router: IRouter): void;
 }
 
 export type ITopMenu = ITopMenuView & IView;

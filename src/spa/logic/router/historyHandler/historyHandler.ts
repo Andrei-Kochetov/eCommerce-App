@@ -15,9 +15,9 @@ export default class HistoryHandler implements IHistoryHandler {
     window.addEventListener(HistoryHandlerEvent, this.navigate.bind(this));
   }
 
-  public navigate(url: PopStateEvent | string | null): void {
+  public navigate(url: PopStateEvent | string | null, replace = false): void {
     if (typeof url === 'string') {
-      this.setHistoryRecord(url);
+      this.setHistoryRecord(url, replace);
     }
 
     const params: URLParams = {
@@ -61,7 +61,11 @@ export default class HistoryHandler implements IHistoryHandler {
     return result;
   }
 
-  private setHistoryRecord(url: string): void {
-    window.history.pushState(null, '', `/${url}`);
+  private setHistoryRecord(url: string, replace: boolean): void {
+    if (replace) {
+      window.history.replaceState(null, '', `/${url}`);
+    } else {
+      window.history.pushState(null, '', `/${url}`);
+    }
   }
 }

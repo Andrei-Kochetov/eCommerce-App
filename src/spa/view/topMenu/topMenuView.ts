@@ -6,6 +6,9 @@ import { btnParams } from '@src/spa/view/button/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import { HIDDEN_CLASS } from '../header/types';
 import View from '@src/spa/view/view';
+import { IRouter } from '@src/spa/logic/router/types';
+import { IHeaderController } from '@src/spa/logic/controller/headerController/types';
+import HeaderController from '@src/spa/logic/controller/headerController/headerController';
 
 const DEFAULT_USER_NAME = '?';
 
@@ -42,6 +45,7 @@ export default class TopMenuView extends View {
   private readonly registerBTN: IElementCreator;
   private readonly userBar: IElementCreator;
   private readonly basket: IElementCreator;
+  private controller: IHeaderController | null = null;
 
   constructor() {
     const params: ElementCreatorParams = {
@@ -82,6 +86,10 @@ export default class TopMenuView extends View {
       this.basket,
       this.userBar
     );
+  }
+
+  public setController(router: IRouter): void {
+    this.controller = new HeaderController(router);
   }
 
   public hideSignOutBTN(): void {
@@ -152,6 +160,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -163,6 +178,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.CATALOG });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -174,6 +196,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.ABOUT_US });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -185,6 +214,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -196,6 +232,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.LOGIN });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.signOut(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -207,6 +250,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.REGISTRATION });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -218,6 +268,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ElementCreator(userBarParams);
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.PROFILE });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 
@@ -229,6 +286,13 @@ export default class TopMenuView extends View {
 
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.BASKET });
+    button.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
+      },
+    });
     return button;
   }
 }
