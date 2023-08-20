@@ -73,7 +73,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     return (
       this.emptyFieldCheck(input) &&
       this.addressCheck(input) &&
-      this.minMaxLengthCheck(input, 4, 30) &&
+      this.minMaxLengthCheck(input, 1, 30) &&
       this.spaceStartEndFieldCheck(input)
     );
   }
@@ -82,7 +82,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
-      this.minMaxLengthCheck(input, 4, 8) &&
+      this.minMaxLengthCheck(input, 4, 10) &&
       this.postCodeCheck(input) &&
       this.spaceStartEndFieldCheck(input)
     );
@@ -108,7 +108,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     return (
       this.emptyFieldCheck(input) &&
       this.addressCheck(input) &&
-      this.minMaxLengthCheck(input, 4, 30) &&
+      this.minMaxLengthCheck(input, 1, 30) &&
       this.spaceStartEndFieldCheck(input)
     );
   }
@@ -117,7 +117,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
-      this.minMaxLengthCheck(input, 4, 8) &&
+      this.minMaxLengthCheck(input, 4, 10) &&
       this.postCodeCheck(input) &&
       this.spaceStartEndFieldCheck(input)
     );
@@ -145,7 +145,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
   private onlyTextCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
-      const regExp = /^[А-ЯЁA-Z][а-яА-ЯёЁa-zA-Z- ][а-яА-ЯёЁa-zA-Z ]+$/;
+      const regExp = /^([a-zа-яё -])+$/i;
       if (!regExp.test(input.value)) {
         inputView.setTextError(ErrorMessages.ONLY_TEXT);
         return false;
