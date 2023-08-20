@@ -34,7 +34,7 @@ export default class LoginController extends Controller implements ILoginControl
           this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
           this.goTo(element);
         })
-        .catch((e) => this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION));
+        .catch(() => this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION));
     }
   }
 }
