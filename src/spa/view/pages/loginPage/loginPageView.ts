@@ -13,6 +13,7 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/loginPage/constants';
 import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
+import { authorization } from '@src/spa/model/clientApi/LoginClient';
 
 export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly passwordField: IInput;
@@ -90,7 +91,14 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     };
     const button: IView = new ButtonView(params);
     button.getView().addEventListener('click', () => {
-      new LoginValidator(this).validate();
+      if (new LoginValidator(this).validate()) {
+        authorization(
+          (this.emailField.getInput().getElement() as HTMLInputElement).value,
+          (this.passwordField.getInput().getElement() as HTMLInputElement).value
+        )
+          .then(() => this.passwordField.setTextError(' '))
+          .catch(() => this.passwordField.setTextError('You made a mistake in your email or password'));
+      }
     });
     return button;
   }
