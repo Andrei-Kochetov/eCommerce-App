@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { options } from '@src/spa/model/LoginClientApi/constants';
 import { ClientBuilder, PasswordAuthMiddlewareOptions, TokenCache } from '@commercetools/sdk-client-v2';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
-import { ILoginClient } from '@src/spa/';
+import { ILoginClient } from '@src/spa/model/LoginClientApi/types';
 
 export default class LoginClient implements ILoginClient {
   private token: TokenCache;

@@ -12,8 +12,6 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/loginPage/constants';
-import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
-import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 
 export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly passwordField: IInput;
