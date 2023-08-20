@@ -1,5 +1,3 @@
-import { AuthMiddlewareOptions, HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
-
 export const options = {
   projectKey: 'ecommerce-app2023',
   authMiddlewareOptions: {
