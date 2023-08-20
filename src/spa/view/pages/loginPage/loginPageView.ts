@@ -79,7 +79,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     const params: IInputViewParams = {
       attributes: {
         id: 'email',
-        type: 'email',
+        type: 'text',
         name: 'email',
       },
       textLabel: 'Email',

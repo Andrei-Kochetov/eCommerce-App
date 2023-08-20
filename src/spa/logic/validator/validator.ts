@@ -68,4 +68,21 @@ export default abstract class Validator {
       return false;
     }
   }
+
+  protected spaceStartEndFieldCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      if (input.value.startsWith(' ')) {
+        inputView.setTextError(ErrorMessages.SPASE_START);
+        return false;
+      } else if (input.value.endsWith(' ')) {
+        inputView.setTextError(ErrorMessages.SPACE_END);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

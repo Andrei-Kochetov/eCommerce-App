@@ -7,4 +7,6 @@ export enum ErrorMessages {
   MIN_DATE_BIRTH = 'Minimum age 13 years',
   POST_CODE = 'Only numbers and capital Latin letters',
   COUNTRY = 'No country selected',
+  SPASE_START = 'The field must not start with a space',
+  SPACE_END = 'The field must not end with a space',
 }
