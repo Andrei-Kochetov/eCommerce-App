@@ -98,6 +98,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
       event: 'click',
       callback: (): void => this.controller.login(button.getView()),
     });
+
     return button;
   }
 
