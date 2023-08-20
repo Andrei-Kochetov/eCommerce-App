@@ -27,8 +27,8 @@ export default class LoginController extends Controller implements ILoginControl
         .authorization(emailInput.value, passwordInput.value)
         .then((response) => {
           // This is the token and the client data that you requested to withdraw
-          const customersToken = loginClient.getToken();
-          const customersData = response.body.customer;
+          const customerToken = loginClient.getToken();
+          const customerData = response.body.customer;
 
           this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
           this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
