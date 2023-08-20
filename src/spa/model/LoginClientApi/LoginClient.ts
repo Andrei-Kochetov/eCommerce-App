@@ -4,6 +4,7 @@ import { options } from '@src/spa/model/LoginClientApi/constants';
 import { ClientBuilder, PasswordAuthMiddlewareOptions, TokenCache } from '@commercetools/sdk-client-v2';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 import { ILoginClient } from '@src/spa/model/LoginClientApi/types';
+import { CustomerSignInResult, ClientResponse } from '@commercetools/platform-sdk';
 
 export default class LoginClient implements ILoginClient {
   private token: TokenCache;
@@ -14,13 +15,13 @@ export default class LoginClient implements ILoginClient {
   public getToken() {
     return this.token.get();
   }
-  public authorization = (email: string, password: string) => {
+  public authorization = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
     const passwordMiddlewareOptions: PasswordAuthMiddlewareOptions = {
-      host: 'https://auth.europe-west1.gcp.commercetools.com',
+      host: options.host,
       projectKey: options.projectKey,
       credentials: {
-        clientId: '5CtkecLYr54FhhzXfgya3yRC',
-        clientSecret: 'Y0wVAYt9uSgpgJFn4_lP9r_mmFlYMlK0',
+        clientId: options.clientId,
+        clientSecret: options.clientSecret,
         user: {
           username: `${email}`,
           password: `${password}`,

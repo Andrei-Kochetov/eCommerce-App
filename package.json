@@ -53,9 +53,6 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@commercetools/history-sdk": "^3.5.0",
-    "@commercetools/importapi-sdk": "^4.6.2",
-    "@commercetools/ml-sdk": "^3.4.1",
     "@commercetools/platform-sdk": "^5.0.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
     "@types/jest": "^29.5.3",

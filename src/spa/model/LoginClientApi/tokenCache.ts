@@ -1,17 +1,17 @@
 import { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export default class MyTokenCache implements TokenCache {
-  myCache: TokenStore;
+  private myCache: TokenStore;
   constructor() {
     this.myCache = {
       token: '',
       expirationTime: 0,
     };
   }
-  set(newCache: TokenStore) {
+  public set(newCache: TokenStore) {
     this.myCache = newCache;
   }
-  get() {
+  public get() {
     return this.myCache;
   }
 }
