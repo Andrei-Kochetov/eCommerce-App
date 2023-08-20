@@ -90,17 +90,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
       classNames: constants.FORM_BTN_CLASSES,
     };
     const button: IView = new ButtonView(params);
-    button.getView().addEventListener('click', () => {
-      if (new LoginValidator(this).validate()) {
-        new LoginClient()
-          .authorization(
-            (this.emailField.getInput().getElement() as HTMLInputElement).value,
-            (this.passwordField.getInput().getElement() as HTMLInputElement).value
-          )
-          .then(() => this.passwordField.setTextError(' '))
-          .catch(() => this.passwordField.setTextError('You made a mistake in your email or password'));
-      }
-    });
+
     return button;
   }
 
