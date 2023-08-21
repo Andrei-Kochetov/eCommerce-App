@@ -37,7 +37,7 @@ export default class RegistrationController extends Controller implements IRegis
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
-      this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
+      this.page.getEmailField().setTextError(ErrorMessages.AUTHORIZATION);
       PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
     }
   }
