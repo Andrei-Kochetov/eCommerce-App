@@ -41,7 +41,6 @@ export default class LoginController extends Controller implements ILoginControl
         this.goTo(element);
       } catch (err) {
         this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
-        console.log(err);
       }
     }
   }
