@@ -35,7 +35,7 @@ export default class RegistrationController extends Controller implements IRegis
       this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
       this.goTo(element);
     } catch (err) {
-      this.page.getPasswordField().setTextError(ErrorMessages.REGISTRATION);
+      this.page.getEmailField().setTextError(ErrorMessages.REGISTRATION);
     }
   }
 }
