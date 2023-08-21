@@ -1,0 +1,30 @@
+@import '@src/spa/basic-styles/_mixins';
+@import '@src/spa/basic-styles/variables.scss';
+
+.header {
+  width: 100%;
+  background-color: $backgraund-dark;
+  &__container {
+    @include flex($justify: space-between, $align: center);
+    padding: 1.5rem 0;
+
+    @media screen and (max-width: 500px) {
+      @include flex($direction: column, $gap: 1rem, $align: flex-start);
+    }
+  }
+  &__logo-link {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__logo-img{
+    width: 8rem;
+    height: 3rem;
+    @include background ($src: '@src/assets/onPlug.png');
+  }
+}
+
+._hidden {
+  display: none !important; // don't delete, this is for navigation hiding
+}

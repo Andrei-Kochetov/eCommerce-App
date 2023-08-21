@@ -1,0 +1,33 @@
+@import '@src/spa/basic-styles/mixins';
+@import '@src/spa/basic-styles/variables.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  &, &::before, &::after{
+    box-sizing: inherit;
+  }
+}
+
+html {
+  font-size: calc(0.3vw + 0.5vh + 4px);
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  @include flex(column, 0);
+  min-height: 100vh;
+}
+
+button {
+  border: none;
+  outline: none;
+  color: #000000;
+}
+
+.not-active {
+  display: none;
+}
