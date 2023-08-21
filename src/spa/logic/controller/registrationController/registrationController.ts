@@ -10,6 +10,7 @@ import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registrat
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
+import PopUpView from '@src/spa/view/popUp/popUpView';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -33,9 +34,11 @@ export default class RegistrationController extends Controller implements IRegis
       this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
       this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
       this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+      PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
-      this.page.getEmailField().setTextError(ErrorMessages.REGISTRATION);
+      this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
+      PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
     }
   }
 }

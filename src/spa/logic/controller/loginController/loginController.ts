@@ -9,6 +9,7 @@ import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
+import PopUpView from '@src/spa/view/popUp/popUpView';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
@@ -38,9 +39,11 @@ export default class LoginController extends Controller implements ILoginControl
         this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
         this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
         this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+        PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {
         this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
+        PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
       }
     }
   }
