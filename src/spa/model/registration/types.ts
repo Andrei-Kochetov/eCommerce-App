@@ -1,3 +1,7 @@
+import { CustomerSignInResult } from '@commercetools/platform-sdk';
+import { TokenStore } from '@commercetools/sdk-client-v2';
+import { ClientResponse } from '@commercetools/platform-sdk';
+
 export interface IRegistrationInputValue {
   password: string;
   email: string;
@@ -14,4 +18,9 @@ export interface IRegistrationInputValue {
   shippingCity: string;
   shippingAddress: string;
   shippingPost: string;
+}
+
+export interface IRegistration {
+  getToken(): TokenStore;
+  registration(registrationInputValue: IRegistrationInputValue): Promise<ClientResponse<CustomerSignInResult>>;
 }

@@ -1,20 +1,27 @@
-import { ClientBuilder, TokenCache } from '@commercetools/sdk-client-v2';
+import { ClientBuilder, TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 import { options } from '@src/spa/model/LoginClientApi/constants';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ClientResponse, CustomerSignInResult, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
-import { IRegistrationInputValue } from '@src/spa/model/registration/types';
+import { IRegistrationInputValue, IRegistration } from '@src/spa/model/registration/types';
 
-export default class Registration {
+export default class Registration implements IRegistration {
+  private static readonly instance: IRegistration = new Registration();
+
   private token: TokenCache;
-  constructor() {
+
+  private constructor() {
     this.token = new MyTokenCache();
   }
 
-  public getToken() {
+  public static getInstance(): IRegistration {
+    return this.instance;
+  }
+
+  public getToken(): TokenStore {
     return this.token.get();
   }
 
-  public static registration(registrationInputValue: IRegistrationInputValue) {
+  public registration(registrationInputValue: IRegistrationInputValue): Promise<ClientResponse<CustomerSignInResult>> {
     const ctpClient = new ClientBuilder()
       .withClientCredentialsFlow(options.authMiddlewareOptions)
       .withHttpMiddleware(options.httpMiddlewareOptions)

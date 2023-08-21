@@ -1,7 +1,13 @@
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import fetch from 'node-fetch';
 import { options } from '@src/spa/model/LoginClientApi/constants';
-import { Client, ClientBuilder, PasswordAuthMiddlewareOptions, TokenCache } from '@commercetools/sdk-client-v2';
+import {
+  Client,
+  ClientBuilder,
+  PasswordAuthMiddlewareOptions,
+  TokenCache,
+  TokenStore,
+} from '@commercetools/sdk-client-v2';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 import { ILoginClient } from '@src/spa/model/LoginClientApi/types';
 import { CustomerSignInResult, ClientResponse } from '@commercetools/platform-sdk';
@@ -19,7 +25,7 @@ export default class LoginClient {
     return this.instance;
   }
 
-  public getToken() {
+  public getToken(): TokenStore {
     return this.token.get();
   }
 
