@@ -1,10 +1,17 @@
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import fetch from 'node-fetch';
 import { options } from '@src/spa/model/LoginClientApi/constants';
-import { ClientBuilder, PasswordAuthMiddlewareOptions, TokenCache } from '@commercetools/sdk-client-v2';
+import {
+  Client,
+  ClientBuilder,
+  PasswordAuthMiddlewareOptions,
+  TokenCache,
+  TokenStore,
+} from '@commercetools/sdk-client-v2';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 import { ILoginClient } from '@src/spa/model/LoginClientApi/types';
 import { CustomerSignInResult, ClientResponse } from '@commercetools/platform-sdk';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export default class LoginClient {
   private static readonly instance: ILoginClient = new LoginClient();
@@ -18,9 +25,10 @@ export default class LoginClient {
     return this.instance;
   }
 
-  public getToken() {
+  public getToken(): TokenStore {
     return this.token.get();
   }
+
   public authorization(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
     const passwordMiddlewareOptions: PasswordAuthMiddlewareOptions = {
       host: options.host,
@@ -37,12 +45,17 @@ export default class LoginClient {
       scopes: options.scopes,
       fetch,
     };
-    const ctpClient = new ClientBuilder()
+
+    const ctpClient: Client = new ClientBuilder()
       .withClientCredentialsFlow(options.authMiddlewareOptions)
       .withHttpMiddleware(options.httpMiddlewareOptions)
       .withPasswordFlow(passwordMiddlewareOptions)
       .build();
-    const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({ projectKey: options.projectKey });
+
+    const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+      projectKey: options.projectKey,
+    });
+
     return apiRoot
       .me()
       .login()

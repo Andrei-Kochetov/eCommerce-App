@@ -11,6 +11,7 @@ export default class HeaderController extends Controller implements IHeaderContr
   public signOut(element: HTMLElement): void {
     this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'false');
     this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, '');
+    this.state.setRecord(APP_STATE_KEYS.TOKEN, '');
     this.goTo(element);
   }
 }

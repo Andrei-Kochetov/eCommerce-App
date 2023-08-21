@@ -10,4 +10,5 @@ export enum ErrorMessages {
   AUTHORIZATION = 'You made a mistake in your email or password',
   SPASE_START = 'The field must not start with a space',
   SPACE_END = 'The field must not end with a space',
+  REGISTRATION = 'User with such an email is already exist',
 }

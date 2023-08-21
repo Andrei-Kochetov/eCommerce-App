@@ -7,8 +7,9 @@ import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidat
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
-import { Customer } from '@commercetools/platform-sdk';
+import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
+import PopUpView from '@src/spa/view/popUp/popUpView';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
@@ -18,25 +19,32 @@ export default class LoginController extends Controller implements ILoginControl
     this.page = page;
   }
 
-  public login(element: HTMLElement): void {
+  public async login(element: HTMLElement): Promise<void> {
     const validator: ILoginValidator = new LoginValidator(this.page);
     const emailInput = this.page.getEmailField().getInput().getElement();
     const passwordInput = this.page.getPasswordField().getInput().getElement();
     const loginClient = LoginClient.getInstance();
     if (!validator.validate()) return;
-    if (emailInput instanceof HTMLInputElement && passwordInput instanceof HTMLInputElement) {
-      loginClient
-        .authorization(emailInput.value, passwordInput.value)
-        .then((response) => {
-          // This is the token and the client data that you requested to withdraw
-          const customerToken: TokenStore = loginClient.getToken();
-          const customerData: Customer = response.body.customer;
 
-          this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
-          this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
-          this.goTo(element);
-        })
-        .catch(() => this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION));
+    if (emailInput instanceof HTMLInputElement && passwordInput instanceof HTMLInputElement) {
+      try {
+        const response: ClientResponse<CustomerSignInResult> = await loginClient.authorization(
+          emailInput.value,
+          passwordInput.value
+        );
+        const customerToken: TokenStore = loginClient.getToken();
+        const customerData: Customer = response.body.customer;
+        const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
+
+        this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
+        this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
+        this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+        PopUpView.getApprovePopUp('You are signed in to the app!').show();
+        this.goTo(element);
+      } catch (err) {
+        this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
+        PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
+      }
     }
   }
 }
