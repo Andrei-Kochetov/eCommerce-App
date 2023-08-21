@@ -19,6 +19,7 @@ export default class State implements IState {
     this.state = {};
   }
 
+  // if necessary add a record to local storage add a key here and its default value to DEFAULT_STATE
   public setRecord(key: APP_STATE_KEYS, value: string): void {
     this.state[key] = value;
   }
@@ -32,24 +33,18 @@ export default class State implements IState {
 
   private saveState(): void {
     Object.entries(this.state).forEach(([key, value]): void => {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, value);
     });
   }
 
   private loadState(): Record<string, string> {
     const state: Record<string, string> = {};
-    for (let i = 0; i < localStorage.length; i++) {
-      const key: string | null = localStorage.key(i);
-      if (!key) continue;
-      const value: string | null = localStorage.getItem(key);
-      if (value === null) continue;
-      state[key] = value;
-    }
 
-    // set some default values
     Object.keys(DEFAULT_STATE).forEach((key: string): void => {
-      if (!(key in state)) state[key] = DEFAULT_STATE[key];
+      const value: string | null = localStorage.getItem(key);
+      state[key] = value ? value : DEFAULT_STATE[key];
     });
+
     return state;
   }
 }
