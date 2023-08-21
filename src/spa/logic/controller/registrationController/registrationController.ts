@@ -5,6 +5,8 @@ import IRegistrationController from '@src/spa/logic/controller/registrationContr
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
+import Registration from '@src/spa/model/registration/registration';
+import { IRegistrationInputValue } from '@src/spa/model/registration/types';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -14,7 +16,7 @@ export default class RegistrationController extends Controller implements IRegis
     this.page = page;
   }
 
-  public register(element: HTMLElement): void {
+  public register(element: HTMLElement, registrationInputValue: IRegistrationInputValue): void {
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     if (!validator.validate()) return;
 
@@ -23,6 +25,7 @@ export default class RegistrationController extends Controller implements IRegis
     this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, 'Anonymous');
     // end of test logic
     // TODO: add registration logic
+    Registration.registration(registrationInputValue);
 
     this.goTo(element);
   }

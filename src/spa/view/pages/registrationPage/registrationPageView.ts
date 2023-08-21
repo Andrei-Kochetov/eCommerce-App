@@ -39,6 +39,8 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly homeBTN: IView;
   private readonly toLoginBTN: IView;
   private readonly controller: IRegistrationController;
+  private shippingAddressDefaultFlag;
+  private billingAddressDefaultFlag;
 
   public constructor(router: IRouter) {
     super(PageNames.REGISTRATION, constants.PAGE_CLASS);
@@ -63,6 +65,8 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     this.toLoginBTN = this.createToLoginBTN();
     this.configureView();
     this.controller = new RegistrationController(router, this);
+    this.shippingAddressDefaultFlag = false;
+    this.billingAddressDefaultFlag = false;
   }
 
   public getPasswordField(): IInput {
@@ -300,6 +304,12 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     };
     const checkbox = new InputView(params);
     checkbox.getViewCreator().setClasses('input-checkbox');
+    checkbox.getView().addEventListener('click', (event: MouseEvent): void => {
+      if (!(event.target instanceof HTMLInputElement)) return;
+      if (event.target.id === 'billing-address-default') {
+        this.billingAddressDefaultFlag = !this.billingAddressDefaultFlag;
+      }
+    });
     return checkbox;
   }
 
@@ -355,6 +365,12 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     };
     const checkbox = new InputView(params);
     checkbox.getViewCreator().setClasses('input-checkbox');
+    checkbox.getView().addEventListener('click', (event: MouseEvent): void => {
+      if (!(event.target instanceof HTMLInputElement)) return;
+      if (event.target.id === 'shipping-address-default') {
+        this.shippingAddressDefaultFlag = !this.shippingAddressDefaultFlag;
+      }
+    });
     return checkbox;
   }
 
@@ -389,7 +405,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     button.getViewCreator().setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.MAIN });
     button.getViewCreator().setListeners({
       event: 'click',
-      callback: (): void => this.controller.register(button.getView()),
+      callback: (): void => this.controller.register(button.getView(), this.getValues()),
     });
     return button;
   }
@@ -559,4 +575,25 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       .getSelect()
       .getElement() as HTMLSelectElement).selectedIndex;
   };
+
+  private getValues() {
+    const registrationInputValue = {
+      password: (this.passwordField.getInput().getElement() as HTMLInputElement).value,
+      email: (this.emailField.getInput().getElement() as HTMLInputElement).value,
+      firstName: (this.firstNameField.getInput().getElement() as HTMLInputElement).value,
+      lastName: (this.lastNameField.getInput().getElement() as HTMLInputElement).value,
+      dateBirth: (this.dateBirthField.getInput().getElement() as HTMLInputElement).value,
+      billingAddressDefault: this.billingAddressDefaultFlag,
+      billingCountry: (this.billingCountryField.getSelect().getElement() as HTMLInputElement).value,
+      billingCity: (this.billingCityField.getInput().getElement() as HTMLInputElement).value,
+      billingAddress: (this.billingAddressField.getInput().getElement() as HTMLInputElement).value,
+      billingPost: (this.billingPostCodeField.getInput().getElement() as HTMLInputElement).value,
+      shippingAddressDefault: this.shippingAddressDefaultFlag,
+      shippingCountry: (this.shippingCountryField.getSelect().getElement() as HTMLInputElement).value,
+      shippingCity: (this.shippingCityField.getInput().getElement() as HTMLInputElement).value,
+      shippingAddress: (this.shippingAddressField.getInput().getElement() as HTMLInputElement).value,
+      shippingPost: (this.shippingPostCodeField.getInput().getElement() as HTMLInputElement).value,
+    };
+    return registrationInputValue;
+  }
 }
