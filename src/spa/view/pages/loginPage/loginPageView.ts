@@ -15,6 +15,7 @@ import * as constants from '@src/spa/view/pages/loginPage/constants';
 import { IRouter } from '@src/spa/logic/router/types';
 import { ILoginController } from '@src/spa/logic/controller/loginController/types';
 import LoginController from '@src/spa/logic/controller/loginController/loginController';
+import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
 
 export default class LoginPageView extends PageView implements ILoginPageView {
   private readonly passwordField: IInput;
@@ -65,6 +66,11 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     const title: IElementCreator = new ElementCreator(params);
 
     form.setClasses(constants.LOGIN_FORM_CLASS);
+    const emailInput = this.emailField.getInput().getElement();
+    const passwordInput = this.passwordField.getInput().getElement();
+    if (emailInput instanceof HTMLInputElement && passwordInput instanceof HTMLInputElement)
+      emailInput.addEventListener('input', () => new LoginValidator(this).emailCheck(this.emailField));
+    passwordInput.addEventListener('input', () => new LoginValidator(this).passwordCheck(this.passwordField));
     form.addInnerElement(this.emailField.getView(), this.passwordField.getView());
     this.getViewCreator().addInnerElement(
       title,
@@ -79,7 +85,7 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     const params: IInputViewParams = {
       attributes: {
         id: 'email',
-        type: 'email',
+        type: 'text',
         name: 'email',
       },
       textLabel: 'Email',

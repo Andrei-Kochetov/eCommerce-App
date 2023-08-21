@@ -11,7 +11,7 @@ export default abstract class Validator {
   protected emailFieldCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
-      const regExp = /[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+/;
+      const regExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/;
       if (!regExp.test(input.value)) {
         inputView.setTextError(ErrorMessages.EMAIL);
         return false;
@@ -60,6 +60,23 @@ export default abstract class Validator {
     if (input instanceof HTMLInputElement) {
       if (!input.value) {
         inputView.setTextError(ErrorMessages.EMPTY_FIELD);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  protected spaceStartEndFieldCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      if (input.value.startsWith(' ')) {
+        inputView.setTextError(ErrorMessages.SPASE_START);
+        return false;
+      } else if (input.value.endsWith(' ')) {
+        inputView.setTextError(ErrorMessages.SPACE_END);
         return false;
       } else {
         return true;

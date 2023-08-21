@@ -204,7 +204,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     const params: IInputViewParams = {
       attributes: {
         id: 'email',
-        type: 'email',
+        type: 'text',
         name: 'email',
       },
       textLabel: 'Email',
@@ -273,7 +273,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'text',
         name: 'billing-address',
       },
-      textLabel: 'Address',
+      textLabel: 'Street',
     };
     return new InputView(params);
   }
@@ -284,7 +284,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'text',
         name: 'billing-postcode',
       },
-      textLabel: 'Post code',
+      textLabel: 'Postal code',
     };
     return new InputView(params);
   }
@@ -328,7 +328,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'text',
         name: 'shipping-address',
       },
-      textLabel: 'Address',
+      textLabel: 'Street',
     };
     return new InputView(params);
   }
@@ -339,7 +339,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         type: 'text',
         name: 'shipping-postcode',
       },
-      textLabel: 'Post code',
+      textLabel: 'Postal code',
     };
     return new InputView(params);
   }

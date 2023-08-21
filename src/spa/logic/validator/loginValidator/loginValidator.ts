@@ -11,12 +11,20 @@ export default class LoginValidator extends Validator implements ILoginValidator
     this.page = loginPage;
   }
 
-  protected emailCheck(input: IInputView): boolean {
-    return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
+  public emailCheck(input: IInputView): boolean {
+    input.setTextError(' ');
+
+    return this.spaceStartEndFieldCheck(input) && this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
 
-  protected passwordCheck(input: IInputView): boolean {
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
+  public passwordCheck(input: IInputView): boolean {
+    input.setTextError(' ');
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 8, 20) &&
+      this.spaceStartEndFieldCheck(input) &&
+      this.weakPasswordCheck(input)
+    );
   }
 
   public validate(): boolean {

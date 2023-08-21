@@ -15,22 +15,37 @@ export default class RegistrationValidator extends Validator implements IRegistr
 
   protected passwordCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 8, 20) && this.weakPasswordCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 8, 20) &&
+      this.weakPasswordCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected emailCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.emailFieldCheck(input);
+    return this.spaceStartEndFieldCheck(input) && this.emailFieldCheck(input) && this.emptyFieldCheck(input);
   }
 
   protected firstNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 20) &&
+      this.onlyTextCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected lastNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 20) &&
+      this.onlyTextCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected dateBirthCheck(input: IInputView): boolean {
@@ -45,17 +60,32 @@ export default class RegistrationValidator extends Validator implements IRegistr
 
   protected billingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 20) &&
+      this.onlyTextCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected billingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.addressCheck(input) && this.minMaxLengthCheck(input, 4, 30);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.addressCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 30) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected billingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 4, 10) &&
+      this.postCodeCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected shippingCountryCheck(select: ISelect): boolean {
@@ -65,17 +95,32 @@ export default class RegistrationValidator extends Validator implements IRegistr
 
   protected shippingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 1, 20) && this.onlyTextCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 20) &&
+      this.onlyTextCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected shippingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.addressCheck(input) && this.minMaxLengthCheck(input, 4, 30);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.addressCheck(input) &&
+      this.minMaxLengthCheck(input, 1, 30) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   protected shippingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minMaxLengthCheck(input, 4, 8) && this.postCodeCheck(input);
+    return (
+      this.emptyFieldCheck(input) &&
+      this.minMaxLengthCheck(input, 4, 10) &&
+      this.postCodeCheck(input) &&
+      this.spaceStartEndFieldCheck(input)
+    );
   }
 
   public validate(): boolean {
@@ -100,7 +145,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
   private onlyTextCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
-      const regExp = /^[А-ЯЁA-Z][а-яА-ЯёЁa-zA-Z-]+$/;
+      const regExp = /^([a-zа-яё -])+$/i;
       if (!regExp.test(input.value)) {
         inputView.setTextError(ErrorMessages.ONLY_TEXT);
         return false;
