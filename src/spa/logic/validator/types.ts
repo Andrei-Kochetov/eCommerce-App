@@ -9,4 +9,5 @@ export enum ErrorMessages {
   COUNTRY = 'No country selected',
   SPASE_START = 'The field must not start with a space',
   SPACE_END = 'The field must not end with a space',
+  AUTHORIZATION = 'You made a mistake in your email or password',
 }
