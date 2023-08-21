@@ -1,11 +1,9 @@
-import { APP_STATE_KEYS, DEFAULT_STATE, IState, StateRecords } from '@src/spa/logic/state/types';
-
-const STORAGE_STATE_KEY = 'app_state';
+import { APP_STATE_KEYS, IState, DEFAULT_STATE } from '@src/spa/logic/state/types';
 
 export default class State implements IState {
   private static readonly instance: IState = new State();
 
-  private state: StateRecords;
+  private state: Record<string, string>;
 
   private constructor() {
     this.state = this.loadState();
@@ -18,10 +16,10 @@ export default class State implements IState {
   }
 
   public resetState(): void {
-    this.state = DEFAULT_STATE;
+    this.state = {};
   }
 
-  public setRecord<T extends APP_STATE_KEYS>(key: T, value: StateRecords[T]): void {
+  public setRecord(key: APP_STATE_KEYS, value: string): void {
     this.state[key] = value;
   }
 
@@ -33,12 +31,25 @@ export default class State implements IState {
   }
 
   private saveState(): void {
-    localStorage.setItem(STORAGE_STATE_KEY, JSON.stringify(this.state));
+    Object.entries(this.state).forEach(([key, value]): void => {
+      localStorage.setItem(key, JSON.stringify(value));
+    });
   }
 
-  private loadState(): StateRecords {
-    const stateString: string | null = localStorage.getItem(STORAGE_STATE_KEY);
-    if (!stateString) return DEFAULT_STATE;
-    return JSON.parse(stateString);
+  private loadState(): Record<string, string> {
+    const state: Record<string, string> = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key: string | null = localStorage.key(i);
+      if (!key) continue;
+      const value: string | null = localStorage.getItem(key);
+      if (value === null) continue;
+      state[key] = value;
+    }
+
+    // set some default values
+    Object.keys(DEFAULT_STATE).forEach((key: string): void => {
+      if (!(key in state)) state[key] = DEFAULT_STATE[key];
+    });
+    return state;
   }
 }
