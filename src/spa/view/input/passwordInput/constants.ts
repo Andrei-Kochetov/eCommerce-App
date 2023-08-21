@@ -3,6 +3,7 @@ const PASSWORD_ID = 'password';
 const PASSWORD_ATTRIBUTES = {
   type: 'password',
   name: 'password',
+  autocomplete: 'on',
 };
 const PASSWORD_CLASSES = ['password'];
 const REVEALER_TAG = 'span';
