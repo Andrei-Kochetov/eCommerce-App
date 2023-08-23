@@ -17,7 +17,7 @@ export interface Address {
   isDefaultBilling: 'true' | 'false';
 }
 
-export interface IProfileDataGetter {
+export interface IProfileDataManager {
   getProfileData(): ProfileData;
   // and other methods we discuss
 }

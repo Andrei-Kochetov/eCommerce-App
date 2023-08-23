@@ -1,6 +1,6 @@
-import { IProfileDataGetter, ProfileData } from '@src/spa/logic/profile/profileDataGetter/types';
+import { IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 
-export default class ProfileDataGetter implements IProfileDataGetter {
+export default class ProfileDataManager implements IProfileDataManager {
   // singleton
 
   private constructor() {
