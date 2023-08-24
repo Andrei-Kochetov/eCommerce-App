@@ -3,12 +3,26 @@ import PageView from '@src/spa/view/pages/pageView';
 import { PageNames } from '@src/spa/view/pages/types';
 import { ProfileData, UserParams, Address } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
+import ModalView from '../../modal/modalView';
 
 const PROFILE_PAGE_CLASS = 'profile';
 
 export default class ProfilePageView extends PageView implements IProfilePage {
   public constructor(params: ProfileData) {
     super(PageNames.PROFILE, PROFILE_PAGE_CLASS);
+    this.setBTN();
+  }
+
+  // temporary for testing
+  private setBTN(): void {
+    const btn: HTMLElement = document.createElement('input');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('value', 'Show modal window');
+    this.getViewCreator().addInnerElement(btn);
+    btn.addEventListener('click', (): void => {
+      const modal = new ModalView();
+      modal.showModal();
+    });
   }
 
   // here on the base of params you have to implement page view

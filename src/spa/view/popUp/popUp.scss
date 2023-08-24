@@ -1,14 +1,15 @@
-@import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/_mixins';
+@import '@src/spa/basic-styles/_variables';
 
 .pop-up {
   z-index: 3;
   width: 25rem;
-  position: absolute;
+  position: fixed;
   left: calc(50% - 12.5rem);
   bottom: 7.5rem;
   @include flex ($gap: 1rem, $align: center);
   padding: 2rem 1rem 1rem;
-  background: #d6d5d5;
+  background: $pop-up-background;
   border-radius: 0.5rem;
   animation: show .5s;
 }
