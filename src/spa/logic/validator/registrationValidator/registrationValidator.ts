@@ -124,20 +124,34 @@ export default class RegistrationValidator extends Validator implements IRegistr
   }
 
   public validate(): boolean {
+    let arrFunc;
+    if (!this.page.getSingleAddressFlag()) {
+      arrFunc = [this.singleAddressValidation(), this.validationBillingAddresses()];
+    } else {
+      arrFunc = [this.singleAddressValidation()];
+    }
+    return arrFunc.every((el) => el === true);
+  }
+  private singleAddressValidation(): boolean {
     const arrFunc = [
       this.passwordCheck(this.page.getPasswordField()),
       this.emailCheck(this.page.getEmailField()),
       this.firstNameCheck(this.page.getFirstNameField()),
       this.lastNameCheck(this.page.getLastNameField()),
       this.dateBirthCheck(this.page.getDateBirthField()),
-      this.billingCountryCheck(this.page.getBillingCountryField()),
-      this.billingCityCheck(this.page.getBillingCityField()),
-      this.billingAddressCheck(this.page.getBillingAddressField()),
-      this.billingPostCodeCheck(this.page.getBillingPostCodeField()),
       this.shippingCountryCheck(this.page.getShippingCountryField()),
       this.shippingCityCheck(this.page.getShippingCityField()),
       this.shippingAddressCheck(this.page.getShippingAddressField()),
       this.shippingPostCodeCheck(this.page.getShippingPostCodeField()),
+    ];
+    return arrFunc.every((el) => el === true);
+  }
+  private validationBillingAddresses(): boolean {
+    const arrFunc = [
+      this.billingCountryCheck(this.page.getBillingCountryField()),
+      this.billingCityCheck(this.page.getBillingCityField()),
+      this.billingAddressCheck(this.page.getBillingAddressField()),
+      this.billingPostCodeCheck(this.page.getBillingPostCodeField()),
     ];
     return arrFunc.every((el) => el === true);
   }

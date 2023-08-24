@@ -41,7 +41,9 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly controller: IRegistrationController;
   private shippingAddressDefaultFlag;
   private billingAddressDefaultFlag;
-
+  private singleAddressFlag;
+  private wrapperBillingAddress: IElementCreator;
+  private titleShippingAddress: IElementCreator;
   public constructor(router: IRouter) {
     super(PageNames.REGISTRATION, constants.PAGE_CLASS);
     this.passwordField = new PasswordInputView();
@@ -63,10 +65,13 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     this.enterBTN = this.createEnterBTN();
     this.homeBTN = this.createHomeBTN();
     this.toLoginBTN = this.createToLoginBTN();
+    this.wrapperBillingAddress = this.configureBillingAddressView();
+    this.titleShippingAddress = this.createParagraph('Shipping address');
     this.configureView();
     this.controller = new RegistrationController(router, this);
     this.shippingAddressDefaultFlag = false;
     this.billingAddressDefaultFlag = false;
+    this.singleAddressFlag = false;
   }
 
   public getPasswordField(): IInput {
@@ -145,6 +150,10 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return this.toLoginBTN;
   }
 
+  public getSingleAddressFlag(): boolean {
+    return this.singleAddressFlag;
+  }
+
   private configureBillingAddressView(): IElementCreator {
     const wrapper = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
     const titleBillingAddress = this.createParagraph('Billing address');
@@ -161,9 +170,9 @@ export default class RegistrationPageView extends PageView implements IRegistrat
 
   private configureShippingAddressView(): IElementCreator {
     const wrapper = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
-    const titleShippingAddress = this.createParagraph('Shipping address');
     wrapper.addInnerElement(
-      titleShippingAddress.getElement(),
+      this.titleShippingAddress.getElement(),
+      this.titleShippingAddress.getElement(),
       this.shippingAddressDefault.getView(),
       this.shippingCountryField.getView(),
       this.shippingCityField.getView(),
@@ -181,7 +190,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       textContent: constants.TITLE_TEXT,
     };
     const title: IElementCreator = new ElementCreator(params);
-    const wrapperBillingAddress = this.configureBillingAddressView();
+
     const wrapperShippingAddress = this.configureShippingAddressView();
 
     form.setClasses(constants.LOGIN_FORM_CLASS);
@@ -192,8 +201,8 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       this.lastNameField.getView(),
       this.dateBirthField.getView(),
       this.singleAddress.getView(),
-      wrapperBillingAddress.getElement(),
-      wrapperShippingAddress.getElement()
+      wrapperShippingAddress.getElement(),
+      this.wrapperBillingAddress.getElement()
     );
     this.getViewCreator().addInnerElement(
       title,
@@ -388,10 +397,15 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     checkbox.getView().addEventListener('click', (event: MouseEvent): void => {
       if (!(event.target instanceof HTMLInputElement)) return;
       if (!(event.target.id === 'single-address' && event.target.checked)) {
-        this.removeSingleAddressListeners();
+        this.wrapperBillingAddress.getElement().classList.remove('_hidden');
+        this.titleShippingAddress.setTextContent('Shipping address');
+        this.singleAddressFlag = false;
         return;
       }
-      this.addSingleAddressListeners();
+      this.wrapperBillingAddress.getElement().classList.add('_hidden');
+      this.titleShippingAddress.setTextContent('Address');
+      this.singleAddressFlag = true;
+      console.log(this.singleAddressFlag);
     });
     return checkbox;
   }
@@ -447,35 +461,6 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     return wrapper;
   }
 
-  private removeSingleAddressListeners(): void {
-    this.billingCityField.getInput().getElement().removeEventListener('input', this.equalInputCityBillingToShipping);
-    this.shippingCityField.getInput().getElement().removeEventListener('input', this.equalInputCityShippingToBilling);
-    this.billingAddressField
-      .getInput()
-      .getElement()
-      .removeEventListener('input', this.equalInputAddressBillingToShipping);
-    this.shippingAddressField
-      .getInput()
-      .getElement()
-      .removeEventListener('input', this.equalInputAddressShippingToBilling);
-    this.billingPostCodeField
-      .getInput()
-      .getElement()
-      .removeEventListener('input', this.equalInputPostCodeBillingToShipping);
-    this.shippingPostCodeField
-      .getInput()
-      .getElement()
-      .removeEventListener('input', this.equalInputPostCodeShippingToBilling);
-    this.billingCountryField
-      .getSelect()
-      .getElement()
-      .removeEventListener('change', this.equalSelectCountryBillingToShipping);
-    this.shippingCountryField
-      .getSelect()
-      .getElement()
-      .removeEventListener('change', this.equalSelectCountryShippingToBilling);
-  }
-
   private createParagraph(textContent: string): IElementCreator {
     const params: ElementCreatorParams = {
       tag: constants.PARAGRAPH_TAG,
@@ -485,96 +470,6 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     paragraph.setTextContent(textContent);
     return paragraph;
   }
-
-  private addSingleAddressListeners(): void {
-    this.billingCityField.getInput().getElement().addEventListener('input', this.equalInputCityBillingToShipping);
-    this.shippingCityField.getInput().getElement().addEventListener('input', this.equalInputCityShippingToBilling);
-    this.billingAddressField.getInput().getElement().addEventListener('input', this.equalInputAddressBillingToShipping);
-    this.shippingAddressField
-      .getInput()
-      .getElement()
-      .addEventListener('input', this.equalInputAddressShippingToBilling);
-    this.billingPostCodeField
-      .getInput()
-      .getElement()
-      .addEventListener('input', this.equalInputPostCodeBillingToShipping);
-    this.shippingPostCodeField
-      .getInput()
-      .getElement()
-      .addEventListener('input', this.equalInputPostCodeShippingToBilling);
-    this.billingCountryField
-      .getSelect()
-      .getElement()
-      .addEventListener('change', this.equalSelectCountryBillingToShipping);
-    this.shippingCountryField
-      .getSelect()
-      .getElement()
-      .addEventListener('change', this.equalSelectCountryShippingToBilling);
-  }
-
-  private equalInputCityBillingToShipping = (): void => {
-    (this.shippingCityField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.billingCityField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalInputCityShippingToBilling = (): void => {
-    (this.billingCityField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.shippingCityField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalInputAddressBillingToShipping = (): void => {
-    (this.shippingAddressField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.billingAddressField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalInputAddressShippingToBilling = (): void => {
-    (this.billingAddressField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.shippingAddressField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalInputPostCodeBillingToShipping = (): void => {
-    (this.shippingPostCodeField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.billingPostCodeField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalInputPostCodeShippingToBilling = (): void => {
-    (this.billingPostCodeField
-      .getInput()
-      .getElement() as HTMLInputElement).value = (this.shippingPostCodeField
-      .getInput()
-      .getElement() as HTMLInputElement).value;
-  };
-
-  private equalSelectCountryBillingToShipping = (): void => {
-    (this.shippingCountryField
-      .getSelect()
-      .getElement() as HTMLSelectElement).selectedIndex = (this.billingCountryField
-      .getSelect()
-      .getElement() as HTMLSelectElement).selectedIndex;
-  };
-
-  private equalSelectCountryShippingToBilling = (): void => {
-    (this.billingCountryField
-      .getSelect()
-      .getElement() as HTMLSelectElement).selectedIndex = (this.shippingCountryField
-      .getSelect()
-      .getElement() as HTMLSelectElement).selectedIndex;
-  };
 
   private getValues() {
     const registrationInputValue = {
@@ -593,6 +488,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       shippingCity: (this.shippingCityField.getInput().getElement() as HTMLInputElement).value,
       shippingAddress: (this.shippingAddressField.getInput().getElement() as HTMLInputElement).value,
       shippingPost: (this.shippingPostCodeField.getInput().getElement() as HTMLInputElement).value,
+      singleAddress: this.singleAddressFlag,
     };
     return registrationInputValue;
   }
