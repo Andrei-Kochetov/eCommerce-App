@@ -7,6 +7,7 @@ export interface ProfileData {
 }
 
 export interface Address {
+  id: string;
   city: string;
   country: string;
   postcode: string;

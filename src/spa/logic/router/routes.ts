@@ -105,6 +105,7 @@ const params: ProfileData = {
   dateBirth: '01.01.1992',
   addresses: [
     {
+      id: '1',
       city: 'Moscow',
       country: 'Russia',
       postcode: '1231231',
@@ -115,6 +116,7 @@ const params: ProfileData = {
       isDefaultBilling: 'true',
     },
     {
+      id: '2',
       city: 'Minsk',
       country: 'Belarus',
       postcode: '34534534',
