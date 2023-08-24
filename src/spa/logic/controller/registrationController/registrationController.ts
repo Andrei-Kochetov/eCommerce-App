@@ -33,7 +33,6 @@ export default class RegistrationController extends Controller implements IRegis
       }
 
       const customerToken: TokenStore = registration.getToken();
-      console.log(customerToken);
       const customerData: Customer = response.body.customer;
       const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
 
