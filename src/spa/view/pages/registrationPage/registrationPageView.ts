@@ -172,7 +172,6 @@ export default class RegistrationPageView extends PageView implements IRegistrat
     const wrapper = this.createWrapper(constants.ADDRESS_WRAPPER_CLASS_NAME);
     wrapper.addInnerElement(
       this.titleShippingAddress.getElement(),
-      this.titleShippingAddress.getElement(),
       this.shippingAddressDefault.getView(),
       this.shippingCountryField.getView(),
       this.shippingCityField.getView(),
