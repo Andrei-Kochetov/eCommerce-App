@@ -39,9 +39,9 @@ export default class RegistrationPageView extends PageView implements IRegistrat
   private readonly homeBTN: IView;
   private readonly toLoginBTN: IView;
   private readonly controller: IRegistrationController;
-  private shippingAddressDefaultFlag;
-  private billingAddressDefaultFlag;
-  private singleAddressFlag;
+  private shippingAddressDefaultFlag: boolean;
+  private billingAddressDefaultFlag: boolean;
+  private singleAddressFlag: boolean;
   private wrapperBillingAddress: IElementCreator;
   private titleShippingAddress: IElementCreator;
   public constructor(router: IRouter) {
