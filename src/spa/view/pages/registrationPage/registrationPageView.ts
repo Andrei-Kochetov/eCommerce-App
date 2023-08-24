@@ -255,7 +255,7 @@ export default class RegistrationPageView extends PageView implements IRegistrat
         id: 'date-birth',
         type: 'date',
         name: 'date-birth',
-        value: '2011-01-01',
+        value: '2010-08-01',
       },
       textLabel: 'Date of birth',
     };
@@ -405,7 +405,6 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       this.wrapperBillingAddress.getElement().classList.add('_hidden');
       this.titleShippingAddress.setTextContent('Address');
       this.singleAddressFlag = true;
-      console.log(this.singleAddressFlag);
     });
     return checkbox;
   }
