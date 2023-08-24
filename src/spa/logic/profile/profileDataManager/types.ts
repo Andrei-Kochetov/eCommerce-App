@@ -9,7 +9,7 @@ export interface ProfileData {
 export interface Address {
   city: string;
   country: string;
-  postcode: string;
+  postCode: string;
   street: string;
   id: string;
   isShipping: 'true' | 'false';
@@ -19,6 +19,6 @@ export interface Address {
 }
 
 export interface IProfileDataManager {
-  getProfileData(): ProfileData;
+  getProfileData(): Promise<ProfileData | undefined>;
   // and other methods we discuss
 }
