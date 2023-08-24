@@ -1,6 +1,11 @@
 import { Client, ClientBuilder, TokenCache, TokenStore, AuthMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { options } from '@src/spa/model/registration/constants';
-import { ClientResponse, CustomerSignInResult, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import {
+  ClientResponse,
+  CustomerSignInResult,
+  createApiBuilderFromCtpClient,
+  CustomerDraft,
+} from '@commercetools/platform-sdk';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registration/types';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -76,7 +81,7 @@ export default class Registration implements IRegistration {
       .execute();
   }
 
-  private postBodyData(registrationInputValue: IRegistrationInputValue) {
+  private postBodyData(registrationInputValue: IRegistrationInputValue): CustomerDraft {
     let defaultBillingAddress;
     let defaultShippingAddress;
     if (registrationInputValue.billingAddressDefault) defaultBillingAddress = 1;
