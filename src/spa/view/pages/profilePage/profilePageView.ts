@@ -29,3 +29,6 @@ export default class ProfilePageView extends PageView implements IProfilePage {
     // may be will be better re-render addresses section from scratch
   }
 }
+
+// for test purposes I have placed a test obj at the end of routes file on path
+// '@src/spa/logic/router/routes'
