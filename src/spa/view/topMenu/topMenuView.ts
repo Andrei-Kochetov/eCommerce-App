@@ -9,6 +9,7 @@ import View from '@src/spa/view/view';
 import { IRouter } from '@src/spa/logic/router/types';
 import { IHeaderController } from '@src/spa/logic/controller/headerController/types';
 import HeaderController from '@src/spa/logic/controller/headerController/headerController';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 
 const DEFAULT_USER_NAME = '?';
 
@@ -270,9 +271,10 @@ export default class TopMenuView extends View {
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.PROFILE });
     button.setListeners({
       event: 'click',
-      callback: (): void => {
-        if (!this.controller) throw new Error('There is no controller in top menu view!');
-        this.controller.goTo(button.getElement());
+      callback: async () /* : void */ => {
+        /*         if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement()); */
+        console.log(await await new ProfileDataManager().getProfileData());
       },
     });
     return button;

@@ -11,6 +11,7 @@ export interface Address {
   country: string;
   postcode: string;
   street: string;
+  id: string;
   isShipping: 'true' | 'false';
   isBilling: 'true' | 'false';
   isDefaultShipping: 'true' | 'false';
