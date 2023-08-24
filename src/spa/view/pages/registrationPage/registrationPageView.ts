@@ -487,7 +487,6 @@ export default class RegistrationPageView extends PageView implements IRegistrat
       shippingCity: (this.shippingCityField.getInput().getElement() as HTMLInputElement).value,
       shippingAddress: (this.shippingAddressField.getInput().getElement() as HTMLInputElement).value,
       shippingPost: (this.shippingPostCodeField.getInput().getElement() as HTMLInputElement).value,
-      singleAddress: this.singleAddressFlag,
     };
     return registrationInputValue;
   }
