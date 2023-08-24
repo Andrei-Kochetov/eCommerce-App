@@ -17,6 +17,8 @@ export interface Address {
   isDefaultBilling: 'true' | 'false';
 }
 
+export type UserParams = Pick<ProfileData, 'firstName' | 'lastName' | 'dateBirth'>;
+
 export interface IProfileDataManager {
   getProfileData(): ProfileData;
   // and other methods we discuss

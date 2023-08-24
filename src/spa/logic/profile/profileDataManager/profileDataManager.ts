@@ -25,7 +25,7 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   private getToken(): TokenCache {
     const state: IState = State.getInstance();
-    const token = state.getRecord(APP_STATE_KEYS.TOKEN);
+    const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
     return JSON.parse(token);
   }
 }
