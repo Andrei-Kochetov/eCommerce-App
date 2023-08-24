@@ -8,7 +8,7 @@ const PROFILE_PAGE_CLASS = 'profile';
 
 export default class ProfilePageView extends PageView implements IProfilePage {
   public constructor(params: ProfileData) {
-    super(PageNames.CATALOG, PROFILE_PAGE_CLASS);
+    super(PageNames.PROFILE, PROFILE_PAGE_CLASS);
   }
 
   // here on the base of params you have to implement page view
