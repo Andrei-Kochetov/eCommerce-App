@@ -8,9 +8,9 @@ import { IModal } from '@src/spa/view/modal/types';
 import * as constants from '@src/spa/view/modal/constants';
 
 export default class ModalView extends View implements IModal {
-  private readonly modalWrapper: IElementCreator;
   private readonly underlay: IElementCreator;
 
+  protected readonly modalWrapper: IElementCreator;
   protected readonly acceptBTN: IElementCreator;
   protected readonly cancelBTN: IElementCreator;
   protected readonly closeBTN: IElementCreator;

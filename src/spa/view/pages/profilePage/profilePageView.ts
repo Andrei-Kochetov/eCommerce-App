@@ -6,6 +6,7 @@ import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 import EmailModalView from '../../modal/emailModal/emailModalView';
 import UserInfoModalView from '../../modal/userInfoModal/userInfoModalView';
 import PasswordModalView from '../../modal/passwordModal/passwordModalView';
+import AddressesModalView from '../../modal/addressesModal/addressesModalView';
 
 const PROFILE_PAGE_CLASS = 'profile';
 
@@ -17,6 +18,19 @@ export default class ProfilePageView extends PageView implements IProfilePage {
     this.setEmailBTN(params);
     this.setUserInfoBTN(params);
     this.setPasswordBTN();
+    this.setAddressesBTN(params);
+  }
+
+  // temporary for testing
+  private setAddressesBTN(params: ProfileData): void {
+    const btn: HTMLElement = document.createElement('input');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('value', 'Change addresses');
+    this.getViewCreator().addInnerElement(btn);
+    btn.addEventListener('click', (): void => {
+      const modal = new AddressesModalView(params.addresses);
+      modal.showModal();
+    });
   }
 
   // temporary for testing
