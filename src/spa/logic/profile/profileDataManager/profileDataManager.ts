@@ -4,13 +4,16 @@ import { TokenStore } from '@commercetools/sdk-client-v2';
 import State from '@src/spa/logic/state/state';
 import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
 import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
 
 export default class ProfileDataManager implements IProfileDataManager {
   private readonly token: TokenStore;
+  protected readonly state: IState;
   private static readonly instance = new ProfileDataManager();
 
   private constructor() {
     this.token = this.getToken();
+    this.state = State.getInstance();
   }
 
   public static getInstance() {
@@ -19,6 +22,7 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   public async getProfileData(): Promise<ProfileData | undefined> {
     const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.token.token);
+    console.log(dataCustomerResponse);
     const dataCustomer = dataCustomerResponse.body;
     const addresses: Address[] = [];
     dataCustomer.addresses.forEach((address) => {
@@ -45,6 +49,34 @@ export default class ProfileDataManager implements IProfileDataManager {
         addresses: addresses,
       };
     }
+  }
+
+  public async setNewEmail(newEmail: string): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewEmail(this.token.token, newEmail);
+    console.log(dataCustomerResponse);
+  }
+
+  public async setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewNameAndDateBirth(
+      this.token.token,
+      newNameAndDateBirth
+    );
+    console.log(dataCustomerResponse);
+  }
+
+  public async setNewPassword(passwordObj: SetPasswordObj): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewPassword(this.token.token, passwordObj);
+    console.log(dataCustomerResponse);
+  }
+
+  public async setNewAddress(addressObj: SetAddressObj): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
+    console.log(dataCustomerResponse);
+  }
+
+  public async deleteAddress(addressId: string): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().deleteAddress(this.token.token, addressId);
+    console.log(dataCustomerResponse);
   }
 
   private getToken(): TokenStore {
