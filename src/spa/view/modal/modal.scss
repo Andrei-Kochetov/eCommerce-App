@@ -59,6 +59,7 @@
   overflow-y: auto;
   @include flex ($gap: 0, $align: center, $direction: column);
   color: $pop-up-text-color;
+  padding-bottom: 1rem;
 
   &::-webkit-scrollbar {
     width: 0.5rem;

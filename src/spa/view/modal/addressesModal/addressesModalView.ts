@@ -6,6 +6,7 @@ import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import * as constants from '@src/spa/view/modal/addressesModal/constants';
 import { btnParams } from '@src/spa/view/button/types';
 import ButtonView from '@src/spa/view/button/buttonView';
+import AddressModalItemView from './addressModalItem/addressModalItemView';
 
 export default class AddressesModalView extends ModalView {
   private readonly form: IElementCreator;
@@ -13,14 +14,16 @@ export default class AddressesModalView extends ModalView {
   public constructor(addresses: Address[]) {
     super();
     this.form = new FormView().getViewCreator();
-    this.configure();
+    this.configure(addresses);
   }
 
-  private configure(): void {
+  private configure(addresses: Address[]): void {
     const addAddressBTN: IElementCreator = this.createAddAddressBTN();
 
     this.form.setClasses(constants.ADDRESSES_FORM_CLASS);
-    this.form.addInnerElement();
+    addresses.forEach((address: Address): void => {
+      this.form.addInnerElement(new AddressModalItemView(address).getView());
+    });
     this.addForm(this.form);
 
     this.modalWrapper.addInnerElement(addAddressBTN);
