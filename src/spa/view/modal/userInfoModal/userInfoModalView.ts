@@ -1,4 +1,4 @@
-import '@src/spa/view/modal/userInfoModule/userInfoModule.scss';
+import '@src/spa/view/modal/userInfoModal/userInfoModal.scss';
 import ModalView from '@src/spa/view/modal/modalView';
 import { UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import { IInput, IInputViewParams } from '@src/spa/view/input/types';
@@ -6,7 +6,7 @@ import InputView from '@src/spa/view/input/inputView';
 import FormView from '@src/spa/view/form/formView';
 import IView from '@src/spa/view/types';
 
-export default class UserInfoModuleView extends ModalView {
+export default class UserInfoModalView extends ModalView {
   private readonly firstNameInput: IInput;
   private readonly lastNameInput: IInput;
   private readonly birthDateInput: IInput;
