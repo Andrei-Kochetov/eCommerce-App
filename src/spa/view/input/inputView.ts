@@ -40,6 +40,10 @@ export default class InputView extends View implements IInputView {
     this.label.setTextContent(text);
   }
 
+  public changeID(newID: string): void {
+    this.input.setAttributes({ id: newID });
+  }
+
   public getLabel(): IElementCreator {
     return this.label;
   }

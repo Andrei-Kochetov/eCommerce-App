@@ -9,6 +9,10 @@ const NEW_PASSWORD_LABEL_TEXT = 'New password';
 const REPEAT_NEW_PASSWORD_LABEL_TEXT = 'Repeat new password';
 const OLD_PASSWORD_LABEL_TEXT = 'Old password';
 
+const NEW_PASSWORD_ID = 'password-new';
+const REPEAT_NEW_PASSWORD_ID = 'password-new-repeat';
+const OLD_PASSWORD_ID = 'password-old';
+
 export default class PasswordModalView extends ModalView {
   private readonly newPasswordInput: IInput;
   private readonly repeatNewPasswordInput: IInput;
@@ -28,6 +32,11 @@ export default class PasswordModalView extends ModalView {
     this.newPasswordInput.changeLabelText(NEW_PASSWORD_LABEL_TEXT);
     this.repeatNewPasswordInput.changeLabelText(REPEAT_NEW_PASSWORD_LABEL_TEXT);
     this.oldPasswordInput.changeLabelText(OLD_PASSWORD_LABEL_TEXT);
+
+    this.newPasswordInput.changeID(NEW_PASSWORD_ID);
+    this.repeatNewPasswordInput.changeID(REPEAT_NEW_PASSWORD_ID);
+    this.oldPasswordInput.changeID(OLD_PASSWORD_ID);
+
     form
       .getViewCreator()
       .addInnerElement(
