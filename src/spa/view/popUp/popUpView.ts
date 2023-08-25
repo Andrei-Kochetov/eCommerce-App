@@ -8,6 +8,8 @@ import IMG_APPROVE_SRC from '@src/assets/approve-mark.png';
 
 const POP_UP_TAG = 'div';
 const POP_UP_CLASS_NAME = 'pop-up';
+const POP_UP_HIDDEN_CLASS_NAME = 'pop-up_hidden';
+const POP_UP_REJECT_CLASS_NAME = 'pop-up_reject';
 
 const IMG_TAG = 'img';
 const IMG_APPROVE_CLASS_NAME = 'pop-up__img';
@@ -19,6 +21,7 @@ const BUTTON_TAG = 'button';
 const BUTTON_CLASS = 'pop-up__button';
 
 const SHOWING_TIME = 3000; //ms
+const HIDE_ANIMATION_DURATION = 490; //ms
 
 export default class PopUpView extends View implements IPopUpView {
   public constructor(text: string, imgSrc: string) {
@@ -32,11 +35,16 @@ export default class PopUpView extends View implements IPopUpView {
 
   public show(): void {
     document.body.append(this.getView());
-    setTimeout((): void => this.getView().remove(), SHOWING_TIME);
+    setTimeout((): void => {
+      this.getViewCreator().setClasses(POP_UP_HIDDEN_CLASS_NAME);
+      setTimeout((): void => this.getView().remove(), HIDE_ANIMATION_DURATION);
+    }, SHOWING_TIME);
   }
 
   public static getRejectPopUp(text: string): IPopUp {
-    return new PopUpView(text, IMG_REJECT_SRC);
+    const popUp: IPopUp = new PopUpView(text, IMG_REJECT_SRC);
+    popUp.getViewCreator().setClasses(POP_UP_REJECT_CLASS_NAME);
+    return popUp;
   }
 
   public static getApprovePopUp(text: string): IPopUp {

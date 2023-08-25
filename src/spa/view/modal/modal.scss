@@ -24,7 +24,7 @@
   left: calc(50% - 20rem);
   top: 15vh;
   @include flex ($gap: 0, $align: center, $direction: column);
-  background: $pop-up-background;
+  background: $modal-background;
   border-radius: 1rem;
   transform-origin: 0 100%;
   animation: show_modal .5s;
@@ -77,7 +77,7 @@
 .modal__bottom-bar {
   width: 100%;
   padding: 0.5rem 1rem;
-  background-color: $pop-up-bar-background;
+  background-color: $pop-up-background;
 }
 
 .modal__top-bar {

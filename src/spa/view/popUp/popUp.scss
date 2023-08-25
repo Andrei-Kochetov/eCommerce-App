@@ -10,8 +10,20 @@
   @include flex ($gap: 1rem, $align: center);
   padding: 2rem 1rem 1rem;
   background: $pop-up-background;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   animation: show .5s;
+
+  &_reject {
+    background: $pop-up-reject-background;
+
+    .pop-up__text {
+      color: $backgraund-dark;
+    }
+  }
+
+  &_hidden {
+    animation: hide .5s;
+  }
 }
 
 @keyframes show {
@@ -23,6 +35,15 @@
   }
 }
 
+@keyframes hide {
+  from {
+    bottom: 7.5rem;
+  }
+  to {
+    bottom: -7.5rem;
+  }
+}
+
 .pop-up__img {
   display: block;
   width: 4rem;
@@ -31,6 +52,7 @@
 .pop-up__text {
   text-align: center;
   font-size: 1.5rem;
+  color:$pop-up-text-color
 }
 
 .pop-up__button {
@@ -39,7 +61,14 @@
   top: 0.3rem;
   cursor: pointer;
   border-radius: 100%;
-  width: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: $modal-exit-btn-background;
+  color: $backgraund-dark;
+
+  &:hover {
+    color: white;
+  }
 }
 
 
