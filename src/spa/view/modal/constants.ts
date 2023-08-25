@@ -6,7 +6,7 @@ const MODAL_TAG = 'div';
 const MODAL_CLASS = 'modal';
 const MODAL_HIDDEN_CLASS = 'modal_hidden';
 
-const MODAL_REMOVE_DELAY = 495; //ms
+const MODAL_REMOVE_DELAY = 480; //ms
 
 const MODAL_WRAPPER_TAG = 'div';
 const MODAL_WRAPPER_CLASS = 'modal__wrapper';

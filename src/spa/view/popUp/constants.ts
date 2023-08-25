@@ -31,7 +31,7 @@ const BUTTON_TAG = 'button';
 const BUTTON_CLASS = 'pop-up__button';
 
 const SHOWING_TIME = 3000; //ms
-const HIDE_ANIMATION_DURATION = 490; //ms
+const HIDE_ANIMATION_DURATION = 480; //ms
 
 const rejectImg = createImg(IMG_REJECT_SRC);
 const approveImg = createImg(IMG_APPROVE_SRC);

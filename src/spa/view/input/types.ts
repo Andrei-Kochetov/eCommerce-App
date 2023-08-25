@@ -5,7 +5,8 @@ export interface IInputView {
   getInput(): IElementCreator;
   getLabel(): IElementCreator;
   getSpanError(): IElementCreator;
-  setTextError(textErorr: string): void;
+  setTextError(textError: string): void;
+  changeLabelText(text: string): void;
 }
 
 export type IInput = IInputView & IView;

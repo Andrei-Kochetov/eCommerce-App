@@ -36,6 +36,10 @@ export default class InputView extends View implements IInputView {
     this.configureView();
   }
 
+  public changeLabelText(text: string): void {
+    this.label.setTextContent(text);
+  }
+
   public getLabel(): IElementCreator {
     return this.label;
   }
