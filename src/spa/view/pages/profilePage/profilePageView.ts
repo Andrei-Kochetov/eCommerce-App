@@ -3,7 +3,7 @@ import PageView from '@src/spa/view/pages/pageView';
 import { PageNames } from '@src/spa/view/pages/types';
 import { ProfileData, UserParams, Address } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
-import UserInfoModalView from '../../modal/userInfoModal/userInfoModalView';
+import EmailModalView from '../../modal/emailModal/emailModalView';
 
 const PROFILE_PAGE_CLASS = 'profile';
 
@@ -20,7 +20,7 @@ export default class ProfilePageView extends PageView implements IProfilePage {
     btn.setAttribute('value', 'Show modal window');
     this.getViewCreator().addInnerElement(btn);
     btn.addEventListener('click', (): void => {
-      const modal = new UserInfoModalView(params);
+      const modal = new EmailModalView(params.email);
       modal.showModal();
     });
   }
