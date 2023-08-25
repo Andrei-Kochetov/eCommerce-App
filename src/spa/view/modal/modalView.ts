@@ -39,6 +39,17 @@ export default class ModalView extends View implements IModal {
     this.modalWrapper.getElement().prepend(form.getElement());
   }
 
+  protected hideModal(): void {
+    this.underlay.setClasses(constants.UNDERLAY_HIDDEN_CLASS);
+    this.getViewCreator().setClasses(constants.MODAL_HIDDEN_CLASS);
+
+    setTimeout((): void => {
+      this.getView().remove();
+      this.underlay.getElement().remove();
+      document.body.classList.remove(constants.LOCK_CLASS);
+    }, constants.MODAL_REMOVE_DELAY);
+  }
+
   private configureView(): void {
     const upperBarParams: ElementCreatorParams = {
       tag: constants.UPPER_BAR_TAG,
@@ -98,16 +109,5 @@ export default class ModalView extends View implements IModal {
       classNames: [constants.MODAL_BTN_CLASS, constants.ACCEPT_BTN_CLASS],
     };
     return new ButtonView(params).getViewCreator();
-  }
-
-  private hideModal(): void {
-    this.underlay.setClasses(constants.UNDERLAY_HIDDEN_CLASS);
-    this.getViewCreator().setClasses(constants.MODAL_HIDDEN_CLASS);
-
-    setTimeout((): void => {
-      this.getView().remove();
-      this.underlay.getElement().remove();
-      document.body.classList.remove(constants.LOCK_CLASS);
-    }, constants.MODAL_REMOVE_DELAY);
   }
 }

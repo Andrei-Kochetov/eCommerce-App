@@ -102,7 +102,7 @@ const params: ProfileData = {
   email: 'blablabla@gmail.com',
   firstName: 'Ivan',
   lastName: 'Ivanov',
-  dateBirth: '01.01.1992',
+  dateBirth: '1992-01-01',
   addresses: [
     {
       id: '1',
