@@ -5,8 +5,9 @@ import { IInput, IInputViewParams } from '@src/spa/view/input/types';
 import InputView from '@src/spa/view/input/inputView';
 import FormView from '@src/spa/view/form/formView';
 import IView from '@src/spa/view/types';
+import { IUserInfoModal } from '@src/spa/view/modal/userInfoModal/types';
 
-export default class UserInfoModalView extends ModalView {
+export default class UserInfoModalView extends ModalView implements IUserInfoModal {
   private readonly firstNameInput: IInput;
   private readonly lastNameInput: IInput;
   private readonly birthDateInput: IInput;
@@ -17,6 +18,38 @@ export default class UserInfoModalView extends ModalView {
     this.lastNameInput = this.createLastNameInput(params.lastName);
     this.birthDateInput = this.createBirthDateInput(params.dateBirth);
     this.configure();
+  }
+
+  public getFirstNameInput(): IInput {
+    return this.firstNameInput;
+  }
+
+  public getLastNameInput(): IInput {
+    return this.lastNameInput;
+  }
+
+  public getBirthDateInput(): IInput {
+    return this.birthDateInput;
+  }
+
+  public getAllValues(): UserParams {
+    const firstNameInput: HTMLElement = this.firstNameInput.getView();
+    const lastNameInput: HTMLElement = this.lastNameInput.getView();
+    const birthDateInput: HTMLElement = this.birthDateInput.getView();
+
+    if (
+      firstNameInput instanceof HTMLInputElement &&
+      lastNameInput instanceof HTMLInputElement &&
+      birthDateInput instanceof HTMLInputElement
+    ) {
+      return {
+        firstName: firstNameInput.value,
+        lastName: lastNameInput.value,
+        dateBirth: birthDateInput.value,
+      };
+    } else {
+      throw new Error('Inputs are not HTMLInputElement!');
+    }
   }
 
   private configure(): void {
