@@ -9,4 +9,6 @@ export interface IAddressesModal {
   getSingleAddressInfo(id: string): Address | null;
   getAllAddressModalItems(): IAddressModalItem[];
   getSingleAddressModalItem(id: string): IAddressModalItem | null;
+  showModal(): void;
+  hideModal(): void;
 }

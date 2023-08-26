@@ -14,4 +14,6 @@ export interface IPasswordModal {
   getRepeatNewPasswordInput(): IInput;
   getOldPasswordInput(): IInput;
   getAllValues(): ChangePasswordValues;
+  showModal(): void;
+  hideModal(): void;
 }

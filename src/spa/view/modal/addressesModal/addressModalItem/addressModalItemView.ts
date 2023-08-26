@@ -11,6 +11,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import CheckboxView from '@src/spa/view/checkbox/checkboxView';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
+import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
 
 export default class AddressModalItemView extends View implements IAddressModalItem {
   private readonly deleteAddressBTN: IElementCreator;
@@ -29,13 +30,16 @@ export default class AddressModalItemView extends View implements IAddressModalI
 
   private readonly ID: string;
 
-  public constructor(address: Address) {
+  private readonly logic: IAddressModalLogic;
+
+  public constructor(address: Address, logic: IAddressModalLogic) {
     const params: ElementCreatorParams = {
       tag: constants.ADDRESS_ITEM_TAG,
       classNames: [constants.ADDRESS_ITEM_CLASS],
       attributes: { [constants.ADDRESS_ITEM_ID_ATTRIBUTE]: address.id },
     };
     super(params);
+    this.logic = logic;
     this.ID = address.id;
     this.deleteAddressBTN = this.createDeleteAddressBTN();
     this.countryInput = this.createCountryInput(address.country);
@@ -133,6 +137,8 @@ export default class AddressModalItemView extends View implements IAddressModalI
     );
     wrapper.addInnerElement(checkboxWrapper, inputsWrapper);
     this.getViewCreator().addInnerElement(wrapper, this.deleteAddressBTN);
+
+    this.addListeners();
   }
 
   private createCityInput(city: string): IInput {
@@ -205,5 +211,33 @@ export default class AddressModalItemView extends View implements IAddressModalI
       classNames: constants.DELETE_ADDRESS_BTN_CLASSES,
     };
     return new ButtonView(params).getViewCreator();
+  }
+
+  private addListeners(): void {
+    // checkboxes
+    this.isShippingInput
+      .getCheckbox()
+      .setListeners({ event: 'change', callback: (): void => this.logic.isShippingLogic() });
+    this.isDefaultShippingInput
+      .getCheckbox()
+      .setListeners({ event: 'change', callback: (): void => this.logic.defaultShippingLogic(this) });
+    this.isBillingInput
+      .getCheckbox()
+      .setListeners({ event: 'change', callback: (): void => this.logic.isBillingLogic() });
+    this.isDefaultBillingInput
+      .getCheckbox()
+      .setListeners({ event: 'change', callback: (): void => this.logic.defaultBillingLogic(this) });
+
+    //text inputs
+    this.countryInput
+      .getInput()
+      .setListeners({ event: 'change', callback: (): void => this.logic.countryOnChangeLogic() });
+    this.cityInput.getInput().setListeners({ event: 'change', callback: (): void => this.logic.cityOnChangeLogic() });
+    this.streetInput
+      .getInput()
+      .setListeners({ event: 'change', callback: (): void => this.logic.streetOnChangeLogic() });
+    this.postCodeInput
+      .getInput()
+      .setListeners({ event: 'change', callback: (): void => this.logic.postCodeOnChangeLogic() });
   }
 }

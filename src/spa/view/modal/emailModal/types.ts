@@ -5,4 +5,6 @@ export interface IEmailModal {
   getView(): HTMLElement;
   getViewCreator(): IElementCreator;
   getEmailInput(): IInput;
+  showModal(): void;
+  hideModal(): void;
 }

@@ -9,4 +9,6 @@ export interface IUserInfoModal {
   getLastNameInput(): IInput;
   getBirthDateInput(): IInput;
   getAllValues(): UserParams;
+  showModal(): void;
+  hideModal(): void;
 }

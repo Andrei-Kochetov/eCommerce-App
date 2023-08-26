@@ -43,11 +43,9 @@ export default class CheckboxView extends View implements ICheckbox {
   }
 
   public check(toBeChecked: boolean): void {
-    if (toBeChecked) {
-      this.checkbox.setAttributes({ checked: '' });
-    } else {
-      this.checkbox.removeAttribute('checked');
-    }
+    const checkbox: HTMLElement = this.checkbox.getElement();
+    if (!(checkbox instanceof HTMLInputElement)) return;
+    checkbox.checked = toBeChecked;
   }
 
   private configureView(): void {
@@ -73,8 +71,9 @@ export default class CheckboxView extends View implements ICheckbox {
       },
     };
     const checkbox: IElementCreator = new ElementCreator(checkboxParams);
-    if (isChecked === 'true') {
-      checkbox.setAttributes({ checked: '' });
+    const checkboxElement: HTMLElement = checkbox.getElement();
+    if (isChecked === 'true' && checkboxElement instanceof HTMLInputElement) {
+      checkboxElement.checked = true;
     }
     return checkbox;
   }

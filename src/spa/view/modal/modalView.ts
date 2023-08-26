@@ -35,11 +35,7 @@ export default class ModalView extends View implements IModal {
     document.body.classList.add(constants.LOCK_CLASS);
   }
 
-  protected addForm(form: IElementCreator): void {
-    this.modalWrapper.getElement().prepend(form.getElement());
-  }
-
-  protected hideModal(): void {
+  public hideModal(): void {
     this.underlay.setClasses(constants.UNDERLAY_HIDDEN_CLASS);
     this.getViewCreator().setClasses(constants.MODAL_HIDDEN_CLASS);
 
@@ -48,6 +44,10 @@ export default class ModalView extends View implements IModal {
       this.underlay.getElement().remove();
       document.body.classList.remove(constants.LOCK_CLASS);
     }, constants.MODAL_REMOVE_DELAY);
+  }
+
+  protected addForm(form: IElementCreator): void {
+    this.modalWrapper.getElement().prepend(form.getElement());
   }
 
   private configureView(): void {

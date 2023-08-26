@@ -15,4 +15,5 @@ export interface IAddressModalItem {
   getIsDefaultShippingInput(): ICheckbox;
   getIsDefaultBillingInput(): ICheckbox;
   getAllValues(): Address;
+  getID(): string;
 }

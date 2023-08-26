@@ -9,10 +9,13 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import AddressModalItemView from './addressModalItem/addressModalItemView';
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
+import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
+import AddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/addressModalLogic';
 
 export default class AddressesModalView extends ModalView implements IAddressesModal {
   private readonly form: IElementCreator;
   private readonly addresses: Map<string, IAddressModalItem> = new Map();
+  private readonly logic: IAddressModalLogic = new AddressModalLogic(this);
 
   public constructor(addresses: Address[]) {
     super();
@@ -53,13 +56,14 @@ export default class AddressesModalView extends ModalView implements IAddressesM
 
     this.form.setClasses(constants.ADDRESSES_FORM_CLASS);
     addresses.forEach((address: Address): void => {
-      const addressItemView: IAddressModalItem = new AddressModalItemView(address);
+      const addressItemView: IAddressModalItem = new AddressModalItemView(address, this.logic);
       this.form.addInnerElement(addressItemView.getView());
       this.addresses.set(address.id, addressItemView);
     });
     this.addForm(this.form);
 
     this.modalWrapper.addInnerElement(addAddressBTN);
+    this.setAcceptListener();
   }
 
   private createAddAddressBTN(): IElementCreator {
@@ -69,5 +73,9 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     };
     const button: IElementCreator = new ButtonView(params).getViewCreator();
     return button;
+  }
+
+  private setAcceptListener(): void {
+    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
   }
 }
