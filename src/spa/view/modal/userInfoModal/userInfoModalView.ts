@@ -5,11 +5,14 @@ import InputView from '@src/spa/view/input/inputView';
 import FormView from '@src/spa/view/form/formView';
 import IView from '@src/spa/view/types';
 import { IUserInfoModal } from '@src/spa/view/modal/userInfoModal/types';
+import UserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/userInfoModalLogic';
+import IUserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/types';
 
 export default class UserInfoModalView extends ModalView implements IUserInfoModal {
   private readonly firstNameInput: IInput;
   private readonly lastNameInput: IInput;
   private readonly birthDateInput: IInput;
+  private readonly logic: IUserInfoModalLogic = new UserInfoModalLogic(this);
 
   public constructor(params: UserParams) {
     super();
@@ -46,6 +49,7 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
       .getViewCreator()
       .addInnerElement(this.firstNameInput.getView(), this.lastNameInput.getView(), this.birthDateInput.getView());
     this.addForm(form.getViewCreator());
+    this.setListeners();
   }
 
   private createFirstNameInput(firstName: string): IInput {
@@ -86,5 +90,20 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
     };
 
     return new InputView(params);
+  }
+
+  private setListeners(): void {
+    this.firstNameInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.lastNameInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.birthDateInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
+    this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }
 }
