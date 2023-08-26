@@ -10,8 +10,9 @@ import InputView from '@src/spa/view/input/inputView';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import CheckboxView from '@src/spa/view/checkbox/checkboxView';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
+import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 
-export default class AddressModalItemView extends View {
+export default class AddressModalItemView extends View implements IAddressModalItem {
   private readonly deleteAddressBTN: IElementCreator;
 
   //text inputs
@@ -26,6 +27,8 @@ export default class AddressModalItemView extends View {
   private readonly isDefaultShippingInput: ICheckbox;
   private readonly isDefaultBillingInput: ICheckbox;
 
+  private readonly ID: string;
+
   public constructor(address: Address) {
     const params: ElementCreatorParams = {
       tag: constants.ADDRESS_ITEM_TAG,
@@ -33,6 +36,7 @@ export default class AddressModalItemView extends View {
       attributes: { [constants.ADDRESS_ITEM_ID_ATTRIBUTE]: address.id },
     };
     super(params);
+    this.ID = address.id;
     this.deleteAddressBTN = this.createDeleteAddressBTN();
     this.countryInput = this.createCountryInput(address.country);
     this.cityInput = this.createCityInput(address.city);
@@ -46,6 +50,78 @@ export default class AddressModalItemView extends View {
     this.isBillingInput = new CheckboxView(constants.IS_BILLING_CHECKBOX_TEXT, address.isBilling);
     this.isDefaultBillingInput = new CheckboxView(constants.IS_DEFAULT_BILLING_CHECKBOX_TEXT, address.isDefaultBilling);
     this.configure();
+  }
+
+  public getID(): string {
+    return this.ID;
+  }
+
+  public getCountryInput(): IInput {
+    return this.countryInput;
+  }
+
+  public getCityInput(): IInput {
+    return this.cityInput;
+  }
+
+  public getStreetInput(): IInput {
+    return this.streetInput;
+  }
+
+  public getPostCodeInput(): IInput {
+    return this.postCodeInput;
+  }
+
+  public getIsShippingInput(): ICheckbox {
+    return this.isShippingInput;
+  }
+
+  public getIsBillingInput(): ICheckbox {
+    return this.isBillingInput;
+  }
+
+  public getIsDefaultShippingInput(): ICheckbox {
+    return this.isDefaultShippingInput;
+  }
+
+  public getIsDefaultBillingInput(): ICheckbox {
+    return this.isDefaultBillingInput;
+  }
+
+  public getAllValues(): Address {
+    const countryInput: HTMLElement = this.countryInput.getView();
+    const cityInput: HTMLElement = this.cityInput.getView();
+    const streetInput: HTMLElement = this.streetInput.getView();
+    const postCodeInput: HTMLElement = this.postCodeInput.getView();
+    const isShippingInput: HTMLElement = this.isShippingInput.getView();
+    const isBillingInput: HTMLElement = this.isBillingInput.getView();
+    const isDefaultShippingInput: HTMLElement = this.isDefaultShippingInput.getView();
+    const isDefaultBillingInput: HTMLElement = this.isDefaultBillingInput.getView();
+
+    if (
+      countryInput instanceof HTMLInputElement &&
+      cityInput instanceof HTMLInputElement &&
+      streetInput instanceof HTMLInputElement &&
+      postCodeInput instanceof HTMLInputElement &&
+      isShippingInput instanceof HTMLInputElement &&
+      isBillingInput instanceof HTMLInputElement &&
+      isDefaultShippingInput instanceof HTMLInputElement &&
+      isDefaultBillingInput instanceof HTMLInputElement
+    ) {
+      return {
+        id: this.ID,
+        city: cityInput.value,
+        country: countryInput.value,
+        postcode: postCodeInput.value,
+        street: streetInput.value,
+        isShipping: `${isShippingInput.checked}`,
+        isBilling: `${isBillingInput.checked}`,
+        isDefaultShipping: `${isDefaultShippingInput.checked}`,
+        isDefaultBilling: `${isDefaultBillingInput.checked}`,
+      };
+    } else {
+      throw new Error('Inputs are not HTMLInputElement!');
+    }
   }
 
   private configure(): void {
