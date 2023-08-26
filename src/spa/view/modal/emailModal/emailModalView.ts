@@ -4,9 +4,12 @@ import InputView from '@src/spa/view/input/inputView';
 import FormView from '@src/spa/view/form/formView';
 import IView from '@src/spa/view/types';
 import { IEmailModal } from '@src/spa/view/modal/emailModal/types';
+import IEmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/types';
+import EmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/emailModalLogic';
 
 export default class EmailModalView extends ModalView implements IEmailModal {
   private readonly emailInput: IInput;
+  private readonly logic: IEmailModalLogic = new EmailModalLogic(this);
 
   public constructor(email: string) {
     super();
@@ -23,6 +26,7 @@ export default class EmailModalView extends ModalView implements IEmailModal {
 
     form.getViewCreator().addInnerElement(this.emailInput.getView());
     this.addForm(form.getViewCreator());
+    this.setListeners();
   }
 
   private createEmailInput(email: string): IInput {
@@ -36,5 +40,14 @@ export default class EmailModalView extends ModalView implements IEmailModal {
       textLabel: 'Email',
     };
     return new InputView(params);
+  }
+
+  private setListeners(): void {
+    this.emailInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.emailOnChangeLogic() });
+    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
+    this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }
 }
