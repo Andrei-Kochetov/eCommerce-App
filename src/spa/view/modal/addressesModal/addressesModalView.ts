@@ -7,9 +7,12 @@ import * as constants from '@src/spa/view/modal/addressesModal/constants';
 import { btnParams } from '@src/spa/view/button/types';
 import ButtonView from '@src/spa/view/button/buttonView';
 import AddressModalItemView from './addressModalItem/addressModalItemView';
+import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
+import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
 
-export default class AddressesModalView extends ModalView {
+export default class AddressesModalView extends ModalView implements IAddressesModal {
   private readonly form: IElementCreator;
+  private readonly addresses: Map<string, IAddressModalItem> = new Map();
 
   public constructor(addresses: Address[]) {
     super();
@@ -17,12 +20,42 @@ export default class AddressesModalView extends ModalView {
     this.configure(addresses);
   }
 
+  public getAllAddressesInfo(): Address[] {
+    return Array.from(this.addresses.values()).map(
+      (addressItemView: IAddressModalItem): Address => addressItemView.getAllValues()
+    );
+  }
+
+  public getSingleAddressInfo(id: string): Address | null {
+    const addressItemView: IAddressModalItem | undefined = this.addresses.get(id);
+
+    if (addressItemView) {
+      return addressItemView.getAllValues();
+    }
+    return null;
+  }
+
+  public getAllAddressModalItems(): IAddressModalItem[] {
+    return Array.from(this.addresses.values());
+  }
+
+  public getSingleAddressModalItem(id: string): IAddressModalItem | null {
+    const addressItemView: IAddressModalItem | undefined = this.addresses.get(id);
+
+    if (addressItemView) {
+      return addressItemView;
+    }
+    return null;
+  }
+
   private configure(addresses: Address[]): void {
     const addAddressBTN: IElementCreator = this.createAddAddressBTN();
 
     this.form.setClasses(constants.ADDRESSES_FORM_CLASS);
     addresses.forEach((address: Address): void => {
-      this.form.addInnerElement(new AddressModalItemView(address).getView());
+      const addressItemView: IAddressModalItem = new AddressModalItemView(address);
+      this.form.addInnerElement(addressItemView.getView());
+      this.addresses.set(address.id, addressItemView);
     });
     this.addForm(this.form);
 
@@ -34,6 +67,7 @@ export default class AddressesModalView extends ModalView {
       textContent: constants.ADD_ADDRESS_BTN_TEXT,
       classNames: constants.ADD_ADDRESS_BTN_CLASSES,
     };
-    return new ButtonView(params).getViewCreator();
+    const button: IElementCreator = new ButtonView(params).getViewCreator();
+    return button;
   }
 }
