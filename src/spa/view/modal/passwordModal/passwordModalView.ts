@@ -1,4 +1,3 @@
-import '@src/spa/view/modal/passwordModal/passwordModal.scss';
 import ModalView from '@src/spa/view/modal/modalView';
 import { IInput } from '@src/spa/view/input/types';
 import FormView from '@src/spa/view/form/formView';

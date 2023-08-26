@@ -1,4 +1,3 @@
-import '@src/spa/view/modal/userInfoModal/userInfoModal.scss';
 import ModalView from '@src/spa/view/modal/modalView';
 import { UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import { IInput, IInputViewParams } from '@src/spa/view/input/types';
