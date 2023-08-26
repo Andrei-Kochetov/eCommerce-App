@@ -10,4 +10,5 @@ export default interface IAddressModalLogic {
   isShippingLogic(): void;
   isBillingLogic(): void;
   acceptHandler(): void;
+  exitHandler(): void;
 }

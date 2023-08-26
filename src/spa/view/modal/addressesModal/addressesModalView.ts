@@ -63,7 +63,7 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     this.addForm(this.form);
 
     this.modalWrapper.addInnerElement(addAddressBTN);
-    this.setAcceptListener();
+    this.setListeners();
   }
 
   private createAddAddressBTN(): IElementCreator {
@@ -75,7 +75,9 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     return button;
   }
 
-  private setAcceptListener(): void {
+  private setListeners(): void {
     this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
+    this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }
 }

@@ -6,7 +6,7 @@ import { IPopUp, IPopUpView } from '@src/spa/view/popUp/types';
 import * as constants from '@src/spa/view/popUp/constants';
 
 export default class PopUpView extends View implements IPopUpView {
-  public constructor(text: string, img: IElementCreator) {
+  public constructor(text: string, img: IElementCreator | null) {
     const params: ElementCreatorParams = {
       tag: constants.POP_UP_TAG,
       classNames: [constants.POP_UP_CLASS_NAME],
@@ -23,8 +23,18 @@ export default class PopUpView extends View implements IPopUpView {
     }, constants.SHOWING_TIME);
   }
 
+  public showWithoutAutoHiding(): void {
+    document.body.append(this.getView());
+  }
+
   public static getRejectPopUp(text: string): IPopUp {
     const popUp: IPopUp = new PopUpView(text, constants.rejectImg);
+    popUp.getViewCreator().setClasses(constants.POP_UP_REJECT_CLASS_NAME);
+    return popUp;
+  }
+
+  public static getRejectPopUpWithoutImg(text: string): IPopUp {
+    const popUp: IPopUp = new PopUpView(text, null);
     popUp.getViewCreator().setClasses(constants.POP_UP_REJECT_CLASS_NAME);
     return popUp;
   }
@@ -33,10 +43,14 @@ export default class PopUpView extends View implements IPopUpView {
     return new PopUpView(text, constants.approveImg);
   }
 
-  private configureView(text: string, img: IElementCreator): void {
+  private configureView(text: string, img: IElementCreator | null): void {
     const span: IElementCreator = this.createSpan(text);
     const button: IElementCreator = this.createButton();
-    this.getViewCreator().addInnerElement(img, span, button);
+    if (!img) {
+      this.getViewCreator().addInnerElement(span, button);
+    } else {
+      this.getViewCreator().addInnerElement(img, span, button);
+    }
   }
 
   private createButton(): IElementCreator {

@@ -7,7 +7,7 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import { IModal } from '@src/spa/view/modal/types';
 import * as constants from '@src/spa/view/modal/constants';
 
-export default class ModalView extends View implements IModal {
+export default abstract class ModalView extends View implements IModal {
   private readonly underlay: IElementCreator;
 
   protected readonly modalWrapper: IElementCreator;
@@ -89,7 +89,6 @@ export default class ModalView extends View implements IModal {
       classNames: [constants.MODAL_BTN_CLASS, constants.CLOSE_BTN_CLASS],
     };
     const btn: IElementCreator = new ButtonView(params).getViewCreator();
-    btn.setListeners({ event: 'click', callback: this.hideModal.bind(this) });
     return btn;
   }
 
@@ -99,7 +98,6 @@ export default class ModalView extends View implements IModal {
       classNames: [constants.MODAL_BTN_CLASS, constants.CANCEL_BTN_CLASS],
     };
     const btn: IElementCreator = new ButtonView(params).getViewCreator();
-    btn.setListeners({ event: 'click', callback: this.hideModal.bind(this) });
     return btn;
   }
 
