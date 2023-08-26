@@ -4,6 +4,8 @@ import FormView from '@src/spa/view/form/formView';
 import IView from '@src/spa/view/types';
 import PasswordInputView from '@src/spa/view/input/passwordInput/passwordInputView';
 import { ChangePasswordValues, IPasswordModal } from '@src/spa/view/modal/passwordModal/types';
+import PasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/passwordModalLogic';
+import IPasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/types';
 
 const NEW_PASSWORD_LABEL_TEXT = 'New password';
 const REPEAT_NEW_PASSWORD_LABEL_TEXT = 'Repeat new password';
@@ -17,6 +19,7 @@ export default class PasswordModalView extends ModalView implements IPasswordMod
   private readonly newPasswordInput: IInput;
   private readonly repeatNewPasswordInput: IInput;
   private readonly oldPasswordInput: IInput;
+  private readonly logic: IPasswordModalLogic = new PasswordModalLogic(this);
 
   public constructor() {
     super();
@@ -65,5 +68,21 @@ export default class PasswordModalView extends ModalView implements IPasswordMod
         this.oldPasswordInput.getView()
       );
     this.addForm(form.getViewCreator());
+    this.setListeners();
+  }
+
+  private setListeners(): void {
+    this.newPasswordInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.repeatNewPasswordInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.oldPasswordInput
+      .getViewCreator()
+      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
+    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
+    this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }
 }
