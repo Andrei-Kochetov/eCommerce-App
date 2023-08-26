@@ -122,3 +122,14 @@
 ._lock {
   overflow: hidden;
 }
+
+.btn_yes {
+  background-color: $modal-exit-btn-background;
+  color: $backgraund-dark;
+  padding: 0.5rem;
+  border-radius: 1rem;
+
+  &:hover {
+    color: white;
+  }
+}
