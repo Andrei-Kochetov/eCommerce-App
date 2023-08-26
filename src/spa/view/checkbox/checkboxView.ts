@@ -33,6 +33,23 @@ export default class CheckboxView extends View implements ICheckbox {
     return this.span;
   }
 
+  public getValue(): 'true' | 'false' {
+    const checkbox: HTMLElement = this.checkbox.getElement();
+    if (checkbox instanceof HTMLInputElement) {
+      return `${checkbox.checked}`;
+    } else {
+      throw new Error('Input is not HTMLInputElement!');
+    }
+  }
+
+  public check(toBeChecked: boolean): void {
+    if (toBeChecked) {
+      this.checkbox.setAttributes({ checked: '' });
+    } else {
+      this.checkbox.removeAttribute('checked');
+    }
+  }
+
   private configureView(): void {
     this.getViewCreator().addInnerElement(this.checkbox, this.span);
   }

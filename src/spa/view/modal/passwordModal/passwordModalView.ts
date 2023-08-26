@@ -39,23 +39,11 @@ export default class PasswordModalView extends ModalView implements IPasswordMod
   }
 
   public getAllValues(): ChangePasswordValues {
-    const newPasswordInput: HTMLElement = this.newPasswordInput.getView();
-    const repeatNewPasswordInput: HTMLElement = this.repeatNewPasswordInput.getView();
-    const oldPasswordInput: HTMLElement = this.oldPasswordInput.getView();
-
-    if (
-      newPasswordInput instanceof HTMLInputElement &&
-      repeatNewPasswordInput instanceof HTMLInputElement &&
-      oldPasswordInput instanceof HTMLInputElement
-    ) {
-      return {
-        newPassword: newPasswordInput.value,
-        repeatNewPassword: repeatNewPasswordInput.value,
-        oldPassword: oldPasswordInput.value,
-      };
-    } else {
-      throw new Error('Inputs are not HTMLInputElement!');
-    }
+    return {
+      newPassword: this.newPasswordInput.getValue(),
+      repeatNewPassword: this.repeatNewPasswordInput.getValue(),
+      oldPassword: this.oldPasswordInput.getValue(),
+    };
   }
 
   private configure(): void {

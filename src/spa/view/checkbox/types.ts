@@ -5,4 +5,6 @@ export interface ICheckbox {
   getViewCreator(): IElementCreator;
   getCheckbox(): IElementCreator;
   getSpan(): IElementCreator;
+  getValue(): 'true' | 'false';
+  check(toBeChecked: boolean): void;
 }

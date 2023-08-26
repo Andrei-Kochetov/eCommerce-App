@@ -89,39 +89,17 @@ export default class AddressModalItemView extends View implements IAddressModalI
   }
 
   public getAllValues(): Address {
-    const countryInput: HTMLElement = this.countryInput.getView();
-    const cityInput: HTMLElement = this.cityInput.getView();
-    const streetInput: HTMLElement = this.streetInput.getView();
-    const postCodeInput: HTMLElement = this.postCodeInput.getView();
-    const isShippingInput: HTMLElement = this.isShippingInput.getView();
-    const isBillingInput: HTMLElement = this.isBillingInput.getView();
-    const isDefaultShippingInput: HTMLElement = this.isDefaultShippingInput.getView();
-    const isDefaultBillingInput: HTMLElement = this.isDefaultBillingInput.getView();
-
-    if (
-      countryInput instanceof HTMLInputElement &&
-      cityInput instanceof HTMLInputElement &&
-      streetInput instanceof HTMLInputElement &&
-      postCodeInput instanceof HTMLInputElement &&
-      isShippingInput instanceof HTMLInputElement &&
-      isBillingInput instanceof HTMLInputElement &&
-      isDefaultShippingInput instanceof HTMLInputElement &&
-      isDefaultBillingInput instanceof HTMLInputElement
-    ) {
-      return {
-        id: this.ID,
-        city: cityInput.value,
-        country: countryInput.value,
-        postcode: postCodeInput.value,
-        street: streetInput.value,
-        isShipping: `${isShippingInput.checked}`,
-        isBilling: `${isBillingInput.checked}`,
-        isDefaultShipping: `${isDefaultShippingInput.checked}`,
-        isDefaultBilling: `${isDefaultBillingInput.checked}`,
-      };
-    } else {
-      throw new Error('Inputs are not HTMLInputElement!');
-    }
+    return {
+      id: this.ID,
+      city: this.cityInput.getValue(),
+      country: this.countryInput.getValue(),
+      postcode: this.postCodeInput.getValue(),
+      street: this.streetInput.getValue(),
+      isShipping: this.isShippingInput.getValue(),
+      isBilling: this.isBillingInput.getValue(),
+      isDefaultShipping: this.isDefaultShippingInput.getValue(),
+      isDefaultBilling: this.isDefaultBillingInput.getValue(),
+    };
   }
 
   private configure(): void {

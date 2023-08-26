@@ -8,6 +8,7 @@ export interface IInputView {
   setTextError(textError: string): void;
   changeLabelText(text: string): void;
   changeID(newID: string): void;
+  getValue(): string;
 }
 
 export type IInput = IInputView & IView;

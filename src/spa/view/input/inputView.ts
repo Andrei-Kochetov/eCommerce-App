@@ -36,6 +36,15 @@ export default class InputView extends View implements IInputView {
     this.configureView();
   }
 
+  public getValue(): string {
+    const input: HTMLElement = this.input.getElement();
+    if (input instanceof HTMLInputElement) {
+      return input.value;
+    } else {
+      throw new Error('Input is not HTMLInputElement!');
+    }
+  }
+
   public changeLabelText(text: string): void {
     this.label.setTextContent(text);
   }

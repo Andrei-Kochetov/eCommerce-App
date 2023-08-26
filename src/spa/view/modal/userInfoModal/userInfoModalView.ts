@@ -32,23 +32,11 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
   }
 
   public getAllValues(): UserParams {
-    const firstNameInput: HTMLElement = this.firstNameInput.getView();
-    const lastNameInput: HTMLElement = this.lastNameInput.getView();
-    const birthDateInput: HTMLElement = this.birthDateInput.getView();
-
-    if (
-      firstNameInput instanceof HTMLInputElement &&
-      lastNameInput instanceof HTMLInputElement &&
-      birthDateInput instanceof HTMLInputElement
-    ) {
-      return {
-        firstName: firstNameInput.value,
-        lastName: lastNameInput.value,
-        dateBirth: birthDateInput.value,
-      };
-    } else {
-      throw new Error('Inputs are not HTMLInputElement!');
-    }
+    return {
+      firstName: this.firstNameInput.getValue(),
+      lastName: this.lastNameInput.getValue(),
+      dateBirth: this.birthDateInput.getValue(),
+    };
   }
 
   private configure(): void {
