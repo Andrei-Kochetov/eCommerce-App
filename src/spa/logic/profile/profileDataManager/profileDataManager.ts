@@ -1,19 +1,17 @@
 import { IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import { TokenStore } from '@commercetools/sdk-client-v2';
-import State from '@src/spa/logic/state/state';
 import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
 import { Address } from '@src/spa/logic/profile/profileDataManager/types';
 import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
+import State from '@src/spa/logic/state/state';
 
 export default class ProfileDataManager implements IProfileDataManager {
   private readonly token: TokenStore;
-  protected readonly state: IState;
   private static readonly instance = new ProfileDataManager();
 
   private constructor() {
     this.token = this.getToken();
-    this.state = State.getInstance();
   }
 
   public static getInstance() {
@@ -53,6 +51,8 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   public async setNewEmail(newEmail: string): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewEmail(this.token.token, newEmail);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+    console.log(dataCustomerResponse.body.version);
     console.log(dataCustomerResponse);
   }
 

@@ -301,7 +301,7 @@ export default class TopMenuView extends View {
           country: "IL",
           addressId: "URiRbVtg",
         }); */
-        //ProfileDataManager.getInstance().deleteAddress("URiRbVtg");
+        //ProfileDataManager.getInstance().setNewEmail('qw4e52353e@eww.com');
       },
     });
     return button;

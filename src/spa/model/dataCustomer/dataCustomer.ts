@@ -3,6 +3,8 @@ import { options } from '@src/spa/model/LoginClientApi/constants';
 import { Client, ClientBuilder, ExistingTokenMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
+import State from '@src/spa/logic/state/state';
+import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 
 export default class DataCustomer {
   private static readonly instance = new DataCustomer();
@@ -30,12 +32,14 @@ export default class DataCustomer {
 
   public setNewEmail(token: string, email: string) {
     const apiRoot = this.createApiRootForSetNewData(token);
-
+    console.log(State.getInstance());
+    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
+    console.log(currentVersion, typeof currentVersion);
     return apiRoot
       .me()
       .post({
         body: {
-          version: 3,
+          version: currentVersion,
           actions: [
             {
               action: 'changeEmail',
@@ -104,7 +108,7 @@ export default class DataCustomer {
       .me()
       .post({
         body: {
-          version: 6,
+          version: 8,
           actions: [
             {
               action: 'removeAddress',

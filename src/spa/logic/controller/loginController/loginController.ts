@@ -34,11 +34,15 @@ export default class LoginController extends Controller implements ILoginControl
         );
         const customerToken: TokenStore = loginClient.getToken();
         const customerData: Customer = response.body.customer;
+        const customerVersion: number = customerData.version;
         const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
 
         this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
         this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
         this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+        console.log(customerVersion);
+        this.state.setRecord(APP_STATE_KEYS.VERSION, `${customerVersion}`);
+        console.log(this.state, 'login state');
         PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {
