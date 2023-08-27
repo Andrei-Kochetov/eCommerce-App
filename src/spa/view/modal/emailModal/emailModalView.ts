@@ -6,14 +6,16 @@ import IView from '@src/spa/view/types';
 import { IEmailModal } from '@src/spa/view/modal/emailModal/types';
 import IEmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/types';
 import EmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/emailModalLogic';
+import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 
 export default class EmailModalView extends ModalView implements IEmailModal {
   private readonly emailInput: IInput;
-  private readonly logic: IEmailModalLogic = new EmailModalLogic(this);
+  private readonly logic: IEmailModalLogic;
   private readonly initialState: string;
 
-  public constructor(email: string) {
+  public constructor(email: string, page: IProfilePage) {
     super();
+    this.logic = new EmailModalLogic(this, page);
     this.initialState = email;
     this.emailInput = this.createEmailInput(email);
     this.configure();

@@ -4,10 +4,14 @@ import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/type
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
 import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 
 export default class AddressModalLogic extends ModalLogic<IAddressesModal> implements IAddressModalLogic {
-  public constructor(modal: IAddressesModal) {
+  private readonly page: IProfilePage;
+
+  public constructor(modal: IAddressesModal, page: IProfilePage) {
     super(modal);
+    this.page = page;
   }
 
   public defaultShippingLogic(address: IAddressModalItem): void {

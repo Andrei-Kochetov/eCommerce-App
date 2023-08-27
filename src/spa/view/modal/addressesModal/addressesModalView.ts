@@ -11,15 +11,17 @@ import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressMod
 import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
 import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
 import AddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/addressModalLogic';
+import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 
 export default class AddressesModalView extends ModalView implements IAddressesModal {
   private readonly form: IElementCreator;
   private readonly addresses: Map<string, IAddressModalItem> = new Map();
-  private readonly logic: IAddressModalLogic = new AddressModalLogic(this);
+  private readonly logic: IAddressModalLogic;
   private readonly initialState: Address[];
 
-  public constructor(addresses: Address[]) {
+  public constructor(addresses: Address[], page: IProfilePage) {
     super();
+    this.logic = new AddressModalLogic(this, page);
     this.initialState = addresses;
     this.form = new FormView().getViewCreator();
     this.configure(addresses);

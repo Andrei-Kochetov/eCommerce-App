@@ -7,16 +7,18 @@ import IView from '@src/spa/view/types';
 import { IUserInfoModal } from '@src/spa/view/modal/userInfoModal/types';
 import UserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/userInfoModalLogic';
 import IUserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/types';
+import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 
 export default class UserInfoModalView extends ModalView implements IUserInfoModal {
   private readonly firstNameInput: IInput;
   private readonly lastNameInput: IInput;
   private readonly birthDateInput: IInput;
-  private readonly logic: IUserInfoModalLogic = new UserInfoModalLogic(this);
+  private readonly logic: IUserInfoModalLogic;
   private readonly initialState: UserParams;
 
-  public constructor(params: UserParams) {
+  public constructor(params: UserParams, page: IProfilePage) {
     super();
+    this.logic = new UserInfoModalLogic(this, page);
     this.initialState = params;
     this.firstNameInput = this.createFirstNameInput(params.firstName);
     this.lastNameInput = this.createLastNameInput(params.lastName);

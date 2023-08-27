@@ -107,7 +107,7 @@ const params: ProfileData = {
     {
       id: '1',
       city: 'Moscow',
-      country: 'Russia',
+      country: 'RU',
       postcode: '1231231',
       street: 'Lubianka',
       isShipping: 'true',
@@ -118,7 +118,7 @@ const params: ProfileData = {
     {
       id: '2',
       city: 'Minsk',
-      country: 'Belarus',
+      country: 'BY',
       postcode: '34534534',
       street: 'Nemiga',
       isShipping: 'false',
