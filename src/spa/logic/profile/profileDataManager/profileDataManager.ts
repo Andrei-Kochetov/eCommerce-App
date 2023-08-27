@@ -28,7 +28,7 @@ export default class ProfileDataManager implements IProfileDataManager {
         addresses.push({
           city: address.city,
           country: address.country,
-          postCode: address.postalCode,
+          postcode: address.postalCode,
           street: address.streetName,
           id: address.id,
           isShipping: address.id === dataCustomer.shippingAddressIds?.join() ? 'true' : 'false',
@@ -52,8 +52,6 @@ export default class ProfileDataManager implements IProfileDataManager {
   public async setNewEmail(newEmail: string): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewEmail(this.token.token, newEmail);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
-    console.log(dataCustomerResponse.body.version);
-    console.log(dataCustomerResponse);
   }
 
   public async setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void> {
@@ -61,22 +59,22 @@ export default class ProfileDataManager implements IProfileDataManager {
       this.token.token,
       newNameAndDateBirth
     );
-    console.log(dataCustomerResponse);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async setNewPassword(passwordObj: SetPasswordObj): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewPassword(this.token.token, passwordObj);
-    console.log(dataCustomerResponse);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async setNewAddress(addressObj: SetAddressObj): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
-    console.log(dataCustomerResponse);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async deleteAddress(addressId: string): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().deleteAddress(this.token.token, addressId);
-    console.log(dataCustomerResponse);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   private getToken(): TokenStore {

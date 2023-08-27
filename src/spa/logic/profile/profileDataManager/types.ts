@@ -9,7 +9,7 @@ export interface ProfileData {
 export interface Address {
   city: string;
   country: string;
-  postCode: string;
+  postcode: string;
   street: string;
   id: string;
   isShipping: 'true' | 'false';

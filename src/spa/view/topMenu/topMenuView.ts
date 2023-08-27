@@ -274,7 +274,7 @@ export default class TopMenuView extends View {
       callback: async () /* : void  */ => {
         //if (!this.controller) throw new Error('There is no controller in top menu view!');
         //this.controller.goTo(button.getElement());
-        //const resp = await ProfileDataManager.getInstance().getProfileData();
+        const resp = await ProfileDataManager.getInstance().getProfileData();
         //console.log(resp, '324');
       },
     });
@@ -301,7 +301,11 @@ export default class TopMenuView extends View {
           country: "IL",
           addressId: "URiRbVtg",
         }); */
-        //ProfileDataManager.getInstance().setNewEmail('qw4e52353e@eww.com');
+        ProfileDataManager.getInstance().setNewNameAndDateBirth({
+          newFirstName: 'qwe',
+          newLastName: 'QWE',
+          newDateBirth: '1999-12-13',
+        });
       },
     });
     return button;

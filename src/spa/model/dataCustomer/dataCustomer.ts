@@ -32,9 +32,7 @@ export default class DataCustomer {
 
   public setNewEmail(token: string, email: string) {
     const apiRoot = this.createApiRootForSetNewData(token);
-    console.log(State.getInstance());
     const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
-    console.log(currentVersion, typeof currentVersion);
     return apiRoot
       .me()
       .post({
@@ -53,11 +51,12 @@ export default class DataCustomer {
 
   public setNewNameAndDateBirth(token: string, nameAndDateBirthObj: SetNameAndDateBirthObj) {
     const apiRoot = this.createApiRootForSetNewData(token);
+    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     return apiRoot
       .me()
       .post({
         body: {
-          version: 3,
+          version: currentVersion,
           actions: [
             {
               action: 'setFirstName',
@@ -79,11 +78,12 @@ export default class DataCustomer {
 
   public setNewAddress(token: string, addressObj: SetAddressObj) {
     const apiRoot = this.createApiRootForSetNewData(token);
+    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     return apiRoot
       .me()
       .post({
         body: {
-          version: 5,
+          version: currentVersion,
           actions: [
             {
               action: 'changeAddress',
@@ -103,12 +103,12 @@ export default class DataCustomer {
 
   public deleteAddress(token: string, addressId: string) {
     const apiRoot = this.createApiRootForSetNewData(token);
-
+    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     return apiRoot
       .me()
       .post({
         body: {
-          version: 8,
+          version: currentVersion,
           actions: [
             {
               action: 'removeAddress',
@@ -122,13 +122,13 @@ export default class DataCustomer {
 
   public setNewPassword(token: string, passwordObj: SetPasswordObj) {
     const apiRoot = this.createApiRootForSetNewData(token);
-
+    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     return apiRoot
       .me()
       .password()
       .post({
         body: {
-          version: 1,
+          version: currentVersion,
           currentPassword: passwordObj.currentPassword,
           newPassword: passwordObj.newPassword,
         },
