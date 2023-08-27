@@ -9,7 +9,6 @@ import Registration from '@src/spa/model/registration/registration';
 import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registration/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
-import { ErrorMessages } from '@src/spa/logic/validator/types';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
@@ -26,7 +25,13 @@ export default class RegistrationController extends Controller implements IRegis
     if (!validator.validate()) return;
 
     try {
-      const response: ClientResponse<CustomerSignInResult> = await registration.registration(registrationInputValue);
+      let response: ClientResponse<CustomerSignInResult>;
+      if (this.page.getSingleAddressFlag()) {
+        response = await registration.registrationSingleAddress(registrationInputValue);
+      } else {
+        response = await registration.registrationTwoAddress(registrationInputValue);
+      }
+
       const customerToken: TokenStore = registration.getToken();
       const customerData: Customer = response.body.customer;
       const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
@@ -37,8 +42,9 @@ export default class RegistrationController extends Controller implements IRegis
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
-      this.page.getEmailField().setTextError(ErrorMessages.AUTHORIZATION);
-      PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
+      if (err instanceof Error) {
+        PopUpView.getRejectPopUp(err.message).show();
+      }
     }
   }
 }

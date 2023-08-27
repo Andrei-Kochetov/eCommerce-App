@@ -1,12 +1,13 @@
-import { IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
+import { Address, IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
+import { TokenStore } from '@commercetools/sdk-client-v2';
 import State from '@src/spa/logic/state/state';
-import { TokenCache } from '@commercetools/sdk-client-v2';
+import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
 
 export default class ProfileDataManager implements IProfileDataManager {
   private static readonly instance: IProfileDataManager = new ProfileDataManager();
 
-  private readonly token: TokenCache;
+  private readonly token: TokenStore;
 
   private constructor() {
     this.token = this.getToken();
@@ -16,14 +17,11 @@ export default class ProfileDataManager implements IProfileDataManager {
     return this.instance;
   }
 
-  public getProfileData(): ProfileData {
-    //this method you have to implement
-    throw new Error('Method not implemented.');
+  public getProfileData(): number {
+    return 1;
   }
 
-  // and public methods for password, email, user-info, addresses updating
-
-  private getToken(): TokenCache {
+  private getToken(): TokenStore {
     const state: IState = State.getInstance();
     const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
     return JSON.parse(token);

@@ -22,6 +22,7 @@ export interface IRegistrationPageView {
   getEnterBTN(): IView;
   getHomeBTN(): IView;
   getToLoginBTN(): IView;
+  getSingleAddressFlag(): boolean;
 }
 
 export type IRegistrationPage = IRegistrationPageView & IView;
