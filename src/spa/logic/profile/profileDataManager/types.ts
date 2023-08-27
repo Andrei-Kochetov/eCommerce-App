@@ -7,16 +7,18 @@ export interface ProfileData {
 }
 
 export interface Address {
+  id: string;
   city: string;
   country: string;
   postcode: string;
   street: string;
-  id: string;
   isShipping: 'true' | 'false';
   isBilling: 'true' | 'false';
   isDefaultShipping: 'true' | 'false';
   isDefaultBilling: 'true' | 'false';
 }
+
+export type UserParams = Pick<ProfileData, 'firstName' | 'lastName' | 'dateBirth'>;
 
 export interface IProfileDataManager {
   getProfileData(): Promise<ProfileData | undefined>;

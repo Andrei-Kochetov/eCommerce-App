@@ -16,7 +16,7 @@ export default class State implements IState {
   }
 
   public resetState(): void {
-    this.state = {};
+    this.state = DEFAULT_STATE;
   }
 
   // if necessary add a record to local storage add a key here and its default value to DEFAULT_STATE

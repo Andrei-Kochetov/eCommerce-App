@@ -1,8 +1,7 @@
-import { IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
+import { Address, IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
 import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
 import State from '@src/spa/logic/state/state';
 
@@ -79,9 +78,7 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   private getToken(): TokenStore {
     const state: IState = State.getInstance();
-    const token = state.getRecord(APP_STATE_KEYS.TOKEN);
+    const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
     return JSON.parse(token);
   }
-
-  // and public methods for password, email, user-info, addresses updating
 }

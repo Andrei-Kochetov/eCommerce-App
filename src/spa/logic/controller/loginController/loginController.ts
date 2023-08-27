@@ -46,7 +46,6 @@ export default class LoginController extends Controller implements ILoginControl
         PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {
-        this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
         PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
       }
     }

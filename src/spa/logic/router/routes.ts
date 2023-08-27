@@ -3,6 +3,7 @@ import { PageNames } from '@src/spa/view/pages/types';
 import { IRouter } from '@src/spa/logic/router/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
+import { ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 
 const state: IState = State.getInstance();
 
@@ -89,9 +90,41 @@ export const routes: IRoute[] = [
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
         router.navigate(PageNames.LOGIN, true);
       } else {
-        basePage.renderPage(new ProfilePageView());
+        basePage.renderPage(new ProfilePageView(params));
       }
     },
   },
   // TODO add paths for other pages by its templates
 ];
+
+// here is profile data object for profile page testing
+const params: ProfileData = {
+  email: 'blablabla@gmail.com',
+  firstName: 'Ivan',
+  lastName: 'Ivanov',
+  dateBirth: '1992-01-01',
+  addresses: [
+    {
+      id: '1',
+      city: 'Moscow',
+      country: 'RU',
+      postcode: '1231231',
+      street: 'Lubianka',
+      isShipping: 'true',
+      isBilling: 'true',
+      isDefaultShipping: 'true',
+      isDefaultBilling: 'true',
+    },
+    {
+      id: '2',
+      city: 'Minsk',
+      country: 'BY',
+      postcode: '34534534',
+      street: 'Nemiga',
+      isShipping: 'false',
+      isBilling: 'true',
+      isDefaultShipping: 'false',
+      isDefaultBilling: 'false',
+    },
+  ],
+};

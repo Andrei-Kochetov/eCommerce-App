@@ -1,0 +1,5 @@
+@import '@src/spa/basic-styles/mixins';
+
+.checkbox-container {
+  @include flex($align: center, $gap: 0.5rem);
+}

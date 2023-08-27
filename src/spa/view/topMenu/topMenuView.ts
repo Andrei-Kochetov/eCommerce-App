@@ -9,7 +9,6 @@ import View from '@src/spa/view/view';
 import { IRouter } from '@src/spa/logic/router/types';
 import { IHeaderController } from '@src/spa/logic/controller/headerController/types';
 import HeaderController from '@src/spa/logic/controller/headerController/headerController';
-import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 
 const DEFAULT_USER_NAME = '?';
 
@@ -271,11 +270,9 @@ export default class TopMenuView extends View {
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.PROFILE });
     button.setListeners({
       event: 'click',
-      callback: async () /* : void  */ => {
-        //if (!this.controller) throw new Error('There is no controller in top menu view!');
-        //this.controller.goTo(button.getElement());
-        const resp = await ProfileDataManager.getInstance().getProfileData();
-        //console.log(resp, '324');
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
       },
     });
     return button;
@@ -291,21 +288,9 @@ export default class TopMenuView extends View {
     button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: PageNames.BASKET });
     button.setListeners({
       event: 'click',
-      callback: async () /* : void  */ => {
-        //if (!this.controller) throw new Error('There is no controller in top menu view!');
-        //this.controller.goTo(button.getElement());
-        /*         ProfileDataManager.getInstance().setNewAddress({
-          streetName: "qwe124",
-          postalCode: '53443',
-          city: 'QdSas',
-          country: "IL",
-          addressId: "URiRbVtg",
-        }); */
-        ProfileDataManager.getInstance().setNewNameAndDateBirth({
-          newFirstName: 'qwe',
-          newLastName: 'QWE',
-          newDateBirth: '1999-12-13',
-        });
+      callback: (): void => {
+        if (!this.controller) throw new Error('There is no controller in top menu view!');
+        this.controller.goTo(button.getElement());
       },
     });
     return button;
