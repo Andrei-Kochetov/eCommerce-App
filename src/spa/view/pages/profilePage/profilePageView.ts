@@ -5,40 +5,7 @@ import View from '@src/spa/view/view';
 import { Address, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
-import {
-  CONTAINER_CLASS_NAME,
-  CONTAINER_TAG,
-  titleParams,
-  topInfoBlockParams,
-  bottomInfoBlockParams,
-  authorizationInfoBlockParams,
-  userInfoContainerParams,
-  userInfoImgContainerParams,
-  userInfoImgParams,
-  userInfoContentContainerParams,
-  textParagraphParams,
-  editBtnParams,
-  editAdressesBtnParams,
-  changeMailBtnParams,
-  changePasswordParams,
-  passwordContainerParams,
-  passwordImgContainerParams,
-  passwordImgParams,
-  passwordContentContainerParams,
-  mailContainerParams,
-  mailImgContainerParams,
-  mailImgParams,
-  mailContentContainerParams,
-  mailLinkParams,
-  subTitleParams,
-  addressContainerParams,
-  SHIPPING_TEXT,
-  BILLING_TEXT,
-  DEFAULT_SHIPPING_TEXT,
-  DEFAULT_BILLING_TEXT,
-  ADDRESS_CLASS_NAME,
-  DEFAULT_ADDRESS_CLASS_NAME,
-} from '@src/spa/view/pages/profilePage/constants';
+import * as constants from '@src/spa/view/pages/profilePage/constants';
 
 export default class ProfilePageView extends View {
   private readonly firstName: IElementCreator;
@@ -53,20 +20,20 @@ export default class ProfilePageView extends View {
 
   constructor(data: ProfileData) {
     const params: ElementCreatorParams = {
-      tag: CONTAINER_TAG,
-      classNames: [CONTAINER_CLASS_NAME],
+      tag: constants.CONTAINER_TAG,
+      classNames: [constants.CONTAINER_CLASS_NAME],
     };
     super(params);
 
     this.firstName = this.createInfoTextParagraph();
     this.lastName = this.createInfoTextParagraph();
     this.dateBirth = this.createInfoTextParagraph();
-    this.userInfoEditBTN = this.createInfoEditBTN(editBtnParams);
-    this.passwordEditBTN = this.createPasswordEditBTN(changePasswordParams);
+    this.userInfoEditBTN = this.createInfoEditBTN(constants.editBtnParams);
+    this.passwordEditBTN = this.createPasswordEditBTN(constants.changePasswordParams);
     this.mail = this.createMailLink();
-    this.mailEditBTN = this.createMailEditBTN(changeMailBtnParams);
-    this.adressesEditBTN = this.createAdressesEditBTN(editAdressesBtnParams);
-    this.bottomInfoBlock = new ElementCreator(bottomInfoBlockParams);
+    this.mailEditBTN = this.createMailEditBTN(constants.changeMailBtnParams);
+    this.adressesEditBTN = this.createAdressesEditBTN(constants.editAdressesBtnParams);
+    this.bottomInfoBlock = new ElementCreator(constants.bottomInfoBlockParams);
 
     this.changeFirstName(data.firstName);
     this.changeLastName(data.lastName);
@@ -78,10 +45,10 @@ export default class ProfilePageView extends View {
   }
 
   private configureView(): void {
-    const title = new ElementCreator(titleParams);
-    const topInfoBlock = new ElementCreator(topInfoBlockParams);
-    const authorizationInfoBlock = new ElementCreator(authorizationInfoBlockParams);
-    const subTitle = new ElementCreator(subTitleParams);
+    const title = new ElementCreator(constants.titleParams);
+    const topInfoBlock = new ElementCreator(constants.topInfoBlockParams);
+    const authorizationInfoBlock = new ElementCreator(constants.authorizationInfoBlockParams);
+    const subTitle = new ElementCreator(constants.subTitleParams);
 
     authorizationInfoBlock.addInnerElement(this.createMailSection(), this.createPasswordSection());
     topInfoBlock.addInnerElement(this.createInfoSection(), authorizationInfoBlock);
@@ -135,10 +102,10 @@ export default class ProfilePageView extends View {
   }
 
   private createInfoSection(): IElementCreator {
-    const container = new ElementCreator(userInfoContainerParams);
-    const imgContainer = new ElementCreator(userInfoImgContainerParams);
-    const img = new ElementCreator(userInfoImgParams);
-    const contentContainer = new ElementCreator(userInfoContentContainerParams);
+    const container = new ElementCreator(constants.userInfoContainerParams);
+    const imgContainer = new ElementCreator(constants.userInfoImgContainerParams);
+    const img = new ElementCreator(constants.userInfoImgParams);
+    const contentContainer = new ElementCreator(constants.userInfoContentContainerParams);
 
     imgContainer.addInnerElement(img);
     contentContainer.addInnerElement(this.firstName, this.lastName, this.dateBirth, this.userInfoEditBTN);
@@ -148,7 +115,7 @@ export default class ProfilePageView extends View {
   }
 
   private createInfoTextParagraph(): IElementCreator {
-    return new ElementCreator(textParagraphParams);
+    return new ElementCreator(constants.textParagraphParams);
   }
 
   private createInfoEditBTN(btnParams: btnParams): IElementCreator {
@@ -172,10 +139,10 @@ export default class ProfilePageView extends View {
   }
 
   private createPasswordSection(): IElementCreator {
-    const container = new ElementCreator(passwordContainerParams);
-    const imgContainer = new ElementCreator(passwordImgContainerParams);
-    const img = new ElementCreator(passwordImgParams);
-    const contentContainer = new ElementCreator(passwordContentContainerParams);
+    const container = new ElementCreator(constants.passwordContainerParams);
+    const imgContainer = new ElementCreator(constants.passwordImgContainerParams);
+    const img = new ElementCreator(constants.passwordImgParams);
+    const contentContainer = new ElementCreator(constants.passwordContentContainerParams);
 
     imgContainer.addInnerElement(img);
     container.addInnerElement(imgContainer, this.passwordEditBTN);
@@ -187,10 +154,10 @@ export default class ProfilePageView extends View {
   }
 
   private createMailSection(): IElementCreator {
-    const container = new ElementCreator(mailContainerParams);
-    const imgContainer = new ElementCreator(mailImgContainerParams);
-    const img = new ElementCreator(mailImgParams);
-    const contentContainer = new ElementCreator(mailContentContainerParams);
+    const container = new ElementCreator(constants.mailContainerParams);
+    const imgContainer = new ElementCreator(constants.mailImgContainerParams);
+    const img = new ElementCreator(constants.mailImgParams);
+    const contentContainer = new ElementCreator(constants.mailContentContainerParams);
     imgContainer.addInnerElement(img);
     contentContainer.addInnerElement(this.mail, this.mailEditBTN);
     container.addInnerElement(imgContainer, contentContainer);
@@ -199,11 +166,11 @@ export default class ProfilePageView extends View {
   }
 
   private createMailLink(): IElementCreator {
-    return new ElementCreator(mailLinkParams);
+    return new ElementCreator(constants.mailLinkParams);
   }
 
   private createAddressField(address: Address): IElementCreator {
-    const container = new ElementCreator(addressContainerParams);
+    const container = new ElementCreator(constants.addressContainerParams);
     const country = this.createInfoTextParagraph();
     const city = this.createInfoTextParagraph();
     const street = this.createInfoTextParagraph();
@@ -211,26 +178,26 @@ export default class ProfilePageView extends View {
 
     if (address.isDefaultShipping === 'true') {
       const defaultShipping = this.createInfoTextParagraph();
-      defaultShipping.setTextContent(DEFAULT_SHIPPING_TEXT);
-      defaultShipping.setClasses(DEFAULT_ADDRESS_CLASS_NAME);
+      defaultShipping.setTextContent(constants.DEFAULT_SHIPPING_TEXT);
+      defaultShipping.setClasses(constants.DEFAULT_ADDRESS_CLASS_NAME);
       container.addInnerElement(defaultShipping);
     }
     if (address.isDefaultBilling === 'true') {
       const defaultBilling = this.createInfoTextParagraph();
-      defaultBilling.setTextContent(DEFAULT_BILLING_TEXT);
-      defaultBilling.setClasses(DEFAULT_ADDRESS_CLASS_NAME);
+      defaultBilling.setTextContent(constants.DEFAULT_BILLING_TEXT);
+      defaultBilling.setClasses(constants.DEFAULT_ADDRESS_CLASS_NAME);
       container.addInnerElement(defaultBilling);
     }
     if (address.isShipping === 'true') {
       const shipping = this.createInfoTextParagraph();
-      shipping.setTextContent(SHIPPING_TEXT);
-      shipping.setClasses(ADDRESS_CLASS_NAME);
+      shipping.setTextContent(constants.SHIPPING_TEXT);
+      shipping.setClasses(constants.ADDRESS_CLASS_NAME);
       container.addInnerElement(shipping);
     }
     if (address.isBilling === 'true') {
       const billing = this.createInfoTextParagraph();
-      billing.setTextContent(BILLING_TEXT);
-      billing.setClasses(ADDRESS_CLASS_NAME);
+      billing.setTextContent(constants.BILLING_TEXT);
+      billing.setClasses(constants.ADDRESS_CLASS_NAME);
       container.addInnerElement(billing);
     }
 
