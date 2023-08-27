@@ -11,4 +11,5 @@ export interface IUserInfoModal {
   getAllValues(): UserParams;
   showModal(): void;
   hideModal(): void;
+  getInitialState(): UserParams;
 }

@@ -10,26 +10,31 @@ const ARE_YOU_SURE_MESSAGE = `You want to exit without saving changes?`;
 const YES_BTN_CLASS = 'btn_yes';
 
 export default abstract class ModalLogic<T extends IModal> implements IModalLogic {
-  protected wereChanges: boolean;
-
   protected readonly modal: T;
 
   public constructor(modal: T) {
-    this.wereChanges = false;
     this.modal = modal;
   }
 
+  public static ObjTopLevelCompare<T>(first: T, second: T): boolean {
+    for (const key in first) {
+      if (first[key] !== second[key]) return false;
+    }
+    return true;
+  }
+
   protected abstract beforeCloseActions(): void;
+  protected abstract wasChanges(): boolean;
 
   public acceptHandler(): void {
-    if (this.wereChanges) {
+    if (this.wasChanges()) {
       this.beforeCloseActions();
     }
     this.modal.hideModal();
   }
 
   public exitHandler(): void {
-    if (this.wereChanges) {
+    if (this.wasChanges()) {
       const popUp: IPopUpView = PopUpView.getRejectPopUpWithoutImg(ARE_YOU_SURE_MESSAGE);
       popUp.getView().prepend(this.createYesBTN(popUp).getElement());
       popUp.showWithoutAutoHiding();

@@ -51,8 +51,14 @@ export default class ProfilePageView extends PageView implements IProfilePage {
     btn.setAttribute('type', 'button');
     btn.setAttribute('value', 'Change user info');
     this.getViewCreator().addInnerElement(btn);
+    const data = {
+      lastName: params.lastName,
+      firstName: params.firstName,
+      dateBirth: params.dateBirth,
+    };
+
     btn.addEventListener('click', (): void => {
-      const modal = new UserInfoModalView(params);
+      const modal = new UserInfoModalView(data);
       modal.showModal();
     });
   }

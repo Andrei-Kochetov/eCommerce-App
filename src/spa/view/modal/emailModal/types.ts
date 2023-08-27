@@ -7,4 +7,5 @@ export interface IEmailModal {
   getEmailInput(): IInput;
   showModal(): void;
   hideModal(): void;
+  getInitialState(): string;
 }

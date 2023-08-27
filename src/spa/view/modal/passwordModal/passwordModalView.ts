@@ -72,15 +72,6 @@ export default class PasswordModalView extends ModalView implements IPasswordMod
   }
 
   private setListeners(): void {
-    this.newPasswordInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
-    this.repeatNewPasswordInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
-    this.oldPasswordInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
     this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
     this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });

@@ -13,13 +13,19 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
   private readonly lastNameInput: IInput;
   private readonly birthDateInput: IInput;
   private readonly logic: IUserInfoModalLogic = new UserInfoModalLogic(this);
+  private readonly initialState: UserParams;
 
   public constructor(params: UserParams) {
     super();
+    this.initialState = params;
     this.firstNameInput = this.createFirstNameInput(params.firstName);
     this.lastNameInput = this.createLastNameInput(params.lastName);
     this.birthDateInput = this.createBirthDateInput(params.dateBirth);
     this.configure();
+  }
+
+  public getInitialState(): UserParams {
+    return this.initialState;
   }
 
   public getFirstNameInput(): IInput {
@@ -93,15 +99,6 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
   }
 
   private setListeners(): void {
-    this.firstNameInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
-    this.lastNameInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
-    this.birthDateInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.OnChangeLogic() });
     this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
     this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });

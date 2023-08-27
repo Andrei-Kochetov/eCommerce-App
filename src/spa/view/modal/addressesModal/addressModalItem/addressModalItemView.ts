@@ -214,30 +214,11 @@ export default class AddressModalItemView extends View implements IAddressModalI
   }
 
   private addListeners(): void {
-    // checkboxes
-    this.isShippingInput
-      .getCheckbox()
-      .setListeners({ event: 'change', callback: (): void => this.logic.isShippingLogic() });
     this.isDefaultShippingInput
       .getCheckbox()
       .setListeners({ event: 'change', callback: (): void => this.logic.defaultShippingLogic(this) });
-    this.isBillingInput
-      .getCheckbox()
-      .setListeners({ event: 'change', callback: (): void => this.logic.isBillingLogic() });
     this.isDefaultBillingInput
       .getCheckbox()
       .setListeners({ event: 'change', callback: (): void => this.logic.defaultBillingLogic(this) });
-
-    //text inputs
-    this.countryInput
-      .getInput()
-      .setListeners({ event: 'change', callback: (): void => this.logic.countryOnChangeLogic() });
-    this.cityInput.getInput().setListeners({ event: 'change', callback: (): void => this.logic.cityOnChangeLogic() });
-    this.streetInput
-      .getInput()
-      .setListeners({ event: 'change', callback: (): void => this.logic.streetOnChangeLogic() });
-    this.postCodeInput
-      .getInput()
-      .setListeners({ event: 'change', callback: (): void => this.logic.postCodeOnChangeLogic() });
   }
 }

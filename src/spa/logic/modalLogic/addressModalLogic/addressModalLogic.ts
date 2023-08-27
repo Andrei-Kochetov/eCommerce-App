@@ -3,40 +3,16 @@ import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
 import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
+import { Address } from '@src/spa/logic/profile/profileDataManager/types';
 
 export default class AddressModalLogic extends ModalLogic<IAddressesModal> implements IAddressModalLogic {
   public constructor(modal: IAddressesModal) {
     super(modal);
   }
 
-  public countryOnChangeLogic(): void {
-    this.wereChanges = true;
-  }
-
-  public cityOnChangeLogic(): void {
-    this.wereChanges = true;
-  }
-
-  public streetOnChangeLogic(): void {
-    this.wereChanges = true;
-  }
-
-  public postCodeOnChangeLogic(): void {
-    this.wereChanges = true;
-  }
-
-  public isShippingLogic(): void {
-    this.wereChanges = true;
-  }
-
-  public isBillingLogic(): void {
-    this.wereChanges = true;
-  }
-
   public defaultShippingLogic(address: IAddressModalItem): void {
-    this.wereChanges = true;
-
     const checkbox: ICheckbox = address.getIsDefaultShippingInput();
+
     if (checkbox.getValue() === 'true') {
       this.modal
         .getAllAddressModalItems()
@@ -49,8 +25,6 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
   }
 
   public defaultBillingLogic(address: IAddressModalItem): void {
-    this.wereChanges = true;
-
     const checkbox: ICheckbox = address.getIsDefaultBillingInput();
 
     if (checkbox.getValue() === 'true') {
@@ -62,6 +36,17 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     } else {
       checkbox.check(false);
     }
+  }
+
+  protected wasChanges(): boolean {
+    const initialState: Address[] = this.modal.getInitialState();
+    const currentState: Address[] = this.modal.getAllAddressesInfo();
+
+    if (initialState.length !== currentState.length) return true;
+    for (let i = 0; i < initialState.length; i++) {
+      if (!ModalLogic.ObjTopLevelCompare(currentState[i], initialState[i])) return true;
+    }
+    return false;
   }
 
   protected beforeCloseActions(): void {

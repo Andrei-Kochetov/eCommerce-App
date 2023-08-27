@@ -10,11 +10,17 @@ import EmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/emailModa
 export default class EmailModalView extends ModalView implements IEmailModal {
   private readonly emailInput: IInput;
   private readonly logic: IEmailModalLogic = new EmailModalLogic(this);
+  private readonly initialState: string;
 
   public constructor(email: string) {
     super();
+    this.initialState = email;
     this.emailInput = this.createEmailInput(email);
     this.configure();
+  }
+
+  public getInitialState(): string {
+    return this.initialState;
   }
 
   public getEmailInput(): IInput {
@@ -43,9 +49,6 @@ export default class EmailModalView extends ModalView implements IEmailModal {
   }
 
   private setListeners(): void {
-    this.emailInput
-      .getViewCreator()
-      .setListeners({ event: 'change', callback: (): void => this.logic.emailOnChangeLogic() });
     this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
     this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });

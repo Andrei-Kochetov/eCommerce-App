@@ -7,8 +7,8 @@ export default class EmailModalLogic extends ModalLogic<IEmailModal> implements 
     super(modal);
   }
 
-  public emailOnChangeLogic(): void {
-    this.wereChanges = true;
+  protected wasChanges(): boolean {
+    return this.modal.getInitialState() !== this.modal.getEmailInput().getValue();
   }
 
   protected beforeCloseActions(): void {

@@ -16,11 +16,17 @@ export default class AddressesModalView extends ModalView implements IAddressesM
   private readonly form: IElementCreator;
   private readonly addresses: Map<string, IAddressModalItem> = new Map();
   private readonly logic: IAddressModalLogic = new AddressModalLogic(this);
+  private readonly initialState: Address[];
 
   public constructor(addresses: Address[]) {
     super();
+    this.initialState = addresses;
     this.form = new FormView().getViewCreator();
     this.configure(addresses);
+  }
+
+  public getInitialState(): Address[] {
+    return this.initialState;
   }
 
   public getAllAddressesInfo(): Address[] {

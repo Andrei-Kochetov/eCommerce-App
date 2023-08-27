@@ -11,4 +11,5 @@ export interface IAddressesModal {
   getSingleAddressModalItem(id: string): IAddressModalItem | null;
   showModal(): void;
   hideModal(): void;
+  getInitialState(): Address[];
 }
