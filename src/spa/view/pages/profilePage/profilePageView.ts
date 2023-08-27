@@ -2,12 +2,15 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import '@src/spa/view/pages/profilePage/profilePage.scss';
 import View from '@src/spa/view/view';
-import { Address, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
+import { Address, ProfileData, UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/profilePage/constants';
+import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
+import { IProfilePageLogic } from '@src/spa/logic/profilePageLogic/types';
+import ProfilePageLogic from '@src/spa/logic/profilePageLogic/profilePageLogic';
 
-export default class ProfilePageView extends View {
+export default class ProfilePageView extends View implements IProfilePage {
   private readonly firstName: IElementCreator;
   private readonly lastName: IElementCreator;
   private readonly dateBirth: IElementCreator;
@@ -17,14 +20,17 @@ export default class ProfilePageView extends View {
   private readonly mailEditBTN: IElementCreator;
   private readonly bottomInfoBlock: IElementCreator;
   private readonly adressesEditBTN: IElementCreator;
+  private readonly initialState: ProfileData;
+  private readonly logic: IProfilePageLogic = new ProfilePageLogic(this);
 
-  constructor(data: ProfileData) {
+  public constructor(data: ProfileData) {
     const params: ElementCreatorParams = {
       tag: constants.CONTAINER_TAG,
       classNames: [constants.CONTAINER_CLASS_NAME],
     };
     super(params);
 
+    this.initialState = data;
     this.firstName = this.createInfoTextParagraph();
     this.lastName = this.createInfoTextParagraph();
     this.dateBirth = this.createInfoTextParagraph();
@@ -54,23 +60,37 @@ export default class ProfilePageView extends View {
     topInfoBlock.addInnerElement(this.createInfoSection(), authorizationInfoBlock);
 
     this.getViewCreator().addInnerElement(title, topInfoBlock, subTitle, this.bottomInfoBlock, this.adressesEditBTN);
+    this.setListeners();
+  }
+
+  public getInitialState(): ProfileData {
+    return this.initialState;
+  }
+
+  public changeUserInfo(params: UserParams): void {
+    this.changeFirstName(params.firstName);
+    this.changeLastName(params.lastName);
+    this.changeDateBirth(params.dateBirth);
   }
 
   public changeFirstName(firstName: string): void {
     this.firstName.setTextContent(`First name: ${firstName}`);
+    this.initialState.firstName = firstName;
   }
 
   public changeLastName(lastName: string): void {
     this.lastName.setTextContent(`Last name: ${lastName}`);
+    this.initialState.lastName = lastName;
   }
 
   public changeDateBirth(dateBirth: string): void {
     this.dateBirth.setTextContent(`Date birth: ${dateBirth}`);
+    this.initialState.dateBirth = dateBirth;
   }
 
   public changeAddresses(addresses: Address[]): void {
     const map = new Map();
-    this.bottomInfoBlock.clearInnerHTML;
+    this.bottomInfoBlock.clearInnerHTML();
 
     addresses.forEach((address) => {
       map.set(address.id, this.createAddressField(address));
@@ -78,11 +98,13 @@ export default class ProfilePageView extends View {
     for (const addresField of map.values()) {
       this.bottomInfoBlock.addInnerElement(addresField);
     }
+    this.initialState.addresses = addresses;
   }
 
   public changeMail(email: string): void {
     this.mail.setTextContent(`${email}`);
     this.mail.setAttributes({ href: `mailto:${email}` });
+    this.initialState.email = email;
   }
 
   public getInfoEditBTN(): IElementCreator {
@@ -208,5 +230,12 @@ export default class ProfilePageView extends View {
     container.addInnerElement(country, city, street, postalCode);
 
     return container;
+  }
+
+  private setListeners(): void {
+    this.userInfoEditBTN.setListeners({ event: 'click', callback: (): void => this.logic.showUserInfoModal() });
+    this.passwordEditBTN.setListeners({ event: 'click', callback: (): void => this.logic.showPasswordModal() });
+    this.mailEditBTN.setListeners({ event: 'click', callback: (): void => this.logic.showEmailModal() });
+    this.adressesEditBTN.setListeners({ event: 'click', callback: (): void => this.logic.showAddressesModal() });
   }
 }
