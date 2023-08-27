@@ -48,7 +48,7 @@ export default class ProfilePageView extends View {
   private readonly passwordEditBTN: IElementCreator;
   private readonly mail: IElementCreator;
   private readonly mailEditBTN: IElementCreator;
-  private readonly adresses;
+  private readonly bottomInfoBlock: IElementCreator;
   private readonly adressesEditBTN: IElementCreator;
 
   constructor(data: ProfileData) {
@@ -66,15 +66,13 @@ export default class ProfilePageView extends View {
     this.mail = this.createMailLink();
     this.mailEditBTN = this.createMailEditBTN(changeMailBtnParams);
     this.adressesEditBTN = this.createAdressesEditBTN(editAdressesBtnParams);
-    this.adresses = new Map();
+    this.bottomInfoBlock = new ElementCreator(bottomInfoBlockParams);
 
-    data.addresses.forEach((address) => {
-      this.adresses.set(address.id, this.createAddressField(address));
-    });
     this.changeFirstName(data.firstName);
     this.changeLastName(data.lastName);
     this.changeDateBirth(data.dateBirth);
     this.changeMail(data.email);
+    this.changeAddresses(data.addresses);
 
     this.configureView();
   }
@@ -84,13 +82,11 @@ export default class ProfilePageView extends View {
     const topInfoBlock = new ElementCreator(topInfoBlockParams);
     const authorizationInfoBlock = new ElementCreator(authorizationInfoBlockParams);
     const subTitle = new ElementCreator(subTitleParams);
-    const bottomInfoBlock = new ElementCreator(bottomInfoBlockParams);
+
     authorizationInfoBlock.addInnerElement(this.createMailSection(), this.createPasswordSection());
     topInfoBlock.addInnerElement(this.createInfoSection(), authorizationInfoBlock);
-    for (const addresField of this.adresses.values()) {
-      bottomInfoBlock.addInnerElement(addresField);
-    }
-    this.getViewCreator().addInnerElement(title, topInfoBlock, subTitle, bottomInfoBlock, this.adressesEditBTN);
+
+    this.getViewCreator().addInnerElement(title, topInfoBlock, subTitle, this.bottomInfoBlock, this.adressesEditBTN);
   }
 
   public changeFirstName(firstName: string): void {
@@ -103,6 +99,18 @@ export default class ProfilePageView extends View {
 
   public changeDateBirth(dateBirth: string): void {
     this.dateBirth.setTextContent(`Date birth: ${dateBirth}`);
+  }
+
+  public changeAddresses(addresses: Address[]): void {
+    const map = new Map();
+    this.bottomInfoBlock.clearInnerHTML;
+
+    addresses.forEach((address) => {
+      map.set(address.id, this.createAddressField(address));
+    });
+    for (const addresField of map.values()) {
+      this.bottomInfoBlock.addInnerElement(addresField);
+    }
   }
 
   public changeMail(email: string): void {
