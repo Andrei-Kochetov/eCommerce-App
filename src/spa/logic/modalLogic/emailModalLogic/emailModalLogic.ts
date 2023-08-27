@@ -16,6 +16,6 @@ export default class EmailModalLogic extends ModalLogic<IEmailModal> implements 
   }
 
   protected beforeCloseActions(): void {
-    console.log('before accept');
+    this.page.changeMail(this.modal.getEmailInput().getValue());
   }
 }

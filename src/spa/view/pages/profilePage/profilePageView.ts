@@ -90,7 +90,7 @@ export default class ProfilePageView extends View implements IProfilePage {
 
   public changeAddresses(addresses: Address[]): void {
     const map = new Map();
-    this.bottomInfoBlock.clearInnerHTML;
+    this.bottomInfoBlock.clearInnerHTML();
 
     addresses.forEach((address) => {
       map.set(address.id, this.createAddressField(address));

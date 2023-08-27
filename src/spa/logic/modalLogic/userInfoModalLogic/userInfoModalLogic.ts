@@ -20,6 +20,6 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
   }
 
   protected beforeCloseActions(): void {
-    console.log('before accept');
+    this.page.changeUserInfo(this.modal.getAllValues());
   }
 }

@@ -54,6 +54,6 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
   }
 
   protected beforeCloseActions(): void {
-    console.log('before accept');
+    this.page.changeAddresses(this.modal.getAllAddressesInfo());
   }
 }
