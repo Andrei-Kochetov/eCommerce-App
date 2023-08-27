@@ -4,8 +4,17 @@
 .profile-page {
   // min-height = 100vh - header_height - footer_height - main_paddings)
   min-height: calc(100vh - 6rem - 7rem - 4rem);
+  max-width: 83rem;
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
+
+  @media screen and (max-width: 959px) {
+    max-width: 49rem;
+  }
+
+  @media screen and (max-width: 700px) {
+    max-width: 32rem;
+  }
 }
 
 .profile-page,
@@ -55,7 +64,7 @@
 }
 
 .profile-page__address-container {
-  max-width: 15rem;
+  width: 15rem;
 }
 
 .profile-page__text,
@@ -88,7 +97,7 @@
 }
 
 .profile-page__bottom-info-block {
-  @include flex($direction: row, $gap: 2rem, $justify: center);
+  @include flex($direction: row, $gap: 2rem, $justify: flex-start);
   flex-wrap: wrap;
   width: 100%;
 }

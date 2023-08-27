@@ -65,7 +65,7 @@ export default class ProfilePageView extends View {
     this.passwordEditBTN = this.createPasswordEditBTN(changePasswordParams);
     this.mail = this.createMailLink();
     this.mailEditBTN = this.createMailEditBTN(changeMailBtnParams);
-    this.adressesEditBTN = this.createMailEditBTN(editAdressesBtnParams);
+    this.adressesEditBTN = this.createAdressesEditBTN(editAdressesBtnParams);
     this.adresses = new Map();
 
     data.addresses.forEach((address) => {
@@ -148,6 +148,21 @@ export default class ProfilePageView extends View {
     return button;
   }
 
+  private createPasswordEditBTN(btnParams: btnParams): IElementCreator {
+    const button: IElementCreator = new ButtonView(btnParams).getViewCreator();
+    return button;
+  }
+
+  private createMailEditBTN(btnParams: btnParams): IElementCreator {
+    const button: IElementCreator = new ButtonView(btnParams).getViewCreator();
+    return button;
+  }
+
+  private createAdressesEditBTN(btnParams: btnParams): IElementCreator {
+    const button: IElementCreator = new ButtonView(btnParams).getViewCreator();
+    return button;
+  }
+
   private createPasswordSection(): IElementCreator {
     const container = new ElementCreator(passwordContainerParams);
     const imgContainer = new ElementCreator(passwordImgContainerParams);
@@ -161,11 +176,6 @@ export default class ProfilePageView extends View {
     container.addInnerElement(imgContainer, contentContainer);
 
     return container;
-  }
-
-  private createPasswordEditBTN(btnParams: btnParams): IElementCreator {
-    const button: IElementCreator = new ButtonView(btnParams).getViewCreator();
-    return button;
   }
 
   private createMailSection(): IElementCreator {
@@ -182,11 +192,6 @@ export default class ProfilePageView extends View {
 
   private createMailLink(): IElementCreator {
     return new ElementCreator(mailLinkParams);
-  }
-
-  private createMailEditBTN(btnParams: btnParams): IElementCreator {
-    const button: IElementCreator = new ButtonView(btnParams).getViewCreator();
-    return button;
   }
 
   private createAddressField(address: Address): IElementCreator {
