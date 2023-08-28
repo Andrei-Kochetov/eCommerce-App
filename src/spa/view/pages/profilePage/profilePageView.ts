@@ -7,8 +7,8 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/profilePage/constants';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
-import { IProfilePageLogic } from '@src/spa/logic/profilePageLogic/types';
-import ProfilePageLogic from '@src/spa/logic/profilePageLogic/profilePageLogic';
+import { IProfilePageLogic } from '@src/spa/logic/profile/profilePageLogic/types';
+import ProfilePageLogic from '@src/spa/logic/profile/profilePageLogic/profilePageLogic';
 
 export default class ProfilePageView extends View implements IProfilePage {
   private readonly firstName: IElementCreator;
