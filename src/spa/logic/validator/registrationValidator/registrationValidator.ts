@@ -1,7 +1,7 @@
 import { IRegistrationPage } from '@src/spa/view/pages/registrationPage/types';
 import Validator from '@src/spa/logic/validator/validator';
 import { IInputView } from '@src/spa/view/input/types';
-import { ErrorMessages } from '@src/spa/logic/validator/types';
+import { ErrorMessages, MAX_AGE, MIN_AGE } from '@src/spa/logic/validator/types';
 import { ISelect } from '@src/spa/view/select/types';
 import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
 
@@ -50,7 +50,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
 
   public static dateBirthCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minDateBirthCheck(input);
+    return this.emptyFieldCheck(input) && this.minDateBirthCheck(input) && this.maxDateBirthCheck(input);
   }
 
   public static billingCountryCheck(select: ISelect): boolean {
@@ -192,11 +192,30 @@ export default class RegistrationValidator extends Validator implements IRegistr
     if (input instanceof HTMLInputElement) {
       const dateNow = new Date();
       const date13YearsAgo = new Date(
-        `${+dateNow.getFullYear() - 13}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
+        `${+dateNow.getFullYear() - MIN_AGE}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
       ).getTime();
       const dateValue = new Date(input.value).getTime();
       if (date13YearsAgo < dateValue) {
         inputView.setTextError(ErrorMessages.MIN_DATE_BIRTH);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  private static maxDateBirthCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const dateNow = new Date();
+      const maxYearBack = new Date(
+        `${+dateNow.getFullYear() - MAX_AGE}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
+      ).getTime();
+      const dateValue = new Date(input.value).getTime();
+      if (maxYearBack > dateValue) {
+        inputView.setTextError(ErrorMessages.MAX_DATE_BIRTH);
         return false;
       } else {
         return true;

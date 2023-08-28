@@ -2,6 +2,7 @@ import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
 import IEmailModalLogic from '@src/spa/logic/modalLogic/emailModalLogic/types';
 import { IEmailModal } from '@src/spa/view/modal/emailModal/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
+import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 
 export default class EmailModalLogic extends ModalLogic<IEmailModal> implements IEmailModalLogic {
   private readonly page: IProfilePage;
@@ -12,7 +13,7 @@ export default class EmailModalLogic extends ModalLogic<IEmailModal> implements 
   }
 
   protected validate(): boolean {
-    throw new Error('Method not implemented.');
+    return RegistrationValidator.emailCheck(this.modal.getEmailInput());
   }
 
   protected wasChanges(): boolean {

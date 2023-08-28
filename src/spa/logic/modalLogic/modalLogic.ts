@@ -28,7 +28,7 @@ export default abstract class ModalLogic<T extends IModal> implements IModalLogi
   protected abstract wasChanges(): boolean;
 
   public acceptHandler(): void {
-    if (this.validate()) return;
+    if (!this.validate()) return;
     if (this.wasChanges()) {
       this.beforeCloseActions();
     }

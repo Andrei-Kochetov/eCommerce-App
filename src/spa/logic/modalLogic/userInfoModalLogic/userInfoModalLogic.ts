@@ -3,6 +3,7 @@ import IUserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/ty
 import { IUserInfoModal } from '@src/spa/view/modal/userInfoModal/types';
 import { UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
+import RegistrationValidator from '../../validator/registrationValidator/registrationValidator';
 
 export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> implements IUserInfoModalLogic {
   private readonly page: IProfilePage;
@@ -13,7 +14,12 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
   }
 
   protected validate(): boolean {
-    throw new Error('Method not implemented.');
+    const arrFunc: boolean[] = [
+      RegistrationValidator.firstNameCheck(this.modal.getFirstNameInput()),
+      RegistrationValidator.lastNameCheck(this.modal.getLastNameInput()),
+      RegistrationValidator.dateBirthCheck(this.modal.getBirthDateInput()),
+    ];
+    return arrFunc.every((el) => el === true);
   }
 
   protected wasChanges(): boolean {
