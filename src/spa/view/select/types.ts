@@ -3,7 +3,8 @@ import IView from '@src/spa/view/types';
 
 export interface ISelectView {
   getSelect(): IElementCreator;
-  setTextError(textErorr: string): void;
+  setTextError(textError: string): void;
+  getValue(): string;
 }
 
 export type ISelect = ISelectView & IView;

@@ -37,6 +37,14 @@ export default class SelectView extends View implements ISelectView {
     this.spanError = this.createSpanError();
     this.configureView();
   }
+
+  public getValue(): string {
+    const select: HTMLElement = this.select.getElement();
+
+    if (select instanceof HTMLSelectElement) return select.value;
+    throw new Error('This element is not HTMLInputElement!');
+  }
+
   public getSelect(): IElementCreator {
     return this.select;
   }
