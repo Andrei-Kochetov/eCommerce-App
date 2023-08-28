@@ -4,9 +4,11 @@ import { TokenStore } from '@commercetools/sdk-client-v2';
 import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
 import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
 import State from '@src/spa/logic/state/state';
+import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
+import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 
 export default class ProfileDataManager implements IProfileDataManager {
-  private readonly token: TokenStore;
+  private token: TokenStore;
   private static readonly instance = new ProfileDataManager();
 
   private constructor() {
@@ -19,7 +21,6 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   public async getProfileData(): Promise<ProfileData | undefined> {
     const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.token.token);
-    console.log(dataCustomerResponse);
     const dataCustomer = dataCustomerResponse.body;
     const addresses: Address[] = [];
     dataCustomer.addresses.forEach((address) => {
@@ -63,11 +64,20 @@ export default class ProfileDataManager implements IProfileDataManager {
 
   public async setNewPassword(passwordObj: SetPasswordObj): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewPassword(this.token.token, passwordObj);
+    const email = dataCustomerResponse.body.email;
+    await LoginClient.getInstance().authorization(email, passwordObj.newPassword);
+    State.getInstance().setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
+    this.token = this.getToken();
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async setNewAddress(addressObj: SetAddressObj): Promise<void> {
+  public async setNewAddress(addressObj: Address): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+  }
+
+  public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
+    const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.token.token, addressObj);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 

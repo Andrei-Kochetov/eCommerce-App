@@ -101,7 +101,7 @@ export default class UserInfoModalView extends ModalView implements IUserInfoMod
   }
 
   private setListeners(): void {
-    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }

@@ -9,7 +9,6 @@ import * as constants from '@src/spa/view/pages/profilePage/constants';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 import { IProfilePageLogic } from '@src/spa/logic/profilePageLogic/types';
 import ProfilePageLogic from '@src/spa/logic/profilePageLogic/profilePageLogic';
-import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 
 export default class ProfilePageView extends View implements IProfilePage {
   private readonly firstName: IElementCreator;

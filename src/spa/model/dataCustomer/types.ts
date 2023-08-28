@@ -1,12 +1,13 @@
 export type SetPasswordObj = {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
+  repeatNewPassword: string;
 };
 
 export type SetNameAndDateBirthObj = {
-  newFirstName: string;
-  newLastName: string;
-  newDateBirth: string;
+  firstName: string;
+  lastName: string;
+  dateBirth: string;
 };
 
 export type SetAddressObj = {
@@ -16,3 +17,10 @@ export type SetAddressObj = {
   country: string;
   addressId: string;
 };
+
+export interface AddAddressObj {
+  city: string;
+  country: string;
+  postcode: string;
+  street: string;
+}

@@ -6,6 +6,7 @@ import PasswordInputView from '@src/spa/view/input/passwordInput/passwordInputVi
 import { ChangePasswordValues, IPasswordModal } from '@src/spa/view/modal/passwordModal/types';
 import PasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/passwordModalLogic';
 import IPasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/types';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 
 const NEW_PASSWORD_LABEL_TEXT = 'New password';
 const REPEAT_NEW_PASSWORD_LABEL_TEXT = 'Repeat new password';
@@ -72,7 +73,10 @@ export default class PasswordModalView extends ModalView implements IPasswordMod
   }
 
   private setListeners(): void {
-    this.acceptBTN.setListeners({ event: 'click', callback: (): void => this.logic.acceptHandler() });
+    this.acceptBTN.setListeners({
+      event: 'click',
+      callback: () /* : void */ => ProfileDataManager.getInstance().setNewPassword(this.getAllValues()),
+    });
     this.cancelBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
     this.closeBTN.setListeners({ event: 'click', callback: (): void => this.logic.exitHandler() });
   }
