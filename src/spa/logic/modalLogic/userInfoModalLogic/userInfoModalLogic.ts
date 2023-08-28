@@ -19,7 +19,7 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
       RegistrationValidator.lastNameCheck(this.modal.getLastNameInput()),
       RegistrationValidator.dateBirthCheck(this.modal.getBirthDateInput()),
     ];
-    return arrFunc.every((el) => el === true);
+    return arrFunc.every((el: boolean) => el === true);
   }
 
   protected wasChanges(): boolean {

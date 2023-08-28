@@ -36,7 +36,7 @@ export default class PasswordModalLogic extends ModalLogic<IPasswordModal> imple
       this.sameValuesCheck(newPassword, repeatNewPassword),
     ];
 
-    return arrFunc.every((el) => el === true);
+    return arrFunc.every((el: boolean) => el === true);
   }
 
   protected beforeCloseActions(): void {
