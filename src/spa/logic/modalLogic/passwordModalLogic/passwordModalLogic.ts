@@ -18,6 +18,10 @@ export default class PasswordModalLogic extends ModalLogic<IPasswordModal> imple
     return result;
   }
 
+  protected validate(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
   protected beforeCloseActions(): void {
     console.log('before accept');
   }

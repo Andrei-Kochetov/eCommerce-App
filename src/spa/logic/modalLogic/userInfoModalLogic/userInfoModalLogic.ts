@@ -12,6 +12,10 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
     this.page = page;
   }
 
+  protected validate(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
   protected wasChanges(): boolean {
     const currentState: UserParams = this.modal.getAllValues();
     const initialState: UserParams = this.modal.getInitialState();

@@ -11,13 +11,13 @@ export default class LoginValidator extends Validator implements ILoginValidator
     this.page = loginPage;
   }
 
-  public emailCheck(input: IInputView): boolean {
+  public static emailCheck(input: IInputView): boolean {
     input.setTextError(' ');
 
     return this.spaceStartEndFieldCheck(input) && this.emptyFieldCheck(input) && this.emailFieldCheck(input);
   }
 
-  public passwordCheck(input: IInputView): boolean {
+  public static passwordCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -28,7 +28,10 @@ export default class LoginValidator extends Validator implements ILoginValidator
   }
 
   public validate(): boolean {
-    const arrFunc = [this.passwordCheck(this.page.getPasswordField()), this.emailCheck(this.page.getEmailField())];
+    const arrFunc = [
+      LoginValidator.passwordCheck(this.page.getPasswordField()),
+      LoginValidator.emailCheck(this.page.getEmailField()),
+    ];
     return arrFunc.every((el) => el === true);
   }
 }

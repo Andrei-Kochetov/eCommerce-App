@@ -11,6 +11,10 @@ export default class EmailModalLogic extends ModalLogic<IEmailModal> implements 
     this.page = page;
   }
 
+  protected validate(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
   protected wasChanges(): boolean {
     return this.modal.getInitialState() !== this.modal.getEmailInput().getValue();
   }

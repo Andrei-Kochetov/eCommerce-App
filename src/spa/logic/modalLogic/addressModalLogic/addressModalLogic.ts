@@ -42,6 +42,10 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     }
   }
 
+  protected validate(): boolean {
+    throw new Error('Method not implemented.');
+  }
+
   protected wasChanges(): boolean {
     const initialState: Address[] = this.modal.getInitialState();
     const currentState: Address[] = this.modal.getAllAddressesInfo();

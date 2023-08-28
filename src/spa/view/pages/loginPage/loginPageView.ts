@@ -69,8 +69,8 @@ export default class LoginPageView extends PageView implements ILoginPageView {
     const emailInput = this.emailField.getInput().getElement();
     const passwordInput = this.passwordField.getInput().getElement();
     if (emailInput instanceof HTMLInputElement && passwordInput instanceof HTMLInputElement)
-      emailInput.addEventListener('input', () => new LoginValidator(this).emailCheck(this.emailField));
-    passwordInput.addEventListener('input', () => new LoginValidator(this).passwordCheck(this.passwordField));
+      emailInput.addEventListener('input', () => LoginValidator.emailCheck(this.emailField));
+    passwordInput.addEventListener('input', () => LoginValidator.passwordCheck(this.passwordField));
     form.addInnerElement(this.emailField.getView(), this.passwordField.getView());
     this.getViewCreator().addInnerElement(
       title,
