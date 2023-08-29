@@ -15,7 +15,7 @@ import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/dec
 
 export default class LoginClient {
   private static readonly instance: ILoginClient = new LoginClient();
-  private readonly token: TokenCache;
+  private token: TokenCache;
 
   private constructor() {
     this.token = new MyTokenCache();
@@ -30,6 +30,7 @@ export default class LoginClient {
   }
 
   public authorization(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
+    this.token = new MyTokenCache();
     const passwordMiddlewareOptions: PasswordAuthMiddlewareOptions = {
       host: options.host,
       projectKey: options.projectKey,

@@ -34,11 +34,13 @@ export default class RegistrationController extends Controller implements IRegis
 
       const customerToken: TokenStore = registration.getToken();
       const customerData: Customer = response.body.customer;
+      const cutomerVersion: number = customerData.version;
       const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
 
       this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
       this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
       this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+      this.state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
