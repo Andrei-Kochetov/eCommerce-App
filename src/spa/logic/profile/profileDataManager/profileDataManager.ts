@@ -61,6 +61,7 @@ export default class ProfileDataManager implements IProfileDataManager {
       this.getToken().token,
       newNameAndDateBirth
     );
+    State.getInstance().setRecord(APP_STATE_KEYS.USER_LOGIN, newNameAndDateBirth.firstName);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
