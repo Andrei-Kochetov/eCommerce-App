@@ -13,7 +13,7 @@ import State from '@src/spa/logic/state/state';
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import { MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 
 export default class DataCustomer {
@@ -110,10 +110,10 @@ export default class DataCustomer {
       .execute();
   }
 
-  public async setNewAddress(token: string, addressObj: Address) {
+  public async setNewAddress(token: string, addressObj: CustomAddress) {
     const apiRoot = this.createApiRootForSetNewData(token);
     const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
-    const currentAddress: Address = (await ProfileDataManager.getInstance().getProfileData()).addresses.filter(
+    const currentAddress: CustomAddress = (await ProfileDataManager.getInstance().getProfileData()).addresses.filter(
       (el) => el.id === addressObj.id
     )[0];
     const actions: MyCustomerUpdateAction[] = this.createActionsAddress(addressObj, currentAddress);
@@ -172,7 +172,10 @@ export default class DataCustomer {
       .execute();
   }
 
-  private createBasicActionsAddress(addressObj: Address, currentAddress: Address): MyCustomerUpdateAction[] {
+  private createBasicActionsAddress(
+    addressObj: CustomAddress,
+    currentAddress: CustomAddress
+  ): MyCustomerUpdateAction[] {
     const actions: MyCustomerUpdateAction[] = [
       {
         action: 'changeAddress',
@@ -199,7 +202,7 @@ export default class DataCustomer {
     return actions;
   }
 
-  private createActionsAddress(addressObj: Address, currentAddress: Address): MyCustomerUpdateAction[] {
+  private createActionsAddress(addressObj: CustomAddress, currentAddress: CustomAddress): MyCustomerUpdateAction[] {
     const actions: MyCustomerUpdateAction[] = this.createBasicActionsAddress(addressObj, currentAddress);
     if (addressObj.isShipping !== currentAddress.isShipping && addressObj.isShipping === 'true') {
       actions.push({

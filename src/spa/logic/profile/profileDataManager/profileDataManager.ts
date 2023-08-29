@@ -1,5 +1,5 @@
 import {
-  Address,
+  CustomAddress,
   DEFAULT_ADDRESS,
   DEFAULT_PROFILE_DATA,
   IProfileDataManager,
@@ -28,7 +28,7 @@ export default class ProfileDataManager implements IProfileDataManager {
   public async getProfileData(): Promise<ProfileData> {
     const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.token.token);
     const dataCustomer = dataCustomerResponse.body;
-    const addresses: Address[] = [];
+    const addresses: CustomAddress[] = [];
     dataCustomer.addresses.forEach((address) => {
       if (address.id) {
         addresses.push({
@@ -75,7 +75,7 @@ export default class ProfileDataManager implements IProfileDataManager {
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async updateAddress(addressObj: Address): Promise<void> {
+  public async updateAddress(addressObj: CustomAddress): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }

@@ -1,5 +1,5 @@
 import '@src/spa/view/modal/addressesModal/addressModalItem/addressModalItem.scss';
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import * as constants from '@src/spa/view/modal/addressesModal/addressModalItem/constants';
 import { btnParams } from '@src/spa/view/button/types';
@@ -34,7 +34,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
 
   private readonly logic: IAddressModalLogic;
 
-  public constructor(address: Address, logic: IAddressModalLogic) {
+  public constructor(address: CustomAddress, logic: IAddressModalLogic) {
     const params: ElementCreatorParams = {
       tag: constants.ADDRESS_ITEM_TAG,
       classNames: [constants.ADDRESS_ITEM_CLASS],
@@ -94,7 +94,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
     return this.isDefaultBillingInput;
   }
 
-  public getAllValues(): Address {
+  public getAllValues(): CustomAddress {
     return {
       id: this.ID,
       city: this.cityInput.getValue(),

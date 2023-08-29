@@ -6,10 +6,10 @@ export interface ProfileData {
   firstName: string;
   lastName: string;
   dateBirth: string;
-  addresses: Address[];
+  addresses: CustomAddress[];
 }
 
-export interface Address {
+export interface CustomAddress {
   id: string;
   city: string;
   country: string;
@@ -28,7 +28,7 @@ export interface IProfileDataManager {
   setNewEmail(newEmail: string): Promise<void>;
   setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void>;
   setNewPassword(passwordObj: SetPasswordObj): Promise<void>;
-  updateAddress(addressObj: Address): Promise<void>;
+  updateAddress(addressObj: CustomAddress): Promise<void>;
   addNewAddress(addressObj: AddAddressObj): Promise<void>;
   deleteAddress(addressId: string): Promise<void>;
 }
@@ -42,7 +42,7 @@ export const DEFAULT_PROFILE_DATA: ProfileData = {
   addresses: [],
 };
 
-export const DEFAULT_ADDRESS: Omit<Address, 'id'> = {
+export const DEFAULT_ADDRESS: Omit<CustomAddress, 'id'> = {
   city: 'Not found',
   country: 'BY',
   postcode: '000000',
