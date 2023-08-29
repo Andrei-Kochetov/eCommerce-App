@@ -4,11 +4,7 @@ import { ErrorMessages } from '@src/spa/logic/validator/types';
 export default abstract class Validator {
   protected abstract validate(): boolean;
 
-  protected abstract passwordCheck(input: IInputView): boolean;
-
-  protected abstract emailCheck(input: IInputView): boolean;
-
-  protected emailFieldCheck(inputView: IInputView): boolean {
+  protected static emailFieldCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/;
@@ -23,7 +19,7 @@ export default abstract class Validator {
     }
   }
 
-  protected minMaxLengthCheck(inputView: IInputView, minLength: number, maxLength: number): boolean {
+  protected static minMaxLengthCheck(inputView: IInputView, minLength: number, maxLength: number): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       if (+input.value.length < minLength) {
@@ -40,7 +36,7 @@ export default abstract class Validator {
     }
   }
 
-  protected weakPasswordCheck(inputView: IInputView): boolean {
+  protected static weakPasswordCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-#!$@%^&*_+~=:;?/])[-\w#!$@%^&*+~=:;?/]{8,}$/;
@@ -55,7 +51,7 @@ export default abstract class Validator {
     }
   }
 
-  protected emptyFieldCheck(inputView: IInputView): boolean {
+  protected static emptyFieldCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       if (!input.value) {
@@ -69,7 +65,7 @@ export default abstract class Validator {
     }
   }
 
-  protected spaceStartEndFieldCheck(inputView: IInputView): boolean {
+  protected static spaceStartEndFieldCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       if (input.value.startsWith(' ')) {

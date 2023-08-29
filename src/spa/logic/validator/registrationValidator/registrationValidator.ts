@@ -1,7 +1,7 @@
 import { IRegistrationPage } from '@src/spa/view/pages/registrationPage/types';
 import Validator from '@src/spa/logic/validator/validator';
 import { IInputView } from '@src/spa/view/input/types';
-import { ErrorMessages } from '@src/spa/logic/validator/types';
+import { ErrorMessages, MAX_AGE, MIN_AGE } from '@src/spa/logic/validator/types';
 import { ISelect } from '@src/spa/view/select/types';
 import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
 
@@ -13,7 +13,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     this.page = registrationPage;
   }
 
-  protected passwordCheck(input: IInputView): boolean {
+  public static passwordCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -23,12 +23,12 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected emailCheck(input: IInputView): boolean {
+  public static emailCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return this.spaceStartEndFieldCheck(input) && this.emailFieldCheck(input) && this.emptyFieldCheck(input);
   }
 
-  protected firstNameCheck(input: IInputView): boolean {
+  public static firstNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -38,7 +38,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected lastNameCheck(input: IInputView): boolean {
+  public static lastNameCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -48,17 +48,17 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected dateBirthCheck(input: IInputView): boolean {
+  public static dateBirthCheck(input: IInputView): boolean {
     input.setTextError(' ');
-    return this.emptyFieldCheck(input) && this.minDateBirthCheck(input);
+    return this.emptyFieldCheck(input) && this.minDateBirthCheck(input) && this.maxDateBirthCheck(input);
   }
 
-  protected billingCountryCheck(select: ISelect): boolean {
+  public static billingCountryCheck(select: ISelect): boolean {
     select.setTextError(' ');
     return this.countryCheck(select);
   }
 
-  protected billingCityCheck(input: IInputView): boolean {
+  public static billingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -68,7 +68,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected billingAddressCheck(input: IInputView): boolean {
+  public static billingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -78,7 +78,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected billingPostCodeCheck(input: IInputView): boolean {
+  public static billingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -88,12 +88,12 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected shippingCountryCheck(select: ISelect): boolean {
+  protected static shippingCountryCheck(select: ISelect): boolean {
     select.setTextError(' ');
     return this.countryCheck(select);
   }
 
-  protected shippingCityCheck(input: IInputView): boolean {
+  protected static shippingCityCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -103,7 +103,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected shippingAddressCheck(input: IInputView): boolean {
+  protected static shippingAddressCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -113,7 +113,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     );
   }
 
-  protected shippingPostCodeCheck(input: IInputView): boolean {
+  protected static shippingPostCodeCheck(input: IInputView): boolean {
     input.setTextError(' ');
     return (
       this.emptyFieldCheck(input) &&
@@ -132,31 +132,32 @@ export default class RegistrationValidator extends Validator implements IRegistr
     }
     return arrFunc.every((el) => el === true);
   }
+
   private singleAddressValidation(): boolean {
     const arrFunc = [
-      this.passwordCheck(this.page.getPasswordField()),
-      this.emailCheck(this.page.getEmailField()),
-      this.firstNameCheck(this.page.getFirstNameField()),
-      this.lastNameCheck(this.page.getLastNameField()),
-      this.dateBirthCheck(this.page.getDateBirthField()),
-      this.shippingCountryCheck(this.page.getShippingCountryField()),
-      this.shippingCityCheck(this.page.getShippingCityField()),
-      this.shippingAddressCheck(this.page.getShippingAddressField()),
-      this.shippingPostCodeCheck(this.page.getShippingPostCodeField()),
+      RegistrationValidator.passwordCheck(this.page.getPasswordField()),
+      RegistrationValidator.emailCheck(this.page.getEmailField()),
+      RegistrationValidator.firstNameCheck(this.page.getFirstNameField()),
+      RegistrationValidator.lastNameCheck(this.page.getLastNameField()),
+      RegistrationValidator.dateBirthCheck(this.page.getDateBirthField()),
+      RegistrationValidator.shippingCountryCheck(this.page.getShippingCountryField()),
+      RegistrationValidator.shippingCityCheck(this.page.getShippingCityField()),
+      RegistrationValidator.shippingAddressCheck(this.page.getShippingAddressField()),
+      RegistrationValidator.shippingPostCodeCheck(this.page.getShippingPostCodeField()),
     ];
     return arrFunc.every((el) => el === true);
   }
   private validationBillingAddresses(): boolean {
     const arrFunc = [
-      this.billingCountryCheck(this.page.getBillingCountryField()),
-      this.billingCityCheck(this.page.getBillingCityField()),
-      this.billingAddressCheck(this.page.getBillingAddressField()),
-      this.billingPostCodeCheck(this.page.getBillingPostCodeField()),
+      RegistrationValidator.billingCountryCheck(this.page.getBillingCountryField()),
+      RegistrationValidator.billingCityCheck(this.page.getBillingCityField()),
+      RegistrationValidator.billingAddressCheck(this.page.getBillingAddressField()),
+      RegistrationValidator.billingPostCodeCheck(this.page.getBillingPostCodeField()),
     ];
     return arrFunc.every((el) => el === true);
   }
 
-  private onlyTextCheck(inputView: IInputView): boolean {
+  private static onlyTextCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^([a-zа-яё -])+$/i;
@@ -171,7 +172,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     }
   }
 
-  private addressCheck(inputView: IInputView): boolean {
+  private static addressCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^[а-яА-ЯёЁa-zA-Z0-9- .,/]+$/;
@@ -186,12 +187,12 @@ export default class RegistrationValidator extends Validator implements IRegistr
     }
   }
 
-  private minDateBirthCheck(inputView: IInputView): boolean {
+  private static minDateBirthCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const dateNow = new Date();
       const date13YearsAgo = new Date(
-        `${+dateNow.getFullYear() - 13}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
+        `${+dateNow.getFullYear() - MIN_AGE}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
       ).getTime();
       const dateValue = new Date(input.value).getTime();
       if (date13YearsAgo < dateValue) {
@@ -205,7 +206,26 @@ export default class RegistrationValidator extends Validator implements IRegistr
     }
   }
 
-  private postCodeCheck(inputView: IInputView): boolean {
+  private static maxDateBirthCheck(inputView: IInputView): boolean {
+    const input = inputView.getInput().getElement();
+    if (input instanceof HTMLInputElement) {
+      const dateNow = new Date();
+      const maxYearBack = new Date(
+        `${+dateNow.getFullYear() - MAX_AGE}-${dateNow.getMonth() + 1}-${+dateNow.getDate() + 1}`
+      ).getTime();
+      const dateValue = new Date(input.value).getTime();
+      if (maxYearBack > dateValue) {
+        inputView.setTextError(ErrorMessages.MAX_DATE_BIRTH);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  private static postCodeCheck(inputView: IInputView): boolean {
     const input = inputView.getInput().getElement();
     if (input instanceof HTMLInputElement) {
       const regExp = /^[A-Z0-9 ]+$/;
@@ -220,7 +240,7 @@ export default class RegistrationValidator extends Validator implements IRegistr
     }
   }
 
-  private countryCheck(selectView: ISelect): boolean {
+  private static countryCheck(selectView: ISelect): boolean {
     const select = selectView.getSelect().getElement();
     if (select instanceof HTMLSelectElement) {
       if (select.options.selectedIndex === 0) {

@@ -74,13 +74,9 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.BASKET}`,
-    callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
+    callback: async (basePage: IBasePage): Promise<void> => {
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
-      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
-        router.navigate(PageNames.LOGIN, true);
-      } else {
-        basePage.renderPage(new BasketPageView());
-      }
+      basePage.renderPage(new BasketPageView());
     },
   },
   {

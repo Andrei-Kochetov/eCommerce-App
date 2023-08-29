@@ -1,15 +1,15 @@
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 
 export interface IAddressesModal {
   getView(): HTMLElement;
   getViewCreator(): IElementCreator;
-  getAllAddressesInfo(): Address[];
-  getSingleAddressInfo(id: string): Address | null;
+  getAllAddressesInfo(): CustomAddress[];
+  getSingleAddressInfo(id: string): CustomAddress | null;
   getAllAddressModalItems(): IAddressModalItem[];
   getSingleAddressModalItem(id: string): IAddressModalItem | null;
   showModal(): void;
   hideModal(): void;
-  getInitialState(): Address[];
+  getInitialState(): CustomAddress[];
 }

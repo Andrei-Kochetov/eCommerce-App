@@ -19,6 +19,8 @@ export interface ITopMenuView {
   showSignInBTN(): void;
   changeCaption(userName?: string): void;
   setController(router: IRouter): void;
+  hideUserBar(): void;
+  showUserBar(): void;
 }
 
 export type ITopMenu = ITopMenuView & IView;

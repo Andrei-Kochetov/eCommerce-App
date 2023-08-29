@@ -4,7 +4,7 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
-import { HIDDEN_CLASS } from '../header/types';
+import { HIDDEN_CLASS } from '@src/spa/view/header/types';
 import View from '@src/spa/view/view';
 import { IRouter } from '@src/spa/logic/router/types';
 import { IHeaderController } from '@src/spa/logic/controller/headerController/types';
@@ -33,7 +33,7 @@ const AUTHORIZATION_BTN_CLASS_NAME = 'btn_authorization';
 const BASKET_BTN_CLASS_NAME = 'btn_basket';
 const SING_IN_BTN_TEXT = 'Sing in';
 const SING_OUT_BTN_TEXT = 'Sing out';
-const REGISTER_TEXT = 'Register';
+const REGISTER_TEXT = 'Sign up'; // or register if someone wishes
 const BASKET_TEXT = '';
 
 export default class TopMenuView extends View {
@@ -90,6 +90,14 @@ export default class TopMenuView extends View {
 
   public setController(router: IRouter): void {
     this.controller = new HeaderController(router);
+  }
+
+  public hideUserBar(): void {
+    this.userBar.setClasses(HIDDEN_CLASS);
+  }
+
+  public showUserBar(): void {
+    this.userBar.removeClasses(HIDDEN_CLASS);
   }
 
   public hideSignOutBTN(): void {

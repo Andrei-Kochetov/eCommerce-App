@@ -1,6 +1,6 @@
 import '@src/spa/view/modal/addressesModal/addressesModal.scss';
 import ModalView from '@src/spa/view/modal/modalView';
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import FormView from '@src/spa/view/form/formView';
 import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import * as constants from '@src/spa/view/modal/addressesModal/constants';
@@ -17,9 +17,9 @@ export default class AddressesModalView extends ModalView implements IAddressesM
   private readonly form: IElementCreator;
   private readonly addresses: Map<string, IAddressModalItem> = new Map();
   private readonly logic: IAddressModalLogic;
-  private readonly initialState: Address[];
+  private readonly initialState: CustomAddress[];
 
-  public constructor(addresses: Address[], page: IProfilePage) {
+  public constructor(addresses: CustomAddress[], page: IProfilePage) {
     super();
     this.logic = new AddressModalLogic(this, page);
     this.initialState = addresses;
@@ -27,17 +27,17 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     this.configure(addresses);
   }
 
-  public getInitialState(): Address[] {
+  public getInitialState(): CustomAddress[] {
     return this.initialState;
   }
 
-  public getAllAddressesInfo(): Address[] {
+  public getAllAddressesInfo(): CustomAddress[] {
     return Array.from(this.addresses.values()).map(
-      (addressItemView: IAddressModalItem): Address => addressItemView.getAllValues()
+      (addressItemView: IAddressModalItem): CustomAddress => addressItemView.getAllValues()
     );
   }
 
-  public getSingleAddressInfo(id: string): Address | null {
+  public getSingleAddressInfo(id: string): CustomAddress | null {
     const addressItemView: IAddressModalItem | undefined = this.addresses.get(id);
 
     if (addressItemView) {
@@ -59,11 +59,11 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     return null;
   }
 
-  private configure(addresses: Address[]): void {
+  private configure(addresses: CustomAddress[]): void {
     const addAddressBTN: IElementCreator = this.createAddAddressBTN();
 
     this.form.setClasses(constants.ADDRESSES_FORM_CLASS);
-    addresses.forEach((address: Address): void => {
+    addresses.forEach((address: CustomAddress): void => {
       const addressItemView: IAddressModalItem = new AddressModalItemView(address, this.logic);
       this.form.addInnerElement(addressItemView.getView());
       this.addresses.set(address.id, addressItemView);

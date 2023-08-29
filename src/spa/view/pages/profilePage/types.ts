@@ -1,4 +1,4 @@
-import { Address, ProfileData, UserParams } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress, ProfileData, UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 
 export interface IProfilePage {
@@ -9,7 +9,7 @@ export interface IProfilePage {
   changeFirstName(firstName: string): void;
   changeLastName(lastName: string): void;
   changeDateBirth(dateBirth: string): void;
-  changeAddresses(addresses: Address[]): void;
+  changeAddresses(addresses: CustomAddress[]): void;
   changeMail(email: string): void;
   getInfoEditBTN(): IElementCreator;
   getPasswordEditBTN(): IElementCreator;

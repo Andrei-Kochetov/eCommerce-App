@@ -2,13 +2,13 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import '@src/spa/view/pages/profilePage/profilePage.scss';
 import View from '@src/spa/view/view';
-import { Address, ProfileData, UserParams } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress, ProfileData, UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { btnParams } from '@src/spa/view/button/types';
 import * as constants from '@src/spa/view/pages/profilePage/constants';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
-import { IProfilePageLogic } from '@src/spa/logic/profilePageLogic/types';
-import ProfilePageLogic from '@src/spa/logic/profilePageLogic/profilePageLogic';
+import { IProfilePageLogic } from '@src/spa/logic/profile/profilePageLogic/types';
+import ProfilePageLogic from '@src/spa/logic/profile/profilePageLogic/profilePageLogic';
 
 export default class ProfilePageView extends View implements IProfilePage {
   private readonly firstName: IElementCreator;
@@ -88,7 +88,7 @@ export default class ProfilePageView extends View implements IProfilePage {
     this.initialState.dateBirth = dateBirth;
   }
 
-  public changeAddresses(addresses: Address[]): void {
+  public changeAddresses(addresses: CustomAddress[]): void {
     const map = new Map();
     this.bottomInfoBlock.clearInnerHTML();
 
@@ -191,7 +191,7 @@ export default class ProfilePageView extends View implements IProfilePage {
     return new ElementCreator(constants.mailLinkParams);
   }
 
-  private createAddressField(address: Address): IElementCreator {
+  private createAddressField(address: CustomAddress): IElementCreator {
     const container = new ElementCreator(constants.addressContainerParams);
     const country = this.createInfoTextParagraph();
     const city = this.createInfoTextParagraph();

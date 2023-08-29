@@ -8,7 +8,7 @@ import EmailModalView from '@src/spa/view/modal/emailModal/emailModalView';
 import { IEmailModal } from '@src/spa/view/modal/emailModal/types';
 import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
 import AddressesModalView from '@src/spa/view/modal/addressesModal/addressesModalView';
-import { IProfilePageLogic } from '@src/spa/logic/profilePageLogic/types';
+import { IProfilePageLogic } from '@src/spa/logic/profile/profilePageLogic/types';
 
 export default class ProfilePageLogic implements IProfilePageLogic {
   private readonly page: IProfilePage;

@@ -1,5 +1,5 @@
 import '@src/spa/view/modal/addressesModal/addressModalItem/addressModalItem.scss';
-import { Address } from '@src/spa/logic/profile/profileDataManager/types';
+import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import * as constants from '@src/spa/view/modal/addressesModal/addressModalItem/constants';
 import { btnParams } from '@src/spa/view/button/types';
@@ -12,12 +12,14 @@ import CheckboxView from '@src/spa/view/checkbox/checkboxView';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
+import { ISelect } from '@src/spa/view/select/types';
+import SelectView from '@src/spa/view/select/selectView';
 
 export default class AddressModalItemView extends View implements IAddressModalItem {
   private readonly deleteAddressBTN: IElementCreator;
 
   //text inputs
-  private readonly countryInput: IInput;
+  private readonly countryInput: ISelect;
   private readonly cityInput: IInput;
   private readonly streetInput: IInput;
   private readonly postCodeInput: IInput;
@@ -32,7 +34,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
 
   private readonly logic: IAddressModalLogic;
 
-  public constructor(address: Address, logic: IAddressModalLogic) {
+  public constructor(address: CustomAddress, logic: IAddressModalLogic) {
     const params: ElementCreatorParams = {
       tag: constants.ADDRESS_ITEM_TAG,
       classNames: [constants.ADDRESS_ITEM_CLASS],
@@ -60,7 +62,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
     return this.ID;
   }
 
-  public getCountryInput(): IInput {
+  public getCountryInput(): ISelect {
     return this.countryInput;
   }
 
@@ -92,7 +94,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
     return this.isDefaultBillingInput;
   }
 
-  public getAllValues(): Address {
+  public getAllValues(): CustomAddress {
     return {
       id: this.ID,
       city: this.cityInput.getValue(),
@@ -157,20 +159,21 @@ export default class AddressModalItemView extends View implements IAddressModalI
     return input;
   }
 
-  private createCountryInput(country: string): IInput {
-    const params: IInputViewParams = {
-      attributes: {
-        id: 'country',
-        type: 'text',
-        name: 'country',
-        value: country,
-      },
-      textLabel: 'Country',
+  private createCountryInput(country: string): ISelect {
+    const params: Record<string, string> = {
+      name: 'country',
     };
-    const input: IInput = new InputView(params);
+    const select: ISelect = new SelectView(params);
+    const element: HTMLElement = select.getSelect().getElement();
+    if (element instanceof HTMLSelectElement) {
+      const options: HTMLOptionsCollection = element.options;
+      const searchOption: HTMLOptionElement | undefined = Array.from(options).find(
+        (option: HTMLOptionElement): boolean => option.value === country
+      );
+      if (searchOption) searchOption.selected = true;
+    }
 
-    input.getViewCreator().removeAttribute('id');
-    return input;
+    return select;
   }
 
   private createStreetInput(street: string): IInput {

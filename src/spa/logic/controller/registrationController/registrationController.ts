@@ -8,8 +8,8 @@ import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import Registration from '@src/spa/model/registration/registration';
 import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registration/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
-import { TokenStore } from '@commercetools/sdk-client-v2';
 import PopUpView from '@src/spa/view/popUp/popUpView';
+import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -32,13 +32,18 @@ export default class RegistrationController extends Controller implements IRegis
         response = await registration.registrationTwoAddress(registrationInputValue);
       }
 
-      const customerToken: TokenStore = registration.getToken();
       const customerData: Customer = response.body.customer;
+      const cutomerVersion: number = customerData.version;
       const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
 
+      const email = customerData.email;
+      const password = this.page.getPasswordField().getValue();
+      await LoginClient.getInstance().authorization(email, password);
+
+      this.state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
       this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
-      this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
       this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+      this.state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
