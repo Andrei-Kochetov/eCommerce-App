@@ -8,7 +8,6 @@ import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import Registration from '@src/spa/model/registration/registration';
 import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registration/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
-import { TokenStore } from '@commercetools/sdk-client-v2';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 
