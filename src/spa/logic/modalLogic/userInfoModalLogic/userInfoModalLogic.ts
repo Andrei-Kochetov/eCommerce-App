@@ -29,7 +29,8 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
     return !ModalLogic.ObjTopLevelCompare(currentState, initialState);
   }
 
-  protected beforeCloseActions(): void {
+  protected beforeCloseActions(): Promise<boolean> {
     this.page.changeUserInfo(this.modal.getAllValues());
+    return Promise.resolve(true);
   }
 }

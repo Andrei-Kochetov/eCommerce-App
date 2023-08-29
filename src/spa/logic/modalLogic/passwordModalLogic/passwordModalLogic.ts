@@ -39,8 +39,8 @@ export default class PasswordModalLogic extends ModalLogic<IPasswordModal> imple
     return arrFunc.every((el: boolean) => el === true);
   }
 
-  protected beforeCloseActions(): void {
-    console.log('before accept');
+  protected beforeCloseActions(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 
   private sameValuesCheck(input_1: IInput, input_2: IInput): boolean {
