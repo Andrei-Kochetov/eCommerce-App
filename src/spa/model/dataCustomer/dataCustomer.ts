@@ -113,7 +113,7 @@ export default class DataCustomer {
   public async setNewAddress(token: string, addressObj: Address) {
     const apiRoot = this.createApiRootForSetNewData(token);
     const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
-    const currentAddress: Address = (await ProfileDataManager.getInstance().getProfileData())!.addresses.filter(
+    const currentAddress: Address = (await ProfileDataManager.getInstance().getProfileData()).addresses.filter(
       (el) => el.id === addressObj.id
     )[0];
     const actions: MyCustomerUpdateAction[] = this.createActionsAddress(addressObj, currentAddress);

@@ -1,8 +1,14 @@
-import { Address, IProfileDataManager, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
+import {
+  Address,
+  DEFAULT_ADDRESS,
+  DEFAULT_PROFILE_DATA,
+  IProfileDataManager,
+  ProfileData,
+} from '@src/spa/logic/profile/profileDataManager/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import DataCustomer from '@src/spa/model/dataCustomer/dataCustomer';
-import { SetPasswordObj, SetNameAndDateBirthObj, SetAddressObj } from '@src/spa/model/dataCustomer/types';
+import { SetPasswordObj, SetNameAndDateBirthObj } from '@src/spa/model/dataCustomer/types';
 import State from '@src/spa/logic/state/state';
 import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
@@ -19,17 +25,17 @@ export default class ProfileDataManager implements IProfileDataManager {
     return this.instance;
   }
 
-  public async getProfileData(): Promise<ProfileData | undefined> {
+  public async getProfileData(): Promise<ProfileData> {
     const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.token.token);
     const dataCustomer = dataCustomerResponse.body;
     const addresses: Address[] = [];
     dataCustomer.addresses.forEach((address) => {
-      if (address.city && address.country && address.streetName && address.id && address.postalCode) {
+      if (address.id) {
         addresses.push({
-          city: address.city,
+          city: address.city ? address.city : DEFAULT_ADDRESS.city,
           country: address.country,
-          postcode: address.postalCode,
-          street: address.streetName,
+          postcode: address.postalCode ? address.postalCode : DEFAULT_ADDRESS.city,
+          street: address.streetName ? address.streetName : DEFAULT_ADDRESS.street,
           id: address.id,
           isShipping: address.id === dataCustomer.shippingAddressIds?.join() ? 'true' : 'false',
           isBilling: address.id === dataCustomer.billingAddressIds?.join() ? 'true' : 'false',
@@ -38,15 +44,13 @@ export default class ProfileDataManager implements IProfileDataManager {
         });
       }
     });
-    if (dataCustomer.firstName && dataCustomer.lastName && dataCustomer.dateOfBirth) {
-      return {
-        email: dataCustomer.email,
-        firstName: dataCustomer.firstName,
-        lastName: dataCustomer.lastName,
-        dateBirth: dataCustomer.dateOfBirth,
-        addresses: addresses,
-      };
-    }
+    return {
+      email: dataCustomer.email,
+      firstName: dataCustomer.firstName ? dataCustomer.firstName : DEFAULT_PROFILE_DATA.firstName,
+      lastName: dataCustomer.lastName ? dataCustomer.lastName : DEFAULT_PROFILE_DATA.lastName,
+      dateBirth: dataCustomer.dateOfBirth ? dataCustomer.dateOfBirth : DEFAULT_PROFILE_DATA.dateBirth,
+      addresses: addresses,
+    };
   }
 
   public async setNewEmail(newEmail: string): Promise<void> {
@@ -71,7 +75,7 @@ export default class ProfileDataManager implements IProfileDataManager {
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async setNewAddress(addressObj: Address): Promise<void> {
+  public async updateAddress(addressObj: Address): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
