@@ -8,8 +8,6 @@ import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profil
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 
-const state: IState = State.getInstance();
-
 export interface IRoute {
   path: string;
   callback: (basePage: IBasePage, router: IRouter) => void;
@@ -34,6 +32,7 @@ export const routes: IRoute[] = [
     path: `${PageNames.LOGIN}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: LoginPageView } = await import('@src/spa/view/pages/loginPage/loginPageView');
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
         router.navigate(PageNames.MAIN, true);
       } else {
@@ -47,6 +46,7 @@ export const routes: IRoute[] = [
       const { default: RegistrationPageView } = await import(
         '@src/spa/view/pages/registrationPage/registrationPageView'
       );
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
         router.navigate(PageNames.MAIN, true);
       } else {
@@ -86,6 +86,7 @@ export const routes: IRoute[] = [
     path: `${PageNames.PROFILE}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: ProfilePageView } = await import('@src/spa/view/pages/profilePage/profilePageView');
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
         router.navigate(PageNames.LOGIN, true);
       } else {
