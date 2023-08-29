@@ -1,9 +1,12 @@
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
-import IUserInfoModalLogic from '@src/spa/logic/modalLogic/userInfoModalLogic/types';
+import IUserInfoModalLogic, { SUCCESS_TEXT } from '@src/spa/logic/modalLogic/userInfoModalLogic/types';
 import { IUserInfoModal } from '@src/spa/view/modal/userInfoModal/types';
 import { UserParams } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
-import RegistrationValidator from '../../validator/registrationValidator/registrationValidator';
+import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 
 export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> implements IUserInfoModalLogic {
   private readonly page: IProfilePage;
@@ -29,8 +32,16 @@ export default class UserInfoModalLogic extends ModalLogic<IUserInfoModal> imple
     return !ModalLogic.ObjTopLevelCompare(currentState, initialState);
   }
 
-  protected beforeCloseActions(): Promise<boolean> {
+  protected async beforeCloseActions(): Promise<boolean> {
+    const userInfo: UserParams = this.modal.getAllValues();
+    try {
+      await ProfileDataManager.getInstance().setNewNameAndDateBirth(userInfo);
+    } catch (err) {
+      PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+      return true;
+    }
+    PopUpView.getApprovePopUp(SUCCESS_TEXT).show();
     this.page.changeUserInfo(this.modal.getAllValues());
-    return Promise.resolve(true);
+    return true;
   }
 }
