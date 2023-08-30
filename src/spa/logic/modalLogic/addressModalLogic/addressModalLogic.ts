@@ -102,25 +102,24 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     const currentState: CustomAddress[] = this.modal.getAllAddressesInfo();
 
     try {
-      currentState.forEach(
-        async (address: CustomAddress): Promise<void> => {
-          if (address.id.includes(NEW_ADDRESSES_ID_FLAG)) {
-            const id: string = await ProfileDataManager.getInstance().addNewAddress(address);
-            const addressItem: IAddressModalItem | null = this.modal.getSingleAddressModalItem(address.id);
-            if (!addressItem) return;
+      for (const address of currentState) {
+        if (address.id.includes(NEW_ADDRESSES_ID_FLAG)) {
+          const id: string = await ProfileDataManager.getInstance().addNewAddress(address);
+          const addressItem: IAddressModalItem | null = this.modal.getSingleAddressModalItem(address.id);
+          if (addressItem) {
             addressItem.setID(id);
-          } else {
-            await ProfileDataManager.getInstance().updateAddress(address);
           }
+        } else {
+          await ProfileDataManager.getInstance().updateAddress(address);
         }
-      );
+      }
+      PopUpView.getApprovePopUp(SUCCESS_ADD_ADDRESS_TEXT).show();
+      this.page.changeAddresses(this.modal.getAllAddressesInfo());
+      return true;
     } catch (err) {
       PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
       return true;
     }
-    PopUpView.getApprovePopUp(SUCCESS_ADD_ADDRESS_TEXT).show();
-    this.page.changeAddresses(this.modal.getAllAddressesInfo());
-    return true;
   }
 
   private getNewAddressInitialData(): CustomAddress {
