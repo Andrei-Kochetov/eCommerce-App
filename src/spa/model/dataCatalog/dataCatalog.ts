@@ -8,7 +8,6 @@ import {
   TokenCache,
 } from '@commercetools/sdk-client-v2';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 
 export default class DataCatalog {
   private static readonly instance = new DataCatalog();
@@ -17,9 +16,13 @@ export default class DataCatalog {
     return this.instance;
   }
 
-  public getDataCatalog(token: string) {
+  public getCatalogs() {
     const apiRoot = this.createApiRoot();
-    return apiRoot.products().get().execute(); //.categories().get().execute()
+    return apiRoot.categories().get().execute();
+  }
+  public getProducts() {
+    const apiRoot = this.createApiRoot();
+    return apiRoot.productProjections().get().execute();
   }
 
   private createApiRoot() {

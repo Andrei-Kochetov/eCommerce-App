@@ -16,14 +16,19 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     return this.instance;
   }
 
-  public async getCatalogData() {
-    const dataCatalogResponse = await DataCatalog.getInstance().getDataCatalog(this.getToken().token);
+  public async getCatalogs() {
+    const dataCatalogResponse = await DataCatalog.getInstance().getCatalogs();
     console.log(dataCatalogResponse.body);
   }
 
-  private getToken(): TokenStore {
-    const state: IState = State.getInstance();
-    const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
-    return JSON.parse(token);
+  public async getProducts() {
+    const dataCatalogResponse = await DataCatalog.getInstance().getProducts();
+    console.log(dataCatalogResponse.body);
   }
+
+  //private getToken(): TokenStore {
+  //  const state: IState = State.getInstance();
+  //  const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
+  //  return JSON.parse(token);
+  //}
 }
