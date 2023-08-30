@@ -23,4 +23,8 @@ export interface AddAddressObj {
   country: string;
   postcode: string;
   street: string;
+  isShipping: 'true' | 'false';
+  isBilling: 'true' | 'false';
+  isDefaultShipping: 'true' | 'false';
+  isDefaultBilling: 'true' | 'false';
 }

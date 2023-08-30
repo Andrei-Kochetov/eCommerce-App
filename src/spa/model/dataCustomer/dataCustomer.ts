@@ -1,4 +1,4 @@
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { ClientResponse, createApiBuilderFromCtpClient, Customer } from '@commercetools/platform-sdk';
 import { options } from '@src/spa/model/LoginClientApi/constants';
 import {
   Client,
@@ -128,9 +128,10 @@ export default class DataCustomer {
       .execute();
   }
 
-  public addNewAddress(token: string, addressObj: AddAddressObj) {
+/* eslint-disable max-lines-per-function*/
+  public async addNewAddress(token: string, addressObj: AddAddressObj): Promise<ClientResponse<Customer>> {
     const apiRoot = this.createApiRootForSetNewData(token);
-    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
+    let currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     const actions: MyCustomerUpdateAction[] = [
       {
         action: 'addAddress',
@@ -142,7 +143,7 @@ export default class DataCustomer {
         },
       },
     ];
-    return apiRoot
+    const responseAddAddress = await apiRoot
       .me()
       .post({
         body: {
@@ -150,27 +151,71 @@ export default class DataCustomer {
           actions: actions,
         },
       })
-      .execute();
-  }
+      .execute()
+      currentVersion = responseAddAddress.body.version;
+      State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${currentVersion}`);
+      if ( addressObj.isBilling === 'true' || addressObj.isShipping === 'true' ||
+        addressObj.isDefaultBilling === 'true' || addressObj.isDefaultShipping === 'true') {
+        const currentAddressIndex = responseAddAddress.body.addresses.length - 1
+        const id = responseAddAddress.body.addresses[currentAddressIndex].id;
+        const apiRoot = this.createApiRootForSetNewData(token);
+        const actions: MyCustomerUpdateAction[] = [];
+        if (addressObj.isBilling === 'true') {
+          actions.push({
+            action: 'addBillingAddressId',
+            addressId: id,
+          });
+        }
+        if (addressObj.isShipping === 'true') {
+          actions.push({
+            action: 'addShippingAddressId',
+            addressId: id,
+          });
+        }
+        if (addressObj.isDefaultBilling === 'true') {
+          actions.push({
+            action: 'setDefaultBillingAddress',
+            addressId: id,
+          });
+        }
+        if (addressObj.isDefaultShipping === 'true') {
+          actions.push({
+            action: 'setDefaultShippingAddress',
+            addressId: id,
+          });
+        }
+        const responseAddAddressWithShippingBillingAndDefault = await apiRoot.me().post({
+          body: {
+            version: currentVersion,
+            actions: actions,
+          },
+        })
+        .execute();
+        currentVersion = responseAddAddressWithShippingBillingAndDefault.body.version;
+        State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${currentVersion}`);
+        return responseAddAddressWithShippingBillingAndDefault
+      } else { return responseAddAddress }
+    }
+    /* eslint-enable max-lines-per-function*/
 
-  public deleteAddress(token: string, addressId: string) {
-    const apiRoot = this.createApiRootForSetNewData(token);
-    const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
-    return apiRoot
-      .me()
-      .post({
-        body: {
-          version: currentVersion,
-          actions: [
-            {
-              action: 'removeAddress',
-              addressId: addressId,
-            },
-          ],
-        },
-      })
-      .execute();
-  }
+    public deleteAddress(token: string, addressId: string) {
+      const apiRoot = this.createApiRootForSetNewData(token);
+      const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
+      return apiRoot
+        .me()
+        .post({
+          body: {
+            version: currentVersion,
+            actions: [
+              {
+                action: 'removeAddress',
+                addressId: addressId,
+              },
+            ],
+          },
+        })
+        .execute();
+    }
 
   private createBasicActionsAddress(
     addressObj: CustomAddress,

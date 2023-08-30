@@ -79,8 +79,7 @@ export default class ProfileDataManager implements IProfileDataManager {
   }
 
   public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
-    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+    await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
   }
 
   public async deleteAddress(addressId: string): Promise<void> {
