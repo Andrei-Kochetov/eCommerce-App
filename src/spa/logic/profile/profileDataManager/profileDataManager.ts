@@ -73,9 +73,17 @@ export default class ProfileDataManager implements IProfileDataManager {
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async updateAddress(addressObj: CustomAddress): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.getToken().token, addressObj);
-    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+  public async updateAddresses(addresses: CustomAddress[]): Promise<void> {
+    const currentAddresses: CustomAddress[] = (await this.getProfileData()).addresses;
+    for (const addressObj of addresses) {
+      const currentAddress: CustomAddress = currentAddresses.filter((el) => el.id === addressObj.id)[0];
+      const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(
+        this.getToken().token,
+        addressObj,
+        currentAddress
+      );
+      State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+    }
   }
 
   public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
