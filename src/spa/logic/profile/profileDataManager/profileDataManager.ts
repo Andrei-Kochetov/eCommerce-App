@@ -12,7 +12,7 @@ import { SetPasswordObj, SetNameAndDateBirthObj } from '@src/spa/model/dataCusto
 import State from '@src/spa/logic/state/state';
 import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
-
+import { Address } from '@commercetools/platform-sdk';
 export default class ProfileDataManager implements IProfileDataManager {
   private static readonly instance = new ProfileDataManager();
 
@@ -73,21 +73,15 @@ export default class ProfileDataManager implements IProfileDataManager {
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async updateAddresses(addresses: CustomAddress[]): Promise<void> {
-    const currentAddresses: CustomAddress[] = (await this.getProfileData()).addresses;
-    for (const addressObj of addresses) {
-      const currentAddress: CustomAddress = currentAddresses.filter((el) => el.id === addressObj.id)[0];
-      const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(
-        this.getToken().token,
-        addressObj,
-        currentAddress
-      );
-      State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
-    }
+  public async updateAddress(addressObj: CustomAddress): Promise<Address[]> {
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.getToken().token, addressObj);
+    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+    return dataCustomerResponse.body.addresses;
   }
 
-  public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
-    await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
+  public async addNewAddress(addressObj: AddAddressObj): Promise<Address[]> {
+    const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
+    return dataCustomerResponse.body.addresses;
   }
 
   public async deleteAddress(addressId: string): Promise<void> {

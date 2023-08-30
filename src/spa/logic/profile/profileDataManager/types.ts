@@ -1,5 +1,6 @@
 import { SetNameAndDateBirthObj } from '@src/spa/model/dataCustomer/types';
 import { SetPasswordObj, AddAddressObj } from '@src/spa/model/dataCustomer/types';
+import { Address } from '@commercetools/platform-sdk';
 
 export interface ProfileData {
   email: string;
@@ -28,8 +29,8 @@ export interface IProfileDataManager {
   setNewEmail(newEmail: string): Promise<void>;
   setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void>;
   setNewPassword(passwordObj: SetPasswordObj): Promise<void>;
-  updateAddresses(addresses: CustomAddress[]): Promise<void>;
-  addNewAddress(addressObj: AddAddressObj): Promise<void>;
+  updateAddress(address: CustomAddress): Promise<Address[]>;
+  addNewAddress(addressObj: AddAddressObj): Promise<Address[]>;
   deleteAddress(addressId: string): Promise<void>;
 }
 

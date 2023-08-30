@@ -14,6 +14,7 @@ import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import { MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 
 export default class DataCustomer {
   private static readonly instance = new DataCustomer();
@@ -109,8 +110,11 @@ export default class DataCustomer {
       .execute();
   }
 
-  public async setNewAddress(token: string, addressObj: CustomAddress, currentAddress: CustomAddress) {
+  public async setNewAddress(token: string, addressObj: CustomAddress) {
     const apiRoot = this.createApiRootForSetNewData(token);
+    const currentAddress: CustomAddress = (await ProfileDataManager.getInstance().getProfileData()).addresses.filter(
+      (el) => el.id === addressObj.id
+    )[0];
     const currentVersion = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.VERSION));
     const actions: MyCustomerUpdateAction[] = this.createActionsAddress(addressObj, currentAddress);
     return apiRoot
