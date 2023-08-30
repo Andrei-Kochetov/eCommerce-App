@@ -10,6 +10,8 @@ import { IRouter } from '@src/spa/logic/router/types';
 import { IHeaderController } from '@src/spa/logic/controller/headerController/types';
 import HeaderController from '@src/spa/logic/controller/headerController/headerController';
 
+import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
+
 const DEFAULT_USER_NAME = '?';
 
 // topMenu properties
@@ -172,7 +174,7 @@ export default class TopMenuView extends View {
       event: 'click',
       callback: (): void => {
         if (!this.controller) throw new Error('There is no controller in top menu view!');
-        this.controller.goTo(button.getElement());
+        CatalogDataManager.getInstance().getCatalogData();
       },
     });
     return button;
