@@ -9,6 +9,7 @@ import * as constants from '@src/spa/view/pages/profilePage/constants';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 import { IProfilePageLogic } from '@src/spa/logic/profile/profilePageLogic/types';
 import ProfilePageLogic from '@src/spa/logic/profile/profilePageLogic/profilePageLogic';
+import { country } from '@src/spa/view/select/country';
 
 export default class ProfilePageView extends View implements IProfilePage {
   private readonly firstName: IElementCreator;
@@ -193,7 +194,7 @@ export default class ProfilePageView extends View implements IProfilePage {
 
   private createAddressField(address: CustomAddress): IElementCreator {
     const container = new ElementCreator(constants.addressContainerParams);
-    const country = this.createInfoTextParagraph();
+    const countryName = this.createInfoTextParagraph();
     const city = this.createInfoTextParagraph();
     const street = this.createInfoTextParagraph();
     const postalCode = this.createInfoTextParagraph();
@@ -223,12 +224,12 @@ export default class ProfilePageView extends View implements IProfilePage {
       container.addInnerElement(billing);
     }
 
-    country.setTextContent(`Country: ${address.country}`);
+    if (address.country in country) countryName.setTextContent(`Country: ${country[address.country]}`);
+    else countryName.setTextContent('Country: undefined');
     city.setTextContent(`City: ${address.city}`);
     street.setTextContent(`Street: ${address.street}`);
     postalCode.setTextContent(`Postal code: ${address.postcode}`);
-    container.addInnerElement(country, city, street, postalCode);
-
+    container.addInnerElement(countryName, city, street, postalCode);
     return container;
   }
 

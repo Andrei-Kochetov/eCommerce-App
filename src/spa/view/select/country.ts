@@ -1,4 +1,4 @@
-export const country = {
+export const country: Record<string, string> = {
   title: 'Select country',
   AM: 'Armenia',
   AZ: 'Azerbaijan',
