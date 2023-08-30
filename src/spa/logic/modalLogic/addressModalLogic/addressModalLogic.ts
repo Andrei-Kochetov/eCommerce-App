@@ -1,12 +1,20 @@
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
-import IAddressModalLogic, { EMPTY_ADDRESS } from '@src/spa/logic/modalLogic/addressModalLogic/types';
+import IAddressModalLogic, {
+  EMPTY_ADDRESS,
+  NEW_ADDRESSES_ID_FLAG,
+  SUCCESS_ADD_ADDRESS_TEXT,
+  SUCCESS_DELETION_TEXT,
+} from '@src/spa/logic/modalLogic/addressModalLogic/types';
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
 import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import AddressModalItemView from '@src/spa/view/modal/addressesModal/addressModalItem/addressModalItemView';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
+import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
+import PopUpView from '@src/spa/view/popUp/popUpView';
 
 export default class AddressModalLogic extends ModalLogic<IAddressesModal> implements IAddressModalLogic {
   private readonly page: IProfilePage;
@@ -22,12 +30,18 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     const data: CustomAddress = this.getNewAddressInitialData();
     const address: IAddressModalItem = new AddressModalItemView(data, this);
     this.modal.addNewAddress(address);
-    console.log(this.modal.getAllAddressesInfo());
   }
 
-  public removeAddress(address: IAddressModalItem): void {
+  public async removeAddress(address: IAddressModalItem): Promise<void> {
+    const id: string = address.getID();
+    try {
+      await ProfileDataManager.getInstance().deleteAddress(id);
+    } catch (err) {
+      PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+      return;
+    }
+    PopUpView.getApprovePopUp(SUCCESS_DELETION_TEXT).show();
     this.modal.removeAddress(address);
-    console.log(this.modal.getAllAddressesInfo());
   }
 
   public defaultShippingLogic(address: IAddressModalItem): void {
@@ -84,13 +98,33 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     return false;
   }
 
-  protected beforeCloseActions(): Promise<boolean> {
+  protected async beforeCloseActions(): Promise<boolean> {
+    const currentState: CustomAddress[] = this.modal.getAllAddressesInfo();
+
+    try {
+      currentState.forEach(
+        async (address: CustomAddress): Promise<void> => {
+          if (address.id.includes(NEW_ADDRESSES_ID_FLAG)) {
+            const id: string = await ProfileDataManager.getInstance().addNewAddress(address);
+            const addressItem: IAddressModalItem | null = this.modal.getSingleAddressModalItem(address.id);
+            if (!addressItem) return;
+            addressItem.setID(id);
+          } else {
+            await ProfileDataManager.getInstance().updateAddress(address);
+          }
+        }
+      );
+    } catch (err) {
+      PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+      return true;
+    }
+    PopUpView.getApprovePopUp(SUCCESS_ADD_ADDRESS_TEXT).show();
     this.page.changeAddresses(this.modal.getAllAddressesInfo());
-    return Promise.resolve(true);
+    return true;
   }
 
   private getNewAddressInitialData(): CustomAddress {
     this.counter++;
-    return { id: `new_${this.counter}`, ...EMPTY_ADDRESS };
+    return { id: `${NEW_ADDRESSES_ID_FLAG}${this.counter}`, ...EMPTY_ADDRESS };
   }
 }

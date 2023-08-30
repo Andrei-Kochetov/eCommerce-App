@@ -12,7 +12,6 @@ import { SetPasswordObj, SetNameAndDateBirthObj } from '@src/spa/model/dataCusto
 import State from '@src/spa/logic/state/state';
 import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
-import { Address } from '@commercetools/platform-sdk';
 export default class ProfileDataManager implements IProfileDataManager {
   private static readonly instance = new ProfileDataManager();
 

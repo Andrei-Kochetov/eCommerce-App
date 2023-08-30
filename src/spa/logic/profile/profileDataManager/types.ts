@@ -1,6 +1,5 @@
 import { SetNameAndDateBirthObj } from '@src/spa/model/dataCustomer/types';
 import { SetPasswordObj, AddAddressObj } from '@src/spa/model/dataCustomer/types';
-import { Address } from '@commercetools/platform-sdk';
 
 export interface ProfileData {
   email: string;
