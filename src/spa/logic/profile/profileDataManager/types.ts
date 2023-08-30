@@ -29,8 +29,8 @@ export interface IProfileDataManager {
   setNewEmail(newEmail: string): Promise<void>;
   setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void>;
   setNewPassword(passwordObj: SetPasswordObj): Promise<void>;
-  updateAddress(address: CustomAddress): Promise<Address[]>;
-  addNewAddress(addressObj: AddAddressObj): Promise<Address[]>;
+  updateAddress(address: CustomAddress): Promise<void>;
+  addNewAddress(addressObj: AddAddressObj): Promise<string>;
   deleteAddress(addressId: string): Promise<void>;
 }
 
