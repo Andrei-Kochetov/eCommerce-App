@@ -1,18 +1,33 @@
 import { IAddressModalItem } from '@src/spa/view/modal/addressesModal/addressModalItem/types';
 import { IAddressesModal } from '@src/spa/view/modal/addressesModal/types';
-import IAddressModalLogic from '@src/spa/logic/modalLogic/addressModalLogic/types';
+import IAddressModalLogic, { EMPTY_ADDRESS } from '@src/spa/logic/modalLogic/addressModalLogic/types';
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
 import { ICheckbox } from '@src/spa/view/checkbox/types';
 import { CustomAddress } from '@src/spa/logic/profile/profileDataManager/types';
 import { IProfilePage } from '@src/spa/view/pages/profilePage/types';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
+import AddressModalItemView from '@src/spa/view/modal/addressesModal/addressModalItem/addressModalItemView';
 
 export default class AddressModalLogic extends ModalLogic<IAddressesModal> implements IAddressModalLogic {
   private readonly page: IProfilePage;
 
+  private counter = 0;
+
   public constructor(modal: IAddressesModal, page: IProfilePage) {
     super(modal);
     this.page = page;
+  }
+
+  public createNewAddress(): void {
+    const data: CustomAddress = this.getNewAddressInitialData();
+    const address: IAddressModalItem = new AddressModalItemView(data, this);
+    this.modal.addNewAddress(address);
+    console.log(this.modal.getAllAddressesInfo());
+  }
+
+  public removeAddress(address: IAddressModalItem): void {
+    this.modal.removeAddress(address);
+    console.log(this.modal.getAllAddressesInfo());
   }
 
   public defaultShippingLogic(address: IAddressModalItem): void {
@@ -72,5 +87,10 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
   protected beforeCloseActions(): Promise<boolean> {
     this.page.changeAddresses(this.modal.getAllAddressesInfo());
     return Promise.resolve(true);
+  }
+
+  private getNewAddressInitialData(): CustomAddress {
+    this.counter++;
+    return { id: `new_${this.counter}`, ...EMPTY_ADDRESS };
   }
 }

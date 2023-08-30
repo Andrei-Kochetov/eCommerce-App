@@ -12,4 +12,6 @@ export interface IAddressesModal {
   showModal(): void;
   hideModal(): void;
   getInitialState(): CustomAddress[];
+  addNewAddress(address: IAddressModalItem): void;
+  removeAddress(address: IAddressModalItem): void;
 }

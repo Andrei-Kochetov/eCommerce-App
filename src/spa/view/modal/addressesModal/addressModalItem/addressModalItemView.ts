@@ -223,5 +223,6 @@ export default class AddressModalItemView extends View implements IAddressModalI
     this.isDefaultBillingInput
       .getCheckbox()
       .setListeners({ event: 'change', callback: (): void => this.logic.defaultBillingLogic(this) });
+    this.deleteAddressBTN.setListeners({ event: 'click', callback: (): void => this.logic.removeAddress(this) });
   }
 }
