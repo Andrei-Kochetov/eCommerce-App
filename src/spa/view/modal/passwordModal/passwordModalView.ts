@@ -9,7 +9,7 @@ import IPasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/ty
 
 const NEW_PASSWORD_LABEL_TEXT = 'New password';
 const REPEAT_NEW_PASSWORD_LABEL_TEXT = 'Repeat new password';
-const OLD_PASSWORD_LABEL_TEXT = 'Old password';
+const OLD_PASSWORD_LABEL_TEXT = 'Current password';
 
 const NEW_PASSWORD_ID = 'password-new';
 const REPEAT_NEW_PASSWORD_ID = 'password-new-repeat';

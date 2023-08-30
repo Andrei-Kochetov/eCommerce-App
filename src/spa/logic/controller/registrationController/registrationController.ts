@@ -4,12 +4,13 @@ import { IRegistrationPage } from '@src/spa/view/pages/registrationPage/types';
 import IRegistrationController from '@src/spa/logic/controller/registrationController/types';
 import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
 import IRegistrationValidator from '@src/spa/logic/validator/registrationValidator/types';
-import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
+import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import Registration from '@src/spa/model/registration/registration';
 import { IRegistration, IRegistrationInputValue } from '@src/spa/model/registration/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
+import State from '@src/spa/logic/state/state';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -20,6 +21,7 @@ export default class RegistrationController extends Controller implements IRegis
   }
 
   public async register(element: HTMLElement, registrationInputValue: IRegistrationInputValue): Promise<void> {
+    const state: IState = State.getInstance();
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     const registration: IRegistration = Registration.getInstance();
     if (!validator.validate()) return;
@@ -40,10 +42,10 @@ export default class RegistrationController extends Controller implements IRegis
       const password = this.page.getPasswordField().getValue();
       await LoginClient.getInstance().authorization(email, password);
 
-      this.state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
-      this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
-      this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
-      this.state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
+      state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
+      state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
+      state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+      state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {

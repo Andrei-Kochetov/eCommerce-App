@@ -3,9 +3,10 @@ import { PageNames } from '@src/spa/view/pages/types';
 import { IRouter } from '@src/spa/logic/router/types';
 import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
-import { ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
-
-const state: IState = State.getInstance();
+import { DEFAULT_PROFILE_DATA, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 
 export interface IRoute {
   path: string;
@@ -31,6 +32,7 @@ export const routes: IRoute[] = [
     path: `${PageNames.LOGIN}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: LoginPageView } = await import('@src/spa/view/pages/loginPage/loginPageView');
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
         router.navigate(PageNames.MAIN, true);
       } else {
@@ -44,6 +46,7 @@ export const routes: IRoute[] = [
       const { default: RegistrationPageView } = await import(
         '@src/spa/view/pages/registrationPage/registrationPageView'
       );
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) === 'true') {
         router.navigate(PageNames.MAIN, true);
       } else {
@@ -83,44 +86,20 @@ export const routes: IRoute[] = [
     path: `${PageNames.PROFILE}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: ProfilePageView } = await import('@src/spa/view/pages/profilePage/profilePageView');
+      const state: IState = State.getInstance();
       if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
         router.navigate(PageNames.LOGIN, true);
       } else {
+        let params: ProfileData;
+        try {
+          params = await ProfileDataManager.getInstance().getProfileData();
+        } catch {
+          params = DEFAULT_PROFILE_DATA;
+          PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+        }
         basePage.renderPage(new ProfilePageView(params));
       }
     },
   },
   // TODO add paths for other pages by its templates
 ];
-
-// here is profile data object for profile page testing
-const params: ProfileData = {
-  email: 'blablabla@gmail.com',
-  firstName: 'Ivan',
-  lastName: 'Ivanov',
-  dateBirth: '1992-01-01',
-  addresses: [
-    {
-      id: '1',
-      city: 'Moscow',
-      country: 'RU',
-      postcode: '1231231',
-      street: 'Lubianka',
-      isShipping: 'true',
-      isBilling: 'true',
-      isDefaultShipping: 'true',
-      isDefaultBilling: 'true',
-    },
-    {
-      id: '2',
-      city: 'Minsk',
-      country: 'BY',
-      postcode: '34534534',
-      street: 'Nemiga',
-      isShipping: 'false',
-      isBilling: 'true',
-      isDefaultShipping: 'false',
-      isDefaultBilling: 'false',
-    },
-  ],
-};

@@ -69,7 +69,8 @@ export default class AddressModalLogic extends ModalLogic<IAddressesModal> imple
     return false;
   }
 
-  protected beforeCloseActions(): void {
+  protected beforeCloseActions(): Promise<boolean> {
     this.page.changeAddresses(this.modal.getAllAddressesInfo());
+    return Promise.resolve(true);
   }
 }

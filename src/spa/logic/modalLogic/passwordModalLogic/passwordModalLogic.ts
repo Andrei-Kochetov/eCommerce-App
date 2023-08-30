@@ -1,8 +1,14 @@
 import ModalLogic from '@src/spa/logic/modalLogic/modalLogic';
-import IPasswordModalLogic from '@src/spa/logic/modalLogic/passwordModalLogic/types';
+import IPasswordModalLogic, {
+  PASSWORD_MISMATCH,
+  SUCCESS_TEXT,
+} from '@src/spa/logic/modalLogic/passwordModalLogic/types';
 import { IInput } from '@src/spa/view/input/types';
 import { ChangePasswordValues, IPasswordModal } from '@src/spa/view/modal/passwordModal/types';
-import RegistrationValidator from '../../validator/registrationValidator/registrationValidator';
+import RegistrationValidator from '@src/spa/logic/validator/registrationValidator/registrationValidator';
+import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 
 const NOT_SAME_VALUE_ERROR = 'Fields has not the same values';
 
@@ -39,8 +45,23 @@ export default class PasswordModalLogic extends ModalLogic<IPasswordModal> imple
     return arrFunc.every((el: boolean) => el === true);
   }
 
-  protected beforeCloseActions(): void {
-    console.log('before accept');
+  protected async beforeCloseActions(): Promise<boolean> {
+    const passwords: ChangePasswordValues = this.modal.getAllValues();
+    try {
+      await ProfileDataManager.getInstance().setNewPassword(passwords);
+    } catch (err) {
+      if (err instanceof Error) {
+        if (err.message === PASSWORD_MISMATCH) {
+          PopUpView.getRejectPopUp(PASSWORD_MISMATCH).show();
+          return false;
+        } else {
+          PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+          return true;
+        }
+      }
+    }
+    PopUpView.getApprovePopUp(SUCCESS_TEXT).show();
+    return true;
   }
 
   private sameValuesCheck(input_1: IInput, input_2: IInput): boolean {

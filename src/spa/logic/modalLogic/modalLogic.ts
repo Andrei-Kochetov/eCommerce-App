@@ -24,13 +24,14 @@ export default abstract class ModalLogic<T extends IModal> implements IModalLogi
   }
 
   protected abstract validate(): boolean;
-  protected abstract beforeCloseActions(): void;
+  protected abstract beforeCloseActions(): Promise<boolean>;
   protected abstract wasChanges(): boolean;
 
-  public acceptHandler(): void {
+  public async acceptHandler(): Promise<void> {
     if (!this.validate()) return;
     if (this.wasChanges()) {
-      this.beforeCloseActions();
+      const result: boolean = await this.beforeCloseActions();
+      if (!result) return;
     }
     this.modal.hideModal();
   }

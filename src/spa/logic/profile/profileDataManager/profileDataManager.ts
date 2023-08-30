@@ -14,19 +14,17 @@ import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 
 export default class ProfileDataManager implements IProfileDataManager {
-  private token: TokenStore;
   private static readonly instance = new ProfileDataManager();
 
-  private constructor() {
-    this.token = this.getToken();
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
 
   public static getInstance() {
     return this.instance;
   }
 
   public async getProfileData(): Promise<ProfileData> {
-    const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.token.token);
+    const dataCustomerResponse = await DataCustomer.getInstance().getDataCustomer(this.getToken().token);
     const dataCustomer = dataCustomerResponse.body;
     const addresses: CustomAddress[] = [];
     dataCustomer.addresses.forEach((address) => {
@@ -54,39 +52,39 @@ export default class ProfileDataManager implements IProfileDataManager {
   }
 
   public async setNewEmail(newEmail: string): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().setNewEmail(this.token.token, newEmail);
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewEmail(this.getToken().token, newEmail);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async setNewNameAndDateBirth(newNameAndDateBirth: SetNameAndDateBirthObj): Promise<void> {
     const dataCustomerResponse = await DataCustomer.getInstance().setNewNameAndDateBirth(
-      this.token.token,
+      this.getToken().token,
       newNameAndDateBirth
     );
+    State.getInstance().setRecord(APP_STATE_KEYS.USER_LOGIN, newNameAndDateBirth.firstName);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async setNewPassword(passwordObj: SetPasswordObj): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().setNewPassword(this.token.token, passwordObj);
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewPassword(this.getToken().token, passwordObj);
     const email = dataCustomerResponse.body.email;
     await LoginClient.getInstance().authorization(email, passwordObj.newPassword);
     State.getInstance().setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
-    this.token = this.getToken();
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async updateAddress(addressObj: CustomAddress): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.token.token, addressObj);
+    const dataCustomerResponse = await DataCustomer.getInstance().setNewAddress(this.getToken().token, addressObj);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.token.token, addressObj);
+    const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
   public async deleteAddress(addressId: string): Promise<void> {
-    const dataCustomerResponse = await DataCustomer.getInstance().deleteAddress(this.token.token, addressId);
+    const dataCustomerResponse = await DataCustomer.getInstance().deleteAddress(this.getToken().token, addressId);
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 

@@ -16,6 +16,7 @@ export default class State implements IState {
   }
 
   public resetState(): void {
+    this.state = {};
     this.state = DEFAULT_STATE;
   }
 
