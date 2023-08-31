@@ -6,7 +6,7 @@ import { IPopUp, IPopUpView } from '@src/spa/view/popUp/types';
 import * as constants from '@src/spa/view/popUp/constants';
 
 export default class PopUpView extends View implements IPopUpView {
-  public constructor(text: string, img: IElementCreator | null) {
+  public constructor(text: string, img: HTMLElement | null) {
     const params: ElementCreatorParams = {
       tag: constants.POP_UP_TAG,
       classNames: [constants.POP_UP_CLASS_NAME],
@@ -28,7 +28,9 @@ export default class PopUpView extends View implements IPopUpView {
   }
 
   public static getRejectPopUp(text: string): IPopUp {
-    const popUp: IPopUp = new PopUpView(text, constants.rejectImg);
+    const img = constants.rejectImg.getElement().cloneNode(true);
+    if (!(img instanceof HTMLElement)) throw new Error('Pop up img error');
+    const popUp: IPopUp = new PopUpView(text, img);
     popUp.getViewCreator().setClasses(constants.POP_UP_REJECT_CLASS_NAME);
     return popUp;
   }
@@ -40,10 +42,12 @@ export default class PopUpView extends View implements IPopUpView {
   }
 
   public static getApprovePopUp(text: string): IPopUp {
-    return new PopUpView(text, constants.approveImg);
+    const img = constants.approveImg.getElement().cloneNode(true);
+    if (!(img instanceof HTMLElement)) throw new Error('Pop up img error');
+    return new PopUpView(text, img);
   }
 
-  private configureView(text: string, img: IElementCreator | null): void {
+  private configureView(text: string, img: HTMLElement | null): void {
     const span: IElementCreator = this.createSpan(text);
     const button: IElementCreator = this.createButton();
     if (!img) {

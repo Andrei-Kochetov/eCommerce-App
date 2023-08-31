@@ -31,6 +31,17 @@ export default class AddressesModalView extends ModalView implements IAddressesM
     return this.initialState;
   }
 
+  public addNewAddress(address: IAddressModalItem): void {
+    this.addresses.set(address.getID(), address);
+    this.form.addInnerElement(address.getView());
+  }
+
+  public removeAddress(address: IAddressModalItem): void {
+    const id: string = address.getID();
+    address.getView().remove();
+    this.addresses.delete(id);
+  }
+
   public getAllAddressesInfo(): CustomAddress[] {
     return Array.from(this.addresses.values()).map(
       (addressItemView: IAddressModalItem): CustomAddress => addressItemView.getAllValues()
@@ -80,6 +91,7 @@ export default class AddressesModalView extends ModalView implements IAddressesM
       classNames: constants.ADD_ADDRESS_BTN_CLASSES,
     };
     const button: IElementCreator = new ButtonView(params).getViewCreator();
+    button.setListeners({ event: 'click', callback: (): void => this.logic.createNewAddress() });
     return button;
   }
 

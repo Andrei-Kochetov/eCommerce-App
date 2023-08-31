@@ -12,7 +12,6 @@ import { SetPasswordObj, SetNameAndDateBirthObj } from '@src/spa/model/dataCusto
 import State from '@src/spa/logic/state/state';
 import { AddAddressObj } from '@src/spa/model/dataCustomer/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
-
 export default class ProfileDataManager implements IProfileDataManager {
   private static readonly instance = new ProfileDataManager();
 
@@ -78,9 +77,11 @@ export default class ProfileDataManager implements IProfileDataManager {
     State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
   }
 
-  public async addNewAddress(addressObj: AddAddressObj): Promise<void> {
+  public async addNewAddress(addressObj: AddAddressObj): Promise<string> {
     const dataCustomerResponse = await DataCustomer.getInstance().addNewAddress(this.getToken().token, addressObj);
-    State.getInstance().setRecord(APP_STATE_KEYS.VERSION, `${dataCustomerResponse.body.version}`);
+    const addresses = dataCustomerResponse.body.addresses;
+    const id = addresses[addresses.length - 1].id;
+    return id ? id : '';
   }
 
   public async deleteAddress(addressId: string): Promise<void> {

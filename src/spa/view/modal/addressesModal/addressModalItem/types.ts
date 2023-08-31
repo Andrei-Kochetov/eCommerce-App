@@ -17,4 +17,5 @@ export interface IAddressModalItem {
   getIsDefaultBillingInput(): ICheckbox;
   getAllValues(): CustomAddress;
   getID(): string;
+  setID(id: string): void;
 }

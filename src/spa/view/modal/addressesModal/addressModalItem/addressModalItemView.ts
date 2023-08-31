@@ -30,7 +30,7 @@ export default class AddressModalItemView extends View implements IAddressModalI
   private readonly isDefaultShippingInput: ICheckbox;
   private readonly isDefaultBillingInput: ICheckbox;
 
-  private readonly ID: string;
+  private ID: string;
 
   private readonly logic: IAddressModalLogic;
 
@@ -60,6 +60,10 @@ export default class AddressModalItemView extends View implements IAddressModalI
 
   public getID(): string {
     return this.ID;
+  }
+
+  public setID(id: string): void {
+    this.ID = id;
   }
 
   public getCountryInput(): ISelect {
@@ -223,5 +227,6 @@ export default class AddressModalItemView extends View implements IAddressModalI
     this.isDefaultBillingInput
       .getCheckbox()
       .setListeners({ event: 'change', callback: (): void => this.logic.defaultBillingLogic(this) });
+    this.deleteAddressBTN.setListeners({ event: 'click', callback: (): void => this.logic.removeAddress(this) });
   }
 }
