@@ -6,7 +6,7 @@ export type CatalogData = {
   allProducts: ProductProjection[];
 };
 
-export interface ProductData {
+export interface CustomProductData {
   id: string;
   name: string;
   description: string;

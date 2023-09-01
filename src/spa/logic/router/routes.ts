@@ -7,6 +7,7 @@ import { DEFAULT_PROFILE_DATA, ProfileData } from '@src/spa/logic/profile/profil
 import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
+import { CustomProductData } from '@src/spa/logic/catalog/catalogDataManager/types';
 
 export interface IRoute {
   path: string;
@@ -106,8 +107,25 @@ export const routes: IRoute[] = [
     path: `${PageNames.PRODUCT}`,
     callback: async (basePage: IBasePage): Promise<void> => {
       const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
-      basePage.renderPage(new ProductPageView());
+      basePage.renderPage(new ProductPageView(productInfo));
     },
   },
   // TODO add paths for other pages by its templates
 ];
+
+const productInfo: CustomProductData = {
+  id: 'hon90lite8256clb',
+  name: 'HONOR 90 Lite 8GB/256GB',
+  description:
+    'Android, screen 6.7" IPS (1080x2388) 90 Hz, Mediatek Dimensity 6020, 8 GB RAM, 256 GB memory, 100 MP camera, 4500 mAh battery, 2 SIM (nano-SIM)',
+  price: '899', // $
+  discountPrice: '799', // $
+  imgURLs: [
+    'https://content2.onliner.by/catalog/device/main/71afe5898b9a35de52ab4ed3a4e131e2.jpeg',
+    'https://content2.onliner.by/catalog/device/main/b5309561ad7bb7c38d26f0c2dfe00db6.jpeg',
+    'https://content2.onliner.by/catalog/device/main/3cbff6b060b8775fb5611e6d74420091.jpeg',
+    'https://content2.onliner.by/catalog/device/main/0619b9023d05c99443f6e8338e2e326f.jpeg',
+    'https://content2.onliner.by/catalog/device/main/a6c4344b1ce7deb5912c4cf80e8e01ff.jpeg',
+    'https://content2.onliner.by/catalog/device/main/b5b8edf86b4a4954be8a7e74bc0d5e0e.jpeg',
+  ],
+};
