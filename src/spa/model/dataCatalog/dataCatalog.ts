@@ -1,12 +1,6 @@
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { options } from '@src/spa/model/LoginClientApi/constants';
-import {
-  Client,
-  ClientBuilder,
-  ExistingTokenMiddlewareOptions,
-  TokenStore,
-  TokenCache,
-} from '@commercetools/sdk-client-v2';
+import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export default class DataCatalog {
