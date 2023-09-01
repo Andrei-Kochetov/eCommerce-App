@@ -27,7 +27,7 @@ const baseConfig = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
-    alias: { '@src': path.resolve(__dirname, 'src') },
+    alias: { '@src': path.resolve(__dirname, 'src'), '@node_modules': path.resolve(__dirname, 'node_modules') },
   },
   output: {
     filename: '[name].js',
