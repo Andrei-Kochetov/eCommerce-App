@@ -101,5 +101,13 @@ export const routes: IRoute[] = [
       }
     },
   },
+  {
+    //temporary for testing
+    path: `${PageNames.PRODUCT}`,
+    callback: async (basePage: IBasePage): Promise<void> => {
+      const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
+      basePage.renderPage(new ProductPageView());
+    },
+  },
   // TODO add paths for other pages by its templates
 ];
