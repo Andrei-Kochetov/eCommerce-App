@@ -34,8 +34,8 @@ export default class ProfileDataManager implements IProfileDataManager {
           postcode: address.postalCode ? address.postalCode : DEFAULT_ADDRESS.city,
           street: address.streetName ? address.streetName : DEFAULT_ADDRESS.street,
           id: address.id,
-          isShipping: address.id === dataCustomer.shippingAddressIds?.join() ? 'true' : 'false',
-          isBilling: address.id === dataCustomer.billingAddressIds?.join() ? 'true' : 'false',
+          isShipping: dataCustomer.shippingAddressIds?.join().includes(address.id) ? 'true' : 'false',
+          isBilling: dataCustomer.billingAddressIds?.join().includes(address.id) ? 'true' : 'false',
           isDefaultShipping: address.id === dataCustomer.defaultShippingAddressId ? 'true' : 'false',
           isDefaultBilling: address.id === dataCustomer.defaultBillingAddressId ? 'true' : 'false',
         });
