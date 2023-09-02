@@ -8,6 +8,7 @@ export type CatalogData = {
 
 export interface CustomProductData {
   id: string;
+  path: string; // catalog/category/subcategory/product_id
   name: string;
   description: string;
   price: string;
