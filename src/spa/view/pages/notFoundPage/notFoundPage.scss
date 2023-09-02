@@ -1,0 +1,22 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
+
+.not-found {
+  @include flex($direction: column, $justify: center, $align: center);
+  height: 100%;
+
+  &__img {
+    height: 25rem;
+    width: 25rem;
+    @include background ($src: '@src/assets/404.png');
+  }
+
+  &__title {
+    font-size: 3rem;
+    color: $corporate-color;
+  }
+
+  &__subtitle {
+    font-size: 2rem;
+  }
+}

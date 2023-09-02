@@ -1,0 +1,41 @@
+@import '@src/spa/basic-styles/mixins';
+@import '@src/spa/basic-styles/variables.scss';
+
+.footer{
+    width: 100%;
+    background-color: $backgraund-dark;
+
+    &-rs-img {
+        width: 10rem;
+        height: 4rem;
+        @include background ($src: '@src/assets/rs_school.svg');
+    }
+    &-gh-img {
+        width: 4rem;
+        height: 4rem;
+    }
+    &__container {
+        @include flex($justify: space-between, $align: center);
+        padding: 1.5rem 0;
+    }
+    &__wrapper-link-gh{
+        @include flex(row, 10px);
+    }
+    &__year{
+        font-size: 2rem;
+    }
+}
+
+.footer-link {
+    &:nth-child(odd) {
+        .footer-gh-img {
+            @include background ($src: '@src/assets/github_1.svg');
+        }
+    }
+
+    &:nth-child(even) {
+        .footer-gh-img {
+            @include background ($src: '@src/assets/github_2.svg');
+        }
+    }
+}

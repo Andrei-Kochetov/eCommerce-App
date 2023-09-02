@@ -1,0 +1,31 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
+
+.top-menu {
+  @include flex($gap: 1rem, $align: center);
+  width: max-content;
+
+  @media screen and (max-width: 500px) {
+    @include flex($justify: center, $align: center);
+    width: 100%;
+  }
+}
+
+.nav {
+  @include flex($gap: 1rem, $align: center);
+}
+
+.top-menu__user-bar {
+  @include flex($align: center, $justify: center);
+  height: 3rem;
+  width: 3rem;
+  background-color: $corporate-color;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: $backgraund-dark;
+
+  &:hover {
+    color: white;
+  }
+}

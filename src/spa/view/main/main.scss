@@ -1,0 +1,16 @@
+@import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
+
+.main {
+  @include flex($align: center);
+  flex-grow: 1;
+  width: 100%;
+  padding: 2rem 0;
+  
+  background-color: $backgraund-light;
+
+}
+
+.main__container {
+  @include flex($justify: center, $align: center);
+}
