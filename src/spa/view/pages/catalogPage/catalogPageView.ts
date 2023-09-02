@@ -20,11 +20,16 @@ export default class CatalogPageView extends PageView {
     this.sectionSubcategories = this.createSectionSubcategories();
     this.sectionFilter = this.createSectionFilter();
     this.sectionCardsProduct = this.createSectionCardsProducts();
-    this.configureView();
+    this.configureView(data);
   }
-  private configureView() {
+
+  /*   public changeSubcategoriesSection(){
+
+  } */
+
+  private configureView(data: CatalogData) {
     const leftContainerFixed = this.createLeftFixedContainer();
-    const wrapperCategories = this.createWrapperCategories();
+    const wrapperCategories = this.createWrapperCategories(data);
     const rightContentContainer = this.createRightContentContainer();
     const searchSection = this.createSearchSection();
     const paginationSection = this.createSectionPagination();
@@ -39,8 +44,12 @@ export default class CatalogPageView extends PageView {
     );
     this.getViewCreator().addInnerElement(leftContainerFixed.getElement(), rightContentContainer.getElement());
   }
-  private createWrapperCategories() {
+  private createWrapperCategories(data: CatalogData) {
     const wrapper = new ElementCreator(constants.paramsWrapperCategories);
+    data.categories.forEach((element) => {
+      const button = this.createButtonCategories(Object.values(element.name)[0]);
+      wrapper.addInnerElement(button.getElement());
+    });
     return wrapper;
   }
   private createLeftFixedContainer() {
@@ -81,4 +90,23 @@ export default class CatalogPageView extends PageView {
     const section = new ElementCreator(constants.paramsPaginationsSection);
     return section;
   }
+  private createButtonCategories(textContent: string) {
+    const params = {
+      tag: 'button',
+      classNames: ['catalog__button-categories'],
+      textContent: textContent,
+      /*       addEventListener: {
+        'click': ()=>{
+          
+        }
+      } */
+    };
+    const button = new ElementCreator(params);
+    return button;
+  }
+  /*   private createProductCard(){
+    const params{
+      ta
+    }
+  } */
 }

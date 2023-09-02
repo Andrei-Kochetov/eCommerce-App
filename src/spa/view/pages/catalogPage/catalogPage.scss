@@ -14,6 +14,15 @@
     height: 10rem;
     width: 100%;
     background-color: pink;
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+  &__button-categories{
+    &:hover{
+      background-color: rgb(235, 138, 138);
+      cursor: pointer;
+    }
   }
 
   &__container-content{

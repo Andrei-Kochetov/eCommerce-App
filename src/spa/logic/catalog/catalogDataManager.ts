@@ -17,9 +17,21 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     const allCategories = await this.getCatalogs();
     const allProducts: ProductProjection[] = (await this.getProducts()).body.results;
     console.log(allCategories, allProducts);
+    const categories = allCategories.filter((el) => !el.parent);
+    const subcategories = allCategories.filter((el) => el.parent);
+    /*         const categoriesThree = new Map()
+for(let i = 0;i<categories.length; i++){
+      categoriesThree.set(categories[i], {})
+      for(let j = 0; j<subcategories.length;j++){
+        categories[i].id === subcategories[j].parent?.id ? 
+         categoriesThree.get(categories[i])
+      }
+    } */
+    console.log(categories);
     return {
       allCategories: allCategories,
       allProducts: allProducts,
+      categories: categories,
     };
   }
   public async getCatalogs() {

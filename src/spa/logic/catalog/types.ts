@@ -4,4 +4,5 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 export type CatalogData = {
   allCategories: Category[];
   allProducts: ProductProjection[];
+  categories: Category[];
 };

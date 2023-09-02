@@ -60,7 +60,7 @@ export default class DataCatalog {
     const category = await this.getCategory(categoryName);
     const queryArgs = {
       where: `categories(id="${category.id}")`,
-      filter: ['variants.attributes.test-id:"test"'],
+      //filter: ['variants.attributes.test-id:"test"'],
     };
     const apiRoot = this.createApiRoot();
     return apiRoot
