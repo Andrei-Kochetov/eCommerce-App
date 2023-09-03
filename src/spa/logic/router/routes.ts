@@ -129,6 +129,7 @@ export const routes: IRoute[] = [
 
 const productInfo: CustomProductData = {
   id: 'hon90lite8256clb',
+  path: 'catalog/electronics/phones/hon90lite8256clb',
   name: 'HONOR 90 Lite 8GB/256GB',
   description:
     'Android, screen 6.7" IPS (1080x2388) 90 Hz, Mediatek Dimensity 6020, 8 GB RAM, 256 GB memory, 100 MP camera, 4500 mAh battery, 2 SIM (nano-SIM)',

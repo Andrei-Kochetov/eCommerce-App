@@ -1,7 +1,105 @@
+@import '@src/spa/basic-styles/_mixins';
+@import '@src/spa/basic-styles/_variables';
+
 .product {
+  position: relative;
   width: 100%;
+  max-width: 120rem;
+  padding-top: 2rem;
+  @include flex ($gap: 1.5rem, $align: center, $direction: column);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .product__swiper_small {
   width: 100%;
+
+  .swiper-wrapper {
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .swiper-slide {
+    @include flex ($gap: 0, $align: center, $justify: center);
+  }
+
+  .swiper-img {
+    width: 12rem;
+  }
+}
+
+.product__sale-label {
+  position: absolute;
+  z-index: 2;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: 10rem;
+  aspect-ratio: 1/1.3;
+  @include background ($src: '@src/assets/sale.png');
+}
+
+.product__prices-wrapper {
+  @include flex ($gap: 1rem, $align: center, $justify: space-between);
+  font-size: 3rem;
+}
+
+.product__price {
+  color: $modal-accept-btn-background;
+
+  &_crossed {
+    text-decoration: line-through;
+  }
+}
+
+.product__discount-price {
+  color: $corporate-color;
+}
+
+.product__btn {
+  background-color: $corporate-color;
+  color: $backgraund-dark;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+
+  &_disabled {
+    pointer-events: none;
+    background-color: $indifferent-color;
+    color: $dark;
+  }
+
+  &_add {
+    background-color: $modal-accept-btn-background;
+  }
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.product__info-wrapper {
+  @include flex ($gap: 1rem, $align: center, $direction: column);
+}
+
+.product__name-wrapper,
+.product__description-wrapper {
+  @include flex ($gap: 1rem, $align: center, $justify: center, $direction: column);
+}
+
+.product__name-title,
+.product__description-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.product__name,
+.product__description {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.swiper-img {
+  &:hover {
+    cursor: pointer;
+  }
 }

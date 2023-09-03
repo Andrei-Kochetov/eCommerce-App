@@ -6,6 +6,7 @@ $btn-backgraund-hover: #a1c05f;
 $backgraund-dark: #f0deb0;
 $backgraund-light: #fffdf5;
 $transparent: #00000000;
+$light: white;
 
 //pop-up
 $pop-up-background: #bfe077;
@@ -17,3 +18,11 @@ $modal-background: #dbe9bb;
 $modal-scroll-track-background: #80b50d;
 $modal-exit-btn-background: #4a2828;
 $modal-accept-btn-background: #2c6c2b;
+
+// product page modal
+$product-page-underlay-background: #8080804d;
+$pagination-bullet-active-color: blue;
+$product-page-swiper-background: #80808080;
+
+// scroll compensation min-width
+$scroll-compensation-min-width: 900px;
