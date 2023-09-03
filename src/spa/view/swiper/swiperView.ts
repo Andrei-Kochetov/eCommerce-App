@@ -63,7 +63,6 @@ export default class SwiperView implements ISwiperView {
   public hideNavigation(): void {
     this.swiperOBJ.pagination.destroy();
     this.swiperOBJ.navigation.destroy();
-    this.swiperOBJ.scrollbar.destroy();
   }
 
   private createSwiperHTML(imgURLs: string[], imgCallback?: swiperImgCallback): IElementCreator {
