@@ -10,17 +10,20 @@ import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import { btnParams } from '@src/spa/view/button/types';
 import ButtonView from '@src/spa/view/button/buttonView';
 import { IProductPage } from '@src/spa/view/pages/productPage/types';
+import { IProductPageLogic } from '@src/spa/logic/product/types';
+import ProductPageLogic from '@src/spa/logic/product/productPageLogic';
 
 export default class ProductPageView extends PageView implements IProductPage {
   private readonly data: CustomProductData;
   private readonly swiper: ISwiperView;
   private readonly addToBasketBTN: IElementCreator;
   private readonly removeFromBasketBTN: IElementCreator;
+  private readonly logic: IProductPageLogic = new ProductPageLogic(this);
 
   public constructor(data: CustomProductData) {
     super(PageNames.PRODUCT, constants.PRODUCT_PAGE_CLASS);
     this.data = data;
-    this.swiper = new SwiperView(data.imgURLs);
+    this.swiper = new SwiperView(data.imgURLs, (): void => this.logic.imgOnClickHandler());
     this.addToBasketBTN = this.createAddToBasketBTN();
     this.removeFromBasketBTN = this.createRemoveFromBasketBTN();
     this.configureView(data);

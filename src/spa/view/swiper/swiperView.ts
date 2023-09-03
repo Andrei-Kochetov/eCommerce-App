@@ -105,7 +105,6 @@ export default class SwiperView implements ISwiperView {
       // Optional parameters
       direction: 'horizontal',
       loop: true,
-      grabCursor: true,
       speed: 500,
 
       // pagination
