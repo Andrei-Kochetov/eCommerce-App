@@ -1,0 +1,6 @@
+const PRODUCT_MODAL_CLASS = 'product-modal';
+const PRODUCT_MODAL_BTN_CLASS = 'product-modal__btn';
+const PRODUCT_MODAL_CONTAINER_CLASS = 'product-modal__container';
+const PRODUCT_MODAL_SWIPER_CLASS = 'product-modal__swiper';
+
+export { PRODUCT_MODAL_CLASS, PRODUCT_MODAL_BTN_CLASS, PRODUCT_MODAL_CONTAINER_CLASS, PRODUCT_MODAL_SWIPER_CLASS };

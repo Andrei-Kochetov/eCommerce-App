@@ -7,6 +7,7 @@ export enum PageNames {
   PROFILE = 'profile',
   BASKET = 'basket',
   ABOUT_US = 'about-us',
+  PRODUCT = 'product',
 }
 
 export const PAGE_NAME_ATTRIBUTE = 'data-page-name';

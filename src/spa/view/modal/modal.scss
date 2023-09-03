@@ -122,6 +122,10 @@
 
 ._lock {
   overflow: hidden;
+
+  @media screen and (min-width: $scroll-compensation-min-width) {  // compensation of laptop scroll width in Chrome
+    padding-right: 16.5px;
+  }
 }
 
 .btn_yes {
