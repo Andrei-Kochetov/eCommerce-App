@@ -175,7 +175,7 @@ export default class TopMenuView extends View {
       callback: (): void => {
         if (!this.controller) throw new Error('There is no controller in top menu view!');
         //this.controller.goTo(button.getElement());
-        CatalogDataManager.getInstance().getCatalogs();
+        CatalogDataManager.getInstance().getProductsFromCategory('Electronics');
       },
     });
     return button;

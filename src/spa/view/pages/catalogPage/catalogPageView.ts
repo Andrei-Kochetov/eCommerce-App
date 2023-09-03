@@ -4,6 +4,11 @@ import { PageNames } from '@src/spa/view/pages/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import * as constants from '@src/spa/view/pages/catalogPage/constants';
 import { CatalogData } from '@src/spa/logic/catalog/types';
+import { ProductProjection } from '@commercetools/platform-sdk';
+import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
+import SelectAttributeView from './select/selectAttribute';
+import InputView from '../../input/inputView';
+import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
 
 const CATALOG_PAGE_CLASS = 'catalog';
 
@@ -13,20 +18,84 @@ export default class CatalogPageView extends PageView {
   private sectionSubcategories;
   private sectionFilter;
   private sectionCardsProduct;
+  private initialState;
+  private selectBrand;
+  private selectColor;
+  private startPriceInput;
+  private endPriceInput;
+  private checkboxSale;
+  private sortAlphabet;
+  private sortPrice;
+  private buttonApplyFilters;
+  private buttonResetFilters;
   public constructor(data: CatalogData) {
     super(PageNames.CATALOG, CATALOG_PAGE_CLASS);
+    this.initialState = data;
     this.searchInput = this.createSearchInput();
     this.sectionCategoryNesting = this.createSectionCategoryNesting();
     this.sectionSubcategories = this.createSectionSubcategories();
+    this.selectBrand = this.createSelectBrand();
+    this.selectColor = this.createSelectColor();
+    this.sortAlphabet = this.createSortAlphabet();
+    this.sortPrice = this.createSortPrice();
+    this.startPriceInput = this.createStartPriceInput();
+    this.endPriceInput = this.createEndPriceInput();
+    this.checkboxSale = this.createCheckboxSale();
+    this.buttonApplyFilters = this.createApplyFiltersButton();
+    this.buttonResetFilters = this.createResetFiltersButton();
     this.sectionFilter = this.createSectionFilter();
     this.sectionCardsProduct = this.createSectionCardsProducts();
     this.configureView(data);
+    this.changeSectionCardProducts(this.initialState.allProducts);
+    this.getAllValueFilters();
   }
 
-  /*   public changeSubcategoriesSection(){
+  public changeSubcategoriesSection(textContentArr: string[]) {
+    this.sectionSubcategories.clearInnerHTML();
+    textContentArr.forEach((el, i) => {
+      const button = this.createButtonSubcategories(textContentArr[i]);
+      this.sectionSubcategories.addInnerElement(button.getElement());
+    });
+  }
+  public changeSectionCardProducts(products: ProductProjection[]) {
+    this.sectionCardsProduct.clearInnerHTML();
+    products.forEach(() => {
+      const card = this.createProductCard();
+      this.sectionCardsProduct.addInnerElement(card.getElement());
+    });
+  }
+  public changeSectionCategoryNesting(products: ProductProjection[]) {
+    this.sectionCardsProduct.clearInnerHTML();
+    products.forEach(() => {
+      const card = this.createProductCard();
+      this.sectionCardsProduct.addInnerElement(card.getElement());
+    });
+  }
 
-  } */
-
+  public getAllValueFilters(): IAllFiltersValue {
+    const allValue = {
+      brand: (this.selectBrand.getView() as HTMLSelectElement).value,
+      color: (this.selectColor.getView() as HTMLSelectElement).value,
+      rangePrice: [
+        +(this.startPriceInput.getElement() as HTMLInputElement).value,
+        +(this.endPriceInput.getElement() as HTMLInputElement).value,
+      ],
+      sale: (this.checkboxSale.getInput().getElement() as HTMLInputElement).checked,
+      sortAlphabet: (this.sortAlphabet.getView() as HTMLSelectElement).value,
+      sortPrice: (this.sortPrice.getView() as HTMLSelectElement).value,
+    };
+    console.log(allValue, 'allValue filters');
+    return allValue;
+  }
+  public resetAllValueFilters() {
+    (this.selectBrand.getView() as HTMLSelectElement).options.selectedIndex = 0;
+    (this.selectColor.getView() as HTMLSelectElement).options.selectedIndex = 0;
+    (this.startPriceInput.getElement() as HTMLInputElement).value = '';
+    (this.endPriceInput.getElement() as HTMLInputElement).value = '';
+    (this.checkboxSale.getInput().getElement() as HTMLInputElement).checked = false;
+    (this.sortAlphabet.getView() as HTMLSelectElement).options.selectedIndex = 0;
+    (this.sortPrice.getView() as HTMLSelectElement).options.selectedIndex = 0;
+  }
   private configureView(data: CatalogData) {
     const leftContainerFixed = this.createLeftFixedContainer();
     const wrapperCategories = this.createWrapperCategories(data);
@@ -48,7 +117,7 @@ export default class CatalogPageView extends PageView {
     const wrapper = new ElementCreator(constants.paramsWrapperCategories);
     data.categories.forEach((element) => {
       const button = this.createButtonCategories(Object.values(element.name)[0]);
-      wrapper.addInnerElement(button.getElement());
+      wrapper.addInnerElement(button);
     });
     return wrapper;
   }
@@ -63,6 +132,13 @@ export default class CatalogPageView extends PageView {
   private createSearchSection() {
     const container = new ElementCreator(constants.paramsSearchSection);
     const button = new ElementCreator(constants.paramsButtonSearch);
+    button.getElement().addEventListener('click', async () => {
+      const searchText: string = (this.searchInput.getElement() as HTMLInputElement).value;
+      this.resetAllValueFilters();
+      const productResult = await CatalogDataManager.getInstance().getProductWithSearch(searchText);
+      this.changeSectionCardProducts(productResult);
+      (this.searchInput.getElement() as HTMLInputElement).value = '';
+    });
     container.addInnerElement(this.searchInput.getElement(), button.getElement());
     return container;
   }
@@ -80,6 +156,16 @@ export default class CatalogPageView extends PageView {
   }
   private createSectionFilter() {
     const section = new ElementCreator(constants.paramsFilterSection);
+    section.addInnerElement(
+      this.selectBrand.getView(),
+      this.selectColor.getView(),
+      this.createRangePrice().getElement(),
+      this.checkboxSale.getView(),
+      this.sortAlphabet.getView(),
+      this.sortPrice.getView(),
+      this.buttonApplyFilters.getElement(),
+      this.buttonResetFilters.getElement()
+    );
     return section;
   }
   private createSectionCardsProducts() {
@@ -90,23 +176,168 @@ export default class CatalogPageView extends PageView {
     const section = new ElementCreator(constants.paramsPaginationsSection);
     return section;
   }
+  private createButtonSubcategories(textContent: string) {
+    const params = {
+      tag: 'button',
+      classNames: ['catalog__button-subategories'],
+      textContent: textContent,
+    };
+    const button = new ElementCreator(params);
+
+    button.getElement().addEventListener('click', async () => {
+      const productsFromSubctegory = await CatalogDataManager.getInstance().getProductsFromCategory(textContent);
+      this.changeSectionCardProducts(productsFromSubctegory);
+    });
+    return button;
+  }
   private createButtonCategories(textContent: string) {
     const params = {
       tag: 'button',
       classNames: ['catalog__button-categories'],
       textContent: textContent,
-      /*       addEventListener: {
-        'click': ()=>{
-          
-        }
-      } */
     };
     const button = new ElementCreator(params);
+    button.getElement().addEventListener('click', async () => {
+      const productsFromCategory = await CatalogDataManager.getInstance().getProductsFromCategory(textContent);
+      this.changeSubcategoriesSection(this.initialState.categoriesThreeText[textContent]);
+      this.changeSectionCardProducts(productsFromCategory);
+    });
     return button;
   }
-  /*   private createProductCard(){
-    const params{
-      ta
-    }
-  } */
+  private createProductCard() {
+    const params = {
+      tag: 'div',
+      classNames: ['catalog__card-product'],
+    };
+    const card = new ElementCreator(params);
+    return card;
+  }
+
+  private createSelectBrand() {
+    const params = {
+      classNames: ['catalog__select-brand'],
+      optionNames: ['Brand', 'Lenovo', 'Samsung', 'HP'],
+      attributes: {
+        name: 'brand-select',
+      },
+    };
+    const select = new SelectAttributeView(params);
+    return select;
+  }
+
+  private createSelectColor() {
+    const params = {
+      classNames: ['catalog__select-color'],
+      optionNames: ['Color', 'Black', 'White', 'Blue'],
+      attributes: {
+        name: 'color-select',
+      },
+    };
+    const select = new SelectAttributeView(params);
+    return select;
+  }
+
+  private createStartPriceInput() {
+    const paramsFrom = {
+      tag: 'input',
+      classNames: ['catalog__input-price'],
+      attributes: {
+        type: 'number',
+        name: 'start-price',
+        placeholder: 'from',
+      },
+    };
+    const inputFrom = new ElementCreator(paramsFrom);
+    return inputFrom;
+  }
+
+  private createEndPriceInput() {
+    const paramsTo = {
+      tag: 'input',
+      classNames: ['catalog__input-price'],
+      attributes: {
+        type: 'number',
+        name: 'end-price',
+        placeholder: 'to',
+      },
+    };
+    const inputTo = new ElementCreator(paramsTo);
+    return inputTo;
+  }
+
+  private createRangePrice() {
+    const paramsWrapper = {
+      tag: 'div',
+      classNames: ['catalog__wrapper-price'],
+      textContent: 'Price',
+    };
+
+    const wrapper = new ElementCreator(paramsWrapper);
+    wrapper.addInnerElement(this.startPriceInput.getElement(), this.endPriceInput.getElement());
+    return wrapper;
+  }
+  private createCheckboxSale() {
+    const params = {
+      attributes: {
+        id: 'checkbox-sale',
+        type: 'checkbox',
+        name: 'checkbox-sale',
+      },
+      textLabel: 'Sale',
+    };
+    const checkbox = new InputView(params);
+    checkbox.getViewCreator().setClasses('catalog__checkbox-sale');
+    return checkbox;
+  }
+  private createSortAlphabet() {
+    const params = {
+      classNames: ['catalog__select-alphabet-sort'],
+      optionNames: ['Alphabetical sorting', 'A-Z', 'Z-A'],
+      attributes: {
+        name: 'sort-alphabet-select',
+      },
+    };
+    const select = new SelectAttributeView(params);
+    return select;
+  }
+  private createSortPrice() {
+    const params = {
+      classNames: ['catalog__select-price-sort'],
+      optionNames: ['Sort by price', 'Ascending', 'Descending'],
+      attributes: {
+        name: 'sort-price-select',
+      },
+    };
+    const select = new SelectAttributeView(params);
+    return select;
+  }
+
+  private createApplyFiltersButton() {
+    const params = {
+      tag: 'button',
+      classNames: ['catalog__button-add-filters'],
+      textContent: 'Apply filters',
+    };
+    const div = new ElementCreator(params);
+    div.getElement().addEventListener('click', async () => {
+      const allValues = this.getAllValueFilters();
+      const filterProducts = await CatalogDataManager.getInstance().getProductWithFilters(allValues);
+      this.changeSectionCardProducts(filterProducts);
+    });
+    return div;
+  }
+  private createResetFiltersButton() {
+    const params = {
+      tag: 'button',
+      classNames: ['catalog__button-reset-filters'],
+      textContent: 'Reset filters',
+    };
+    const div = new ElementCreator(params);
+    div.getElement().addEventListener('click', async () => {
+      this.resetAllValueFilters();
+      const productFilterReset = await CatalogDataManager.getInstance().getProductResetWithFilters();
+      this.changeSectionCardProducts(productFilterReset);
+    });
+    return div;
+  }
 }
