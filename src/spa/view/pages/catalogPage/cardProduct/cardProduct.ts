@@ -1,5 +1,5 @@
 import '@src/spa/view/pages/catalogPage/cardProduct/cardProduct.scss';
-import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
+import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import View from '@src/spa/view/view';
 import * as constants from '@src/spa/view/pages/catalogPage/cardProduct/constants';
@@ -30,7 +30,7 @@ export default class CardProductView extends View {
         data.masterVariant.price?.value.centAmount,
         data.masterVariant.price?.discounted?.value.centAmount
       ).getElement(),
-      this.createDescriptionSection(`${data.metaDescription!['en-US']}`).getElement(),
+      this.createDescriptionSection(data.metaDescription ? `${data.metaDescription['en-US']}` : '').getElement(),
       this.createBasketAndOpenProductSection().getElement()
     );
   }
@@ -46,7 +46,8 @@ export default class CardProductView extends View {
   }
   private createImgSection(urlArr: Image[] | undefined) {
     const sale = new ElementCreator(constants.paramsImg);
-    sale.setAttributes({ src: `${urlArr![0].url!}` });
+    if (!urlArr) return sale;
+    sale.setAttributes({ src: urlArr[0].url ? `${urlArr[0].url}` : '' });
     return sale;
   }
   private createPriceSection(fullPriceText: number | undefined, salePriceText: number | undefined) {
@@ -56,7 +57,7 @@ export default class CardProductView extends View {
       classNames: ['card-product__full-price'],
     };
     const fullPrice = new ElementCreator(paramsFullPrice);
-    fullPrice.setTextContent(`price: ${fullPriceText! / 100}$`);
+    fullPrice.setTextContent(fullPriceText ? `price: ${fullPriceText / 100}$` : '');
     sale.addInnerElement(fullPrice.getElement());
     if (salePriceText) {
       const paramsSalePrice = {

@@ -1,6 +1,6 @@
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { CatalogData, IAllFiltersValue } from './types';
-import { Category, ProductProjection, Project } from '@commercetools/platform-sdk';
+import { Category, ProductProjection } from '@commercetools/platform-sdk';
 
 export default class CatalogDataManager /* implements IProfileDataManager */ {
   private static readonly instance = new CatalogDataManager();
@@ -11,6 +11,7 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
   public static getInstance() {
     return this.instance;
   }
+
   /* eslint-disable max-lines-per-function*/
   public async getCatalogData(): Promise<CatalogData> {
     const allCategories = await this.getCatalogs();
@@ -56,7 +57,7 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
       attributesArr: attributesArr,
     };
   }
-  /* eslint-enable max-lines-per-function*/
+
   public async getCatalogs() {
     const dataCatalogResponse = await DataCatalog.getInstance().getCatalogs();
     return dataCatalogResponse.body.results;
@@ -79,10 +80,12 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     }
     return categoriesThreeText;
   }
+
   public async getProducts() {
     const dataCatalogResponse = await DataCatalog.getInstance().getProducts();
     return dataCatalogResponse;
   }
+
   public async getProductById(id: string) {
     const product = (await DataCatalog.getInstance().getProductById(id)).body.results[0];
     const urlsArr: string[] = [];
@@ -92,7 +95,7 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     return {
       id: product.id,
       name: `${product.name['en-US']}`,
-      description: `${product.description!['en-US']}`,
+      description: product.description ? `${product.description['en-US']}` : '',
       price: `${product.masterVariant.price?.value.centAmount}`,
       discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
       imgUrls: urlsArr,
@@ -101,19 +104,24 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
   }
   public async getCategoryId(categoryName: string) {
     const dataCatalogResponse = await DataCatalog.getInstance().getCategory(categoryName);
+    return dataCatalogResponse;
   }
+
   public async getProductsFromCategory(categoryName: string) {
     const dataCatalogResponse = await DataCatalog.getInstance().getProductsFromCategory(categoryName);
     return dataCatalogResponse.body.results;
   }
+
   public async getProductWithFilters(allValue: IAllFiltersValue) {
     const dataCatalogResponse = await DataCatalog.getInstance().getProductWithFilters(allValue);
     return dataCatalogResponse.body.results;
   }
+
   public async getProductResetWithFilters() {
     const dataCatalogResponse = await DataCatalog.getInstance().getProductResetFilters();
     return dataCatalogResponse.body.results;
   }
+
   public async getProductWithSearch(searchText: string) {
     const dataCatalogResponse = await DataCatalog.getInstance().getProductWithSearch(searchText);
     return dataCatalogResponse.body.results;

@@ -2,7 +2,6 @@ import '@src/spa/view/select/select.scss';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import View from '@src/spa/view/view';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
-import { ISelectView } from '@src/spa/view/select/types';
 import { ISelectAttributesParams } from '@src/spa/view/pages/catalogPage/select/types';
 
 // select properties
