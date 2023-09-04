@@ -33,6 +33,9 @@ export default class DataCatalog {
     const queryArgs = {
       priceCurrency: 'USD',
     };
+    if (this.currentCategoryName) {
+      this.currentCategoryName = '';
+    }
     const apiRoot = this.createApiRoot();
     return apiRoot
       .productProjections()
