@@ -1,0 +1,69 @@
+@import '@src/spa/basic-styles/_variables';
+
+.card-product{
+    font-size: 1.4rem;
+    display: flex;
+    padding: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+    height: 270px;
+    width: 220px;
+    transition: all 0.3s;
+    &:hover{
+        transform: scale(1.05);
+        box-shadow: 0 0 5px $corporate-color;
+    }
+    &__basket-product{
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+    }
+    &__wrapper-sale{
+        display: flex;
+        width: 90%;
+        height: 1.5rem;
+        justify-content: end;
+    }
+    &__sale{
+        display: flex;
+        justify-content: end;
+        border: 1px solid $corporate-color;
+        color: $corporate-color;
+    }
+    &__sale-price{
+        color: $corporate-color
+    }
+    &__price{
+        display: flex;
+        width: 90%;
+        justify-content: space-between;
+    }
+    &__img{
+        height: 160px;
+        width: 180px;
+    }
+    &__description{
+        width: 90%;
+        text-align: start;
+    }
+    &__basket-button, &__open-product-button{
+        background-color: $corporate-color;
+        color: $backgraund-dark;
+        padding: 0.3rem;
+        border-radius: 5px;
+        transition: all 0.3s;
+        &:hover{
+          background-color: $backgraund-dark;
+          color: black;
+        }
+      }
+}
+
+.strikethrough-text{
+    text-decoration: line-through;
+}
+
+.hide{
+    display: none;
+}

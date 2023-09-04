@@ -5,8 +5,10 @@ import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
 import { DEFAULT_PROFILE_DATA, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
+import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
+import { CatalogData } from '@src/spa/logic/catalog/types';
 import { CustomProductData } from '@src/spa/logic/catalog/catalogDataManager/types';
 
 export interface IRoute {
@@ -71,9 +73,16 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.CATALOG}`,
-    callback: async (basePage: IBasePage): Promise<void> => {
+    callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
-      basePage.renderPage(new CatalogPageView());
+      let params;
+      try {
+        params = await CatalogDataManager.getInstance().getCatalogData();
+      } catch {
+        PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+      }
+      if (!params) return;
+      basePage.renderPage(new CatalogPageView(params));
     },
   },
   {
