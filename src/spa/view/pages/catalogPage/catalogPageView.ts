@@ -197,10 +197,6 @@ export default class CatalogPageView extends PageView {
     return button;
   }
   private createProductCard(product: ProductProjection) {
-    const params = {
-      tag: 'div',
-      classNames: ['catalog__card-product'],
-    };
     const card = new CardProductView(product);
     return card;
   }
