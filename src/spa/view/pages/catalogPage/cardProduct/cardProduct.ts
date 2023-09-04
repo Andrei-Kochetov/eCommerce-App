@@ -100,7 +100,12 @@ export default class CardProductView extends View {
     const openProductButton = new ElementCreator(paramsOpenProductButton);
     this.getPass(data).then((res) => {
       openProductButton.setAttributes({ [PAGE_NAME_ATTRIBUTE]: res });
-      openProductButton.setListeners({ event: 'click', callback: (): void => this.router.navigate(res) });
+      openProductButton.setListeners({
+        event: 'click',
+        callback: (): void => {
+          this.router.navigate(res);
+        },
+      });
     });
     section.addInnerElement(basketButton.getElement(), openProductButton.getElement());
     return section;
@@ -115,7 +120,7 @@ export default class CardProductView extends View {
     response = await DataCatalog.getInstance().getCategoryByID(response.ancestors[0].id);
     if (!response) throw new Error('Interaction with commerce tool error');
     const categoryName = response.name;
-    const path = `category/${categoryName['en-US']}/${subcategoryName['en-US']}/${this.id}`;
+    const path = `catalog/${categoryName['en-US']}/${subcategoryName['en-US']}/${this.id}`;
     return path;
   }
 }

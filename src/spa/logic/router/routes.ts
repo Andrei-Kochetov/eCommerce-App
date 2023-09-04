@@ -8,8 +8,8 @@ import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profil
 import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
-import { CustomProductData } from '@src/spa/logic/catalog/catalogDataManager/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
+import { Category } from '@commercetools/platform-sdk';
 
 export interface IRoute {
   path: string;
@@ -87,57 +87,30 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.CATALOG}/`,
-    // eslint-disable-next-line max-lines-per-function
     callback: async (basePage: IBasePage, router: IRouter, path?: string): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       if (!path) return;
 
       const parts: string[] = path.split('/');
-      if (parts.length === 2) {
-        try {
-          await DataCatalog.getInstance().getCategory(parts[1]);
-          let params;
-          try {
-            params = await CatalogDataManager.getInstance().getCatalogData();
-          } catch {
-            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
-          }
+      const checkResult: boolean = await checkCatalogPass(parts, router);
+      if (!checkResult) return;
+
+      try {
+        if (parts.length === 2) {
+          const params = await CatalogDataManager.getInstance().getCatalogData();
           if (!params) return;
           basePage.renderPage(new CatalogPageView(params, router, parts[1]));
-        } catch {
-          router.redirectToNotFoundPage(path);
-        }
-      } else if (parts.length === 3) {
-        try {
-          await DataCatalog.getInstance().getCategory(parts[1]);
-          await DataCatalog.getInstance().getCategory(parts[2]);
-          let params;
-          try {
-            params = await CatalogDataManager.getInstance().getCatalogData();
-          } catch {
-            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
-          }
-          if (!params) return;
-          basePage.renderPage(new CatalogPageView(params, router, parts[1], parts[2]));
-        } catch {
-          router.redirectToNotFoundPage(path);
-        }
-      } else {
-        try {
-          await DataCatalog.getInstance().getCategory(parts[1]);
-          await DataCatalog.getInstance().getCategory(parts[2]);
-          let params;
-          try {
-            params = await CatalogDataManager.getInstance().getProductById(parts[3]);
-          } catch {
-            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
-          }
-          if (!params) return;
+        } else if (parts.length === 3) {
+          const params = await CatalogDataManager.getInstance().getCatalogData();
+          basePage.renderPage(new CatalogPageView(params, router, undefined, parts[2]));
+        } else {
+          const params = await CatalogDataManager.getInstance().getProductById(parts[3]);
+          if (!params) router.redirectToNotFoundPage(path);
           const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
           basePage.renderPage(new ProductPageView(params));
-        } catch {
-          router.redirectToNotFoundPage(path);
         }
+      } catch {
+        PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
       }
     },
   },
@@ -167,31 +140,21 @@ export const routes: IRoute[] = [
       }
     },
   },
-  {
-    //temporary for testing
-    path: `${PageNames.PRODUCT}`,
-    callback: async (basePage: IBasePage): Promise<void> => {
-      const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
-      basePage.renderPage(new ProductPageView(productInfo));
-    },
-  },
-  // TODO add paths for other pages by its templates
 ];
 
-const productInfo: CustomProductData = {
-  id: 'hon90lite8256clb',
-  path: 'catalog/electronics/phones/hon90lite8256clb',
-  name: 'HONOR 90 Lite 8GB/256GB',
-  description:
-    'Android, screen 6.7" IPS (1080x2388) 90 Hz, Mediatek Dimensity 6020, 8 GB RAM, 256 GB memory, 100 MP camera, 4500 mAh battery, 2 SIM (nano-SIM)',
-  price: '899', // $
-  discountPrice: '799', // $
-  imgURLs: [
-    'https://content2.onliner.by/catalog/device/main/71afe5898b9a35de52ab4ed3a4e131e2.jpeg',
-    'https://content2.onliner.by/catalog/device/main/b5309561ad7bb7c38d26f0c2dfe00db6.jpeg',
-    'https://content2.onliner.by/catalog/device/main/3cbff6b060b8775fb5611e6d74420091.jpeg',
-    'https://content2.onliner.by/catalog/device/main/0619b9023d05c99443f6e8338e2e326f.jpeg',
-    'https://content2.onliner.by/catalog/device/main/a6c4344b1ce7deb5912c4cf80e8e01ff.jpeg',
-    'https://content2.onliner.by/catalog/device/main/b5b8edf86b4a4954be8a7e74bc0d5e0e.jpeg',
-  ],
-};
+async function checkCatalogPass(parts: string[], router: IRouter): Promise<boolean> {
+  try {
+    if (parts.length === 2) {
+      const categoryResp: Category = await DataCatalog.getInstance().getCategory(parts[1]);
+      if (!categoryResp) throw new Error();
+    } else {
+      const resp = await DataCatalog.getInstance().getCategory(parts[1]);
+      const resp2 = await DataCatalog.getInstance().getCategory(parts[2]);
+      if (!resp || !resp2) throw new Error();
+    }
+    return true;
+  } catch {
+    router.redirectToNotFoundPage(parts.join('/'));
+    return false;
+  }
+}
