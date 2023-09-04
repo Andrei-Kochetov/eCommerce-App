@@ -25,6 +25,7 @@ export default class CardProductView extends View {
     this.getViewCreator().addInnerElement(
       this.createSaleSection(data.masterVariant.scopedPriceDiscounted).getElement(),
       this.createImgSection(data.masterVariant.images).getElement(),
+      this.createNameSection(data.name['en-US']),
       this.createPriceSection(
         data.masterVariant.price?.value.centAmount,
         data.masterVariant.price?.discounted?.value.centAmount
@@ -68,6 +69,12 @@ export default class CardProductView extends View {
       sale.addInnerElement(salePrice.getElement());
     }
     return sale;
+  }
+
+  private createNameSection(nameText: string) {
+    const name = new ElementCreator(constants.paramsDescriptionSection);
+    name.setTextContent(`${nameText}`);
+    return name;
   }
 
   private createDescriptionSection(descriptionText: string) {
