@@ -3,17 +3,24 @@ import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import View from '@src/spa/view/view';
 import * as constants from '@src/spa/view/pages/catalogPage/cardProduct/constants';
-import { Image, ProductProjection } from '@commercetools/platform-sdk';
+import { Category, Image, ProductProjection } from '@commercetools/platform-sdk';
+import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
+import { PAGE_NAME_ATTRIBUTE } from '../../types';
+import { IRouter } from '@src/spa/logic/router/types';
 
 export default class CardProductView extends View {
   private id: string;
-  public constructor(data: ProductProjection) {
+
+  private readonly router: IRouter;
+
+  public constructor(data: ProductProjection, router: IRouter) {
     const params: ElementCreatorParams = {
       tag: 'div',
       classNames: ['catalog__card-product', `card-product`],
     };
     super(params);
     this.id = data.id;
+    this.router = router;
     this.configureView(data);
   }
 
@@ -31,7 +38,7 @@ export default class CardProductView extends View {
         data.masterVariant.price?.discounted?.value.centAmount
       ).getElement(),
       this.createDescriptionSection(data.metaDescription ? `${data.metaDescription['en-US']}` : '').getElement(),
-      this.createBasketAndOpenProductSection().getElement()
+      this.createBasketAndOpenProductSection(data).getElement()
     );
   }
   private createSaleSection(flag: boolean | undefined) {
@@ -84,7 +91,7 @@ export default class CardProductView extends View {
     return sale;
   }
 
-  private createBasketAndOpenProductSection() {
+  private createBasketAndOpenProductSection(data: ProductProjection) {
     const section = new ElementCreator(constants.paramsBaskeAndOpenProductSection);
     const paramsBasketButton = {
       tag: 'button',
@@ -98,7 +105,29 @@ export default class CardProductView extends View {
       textContent: 'Learn more...',
     };
     const openProductButton = new ElementCreator(paramsOpenProductButton);
+    this.getPass(data).then((res) => {
+      openProductButton.setAttributes({ [PAGE_NAME_ATTRIBUTE]: res });
+      openProductButton.setListeners({
+        event: 'click',
+        callback: (): void => {
+          this.router.navigate(res);
+        },
+      });
+    });
     section.addInnerElement(basketButton.getElement(), openProductButton.getElement());
     return section;
+  }
+
+  private async getPass(data: ProductProjection): Promise<string> {
+    const subcategoryID: string = data.categories[0].id;
+    let response: Category | undefined = await DataCatalog.getInstance().getCategoryByID(subcategoryID);
+    if (!response) throw new Error('Interaction with commerce tool error');
+    const subcategoryName = response.name;
+
+    response = await DataCatalog.getInstance().getCategoryByID(response.ancestors[0].id);
+    if (!response) throw new Error('Interaction with commerce tool error');
+    const categoryName = response.name;
+    const path = `catalog/${categoryName['en-US']}/${subcategoryName['en-US']}/${this.id}`;
+    return path;
   }
 }

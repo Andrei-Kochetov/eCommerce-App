@@ -1,6 +1,6 @@
 import '@src/spa/view/pages/catalogPage/catalogPage.scss';
 import PageView from '@src/spa/view/pages/pageView';
-import { PageNames } from '@src/spa/view/pages/types';
+import { PAGE_NAME_ATTRIBUTE, PageNames } from '@src/spa/view/pages/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import * as constants from '@src/spa/view/pages/catalogPage/constants';
 import { CatalogData } from '@src/spa/logic/catalog/types';
@@ -10,6 +10,9 @@ import SelectAttributeView from './select/selectAttribute';
 import InputView from '../../input/inputView';
 import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
 import CardProductView from './cardProduct/cardProduct';
+import { IRouter } from '@src/spa/logic/router/types';
+import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
+import SwiperView from '../../swiper/swiperView';
 
 const CATALOG_PAGE_CLASS = 'catalog';
 
@@ -29,7 +32,10 @@ export default class CatalogPageView extends PageView {
   private sortPrice;
   private buttonApplyFilters;
   private buttonResetFilters;
-  public constructor(data: CatalogData) {
+
+  private readonly router: IRouter;
+
+  public constructor(data: CatalogData, router: IRouter, category?: string, subcategory?: string) {
     super(PageNames.CATALOG, CATALOG_PAGE_CLASS);
     this.initialState = data;
     this.searchInput = this.createSearchInput();
@@ -46,18 +52,27 @@ export default class CatalogPageView extends PageView {
     this.buttonResetFilters = this.createResetFiltersButton();
     this.sectionFilter = this.createSectionFilter();
     this.sectionCardsProduct = this.createSectionCardsProducts();
-    this.configureView(data);
-    this.changeSectionCardProducts(this.initialState.allProducts);
+    this.router = router;
+
+    this.configureView(data, category, subcategory);
+    if (category && !subcategory) {
+      this.downloadCategory(category);
+    } else if (subcategory && category) {
+      this.downloadSubCategory(subcategory);
+    } else {
+      this.changeSectionCardProducts(this.initialState.allProducts);
+    }
     this.getAllValueFilters();
   }
 
-  public changeSubcategoriesSection(textContentArr: string[]) {
+  public changeSubcategoriesSection(textContentArr: string[], category: string) {
     this.sectionSubcategories.clearInnerHTML();
     textContentArr.forEach((el, i) => {
-      const button = this.createButtonSubcategories(textContentArr[i]);
+      const button = this.createButtonSubcategories(textContentArr[i], category);
       this.sectionSubcategories.addInnerElement(button.getElement());
     });
   }
+
   public changeSectionCardProducts(products: ProductProjection[]) {
     this.sectionCardsProduct.clearInnerHTML();
     products.forEach((product) => {
@@ -80,6 +95,7 @@ export default class CatalogPageView extends PageView {
     };
     return allValue;
   }
+
   public resetAllValueFilters() {
     (this.selectBrand.getView() as HTMLSelectElement).options.selectedIndex = 0;
     (this.selectColor.getView() as HTMLSelectElement).options.selectedIndex = 0;
@@ -89,7 +105,8 @@ export default class CatalogPageView extends PageView {
     (this.sortAlphabet.getView() as HTMLSelectElement).options.selectedIndex = 0;
     (this.sortPrice.getView() as HTMLSelectElement).options.selectedIndex = 0;
   }
-  private configureView(data: CatalogData) {
+
+  private configureView(data: CatalogData, category?: string, subcategory?: string) {
     const leftContainerFixed = this.createLeftFixedContainer();
     const wrapperCategories = this.createWrapperCategories(data);
     const rightContentContainer = this.createRightContentContainer();
@@ -98,6 +115,7 @@ export default class CatalogPageView extends PageView {
     leftContainerFixed.addInnerElement(wrapperCategories.getElement());
     rightContentContainer.addInnerElement(
       searchSection.getElement(),
+      this.createBreadCrumbs(category, subcategory),
       this.sectionCategoryNesting.getElement(),
       this.sectionSubcategories.getElement(),
       this.sectionFilter.getElement(),
@@ -106,6 +124,7 @@ export default class CatalogPageView extends PageView {
     );
     this.getViewCreator().addInnerElement(leftContainerFixed.getElement(), rightContentContainer.getElement());
   }
+
   private createWrapperCategories(data: CatalogData) {
     const wrapper = new ElementCreator(constants.paramsWrapperCategories);
     data.categories.forEach((element) => {
@@ -114,14 +133,17 @@ export default class CatalogPageView extends PageView {
     });
     return wrapper;
   }
+
   private createLeftFixedContainer() {
     const container = new ElementCreator(constants.paramsContainerLeftFixed);
     return container;
   }
+
   private createRightContentContainer() {
     const container = new ElementCreator(constants.paramsContainerRightContent);
     return container;
   }
+
   private createSearchSection() {
     const container = new ElementCreator(constants.paramsSearchSection);
     const button = new ElementCreator(constants.paramsButtonSearch);
@@ -134,18 +156,22 @@ export default class CatalogPageView extends PageView {
     container.addInnerElement(this.searchInput.getElement(), button.getElement());
     return container;
   }
+
   private createSearchInput() {
     const input = new ElementCreator(constants.paramsInputSearch);
     return input;
   }
+
   private createSectionCategoryNesting() {
     const section = new ElementCreator(constants.paramsCategoryNesting);
     return section;
   }
+
   private createSectionSubcategories() {
     const section = new ElementCreator(constants.paramsSubcategoriesSection);
     return section;
   }
+
   private createSectionFilter() {
     const section = new ElementCreator(constants.paramsFilterSection);
     section.addInnerElement(
@@ -160,6 +186,7 @@ export default class CatalogPageView extends PageView {
     );
     return section;
   }
+
   private createSectionCardsProducts() {
     const section = new ElementCreator(constants.paramsCardsProductsSection);
     return section;
@@ -168,20 +195,20 @@ export default class CatalogPageView extends PageView {
     const section = new ElementCreator(constants.paramsPaginationsSection);
     return section;
   }
-  private createButtonSubcategories(textContent: string) {
+
+  private createButtonSubcategories(textContent: string, category: string) {
     const params = {
       tag: 'button',
       classNames: ['catalog__button-subategories'],
       textContent: textContent,
     };
     const button = new ElementCreator(params);
-
-    button.getElement().addEventListener('click', async () => {
-      const productsFromSubctegory = await CatalogDataManager.getInstance().getProductsFromCategory(textContent);
-      this.changeSectionCardProducts(productsFromSubctegory);
-    });
+    const path = `catalog/${category}/${textContent}`;
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: path });
+    button.getElement().addEventListener('click', (): void => this.router.navigate(path));
     return button;
   }
+
   private createButtonCategories(textContent: string) {
     const params = {
       tag: 'button',
@@ -189,15 +216,25 @@ export default class CatalogPageView extends PageView {
       textContent: textContent,
     };
     const button = new ElementCreator(params);
-    button.getElement().addEventListener('click', async () => {
-      const productsFromCategory = await CatalogDataManager.getInstance().getProductsFromCategory(textContent);
-      this.changeSubcategoriesSection(this.initialState.categoriesThreeText[textContent]);
-      this.changeSectionCardProducts(productsFromCategory);
-    });
+    const path = `catalog/${textContent}`;
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: path });
+    button.getElement().addEventListener('click', (): void => this.router.navigate(path));
     return button;
   }
+
+  private async downloadCategory(category: string): Promise<void> {
+    const productsFromCategory = await CatalogDataManager.getInstance().getProductsFromCategory(category);
+    this.changeSubcategoriesSection(this.initialState.categoriesThreeText[category], category);
+    this.changeSectionCardProducts(productsFromCategory);
+  }
+
+  private async downloadSubCategory(category: string): Promise<void> {
+    const productsFromSubctegory = await CatalogDataManager.getInstance().getProductsFromCategory(category);
+    this.changeSectionCardProducts(productsFromSubctegory);
+  }
+
   private createProductCard(product: ProductProjection) {
-    const card = new CardProductView(product);
+    const card = new CardProductView(product, this.router);
     return card;
   }
 
@@ -216,7 +253,7 @@ export default class CatalogPageView extends PageView {
   private createSelectColor() {
     const params = {
       classNames: ['catalog__select-color'],
-      optionNames: ['Color', 'Black', 'White', 'Blue', 'White', 'Silver', 'Red'],
+      optionNames: ['Color', 'Black', 'Blue', 'White', 'Silver', 'Red'],
       attributes: {
         name: 'color-select',
       },
@@ -264,6 +301,7 @@ export default class CatalogPageView extends PageView {
     wrapper.addInnerElement(this.startPriceInput.getElement(), this.endPriceInput.getElement());
     return wrapper;
   }
+
   private createCheckboxSale() {
     const params = {
       attributes: {
@@ -277,6 +315,7 @@ export default class CatalogPageView extends PageView {
     checkbox.getViewCreator().setClasses('catalog__checkbox-sale');
     return checkbox;
   }
+
   private createSortAlphabet() {
     const params = {
       classNames: ['catalog__select-alphabet-sort'],
@@ -288,6 +327,7 @@ export default class CatalogPageView extends PageView {
     const select = new SelectAttributeView(params);
     return select;
   }
+
   private createSortPrice() {
     const params = {
       classNames: ['catalog__select-price-sort'],
@@ -314,6 +354,7 @@ export default class CatalogPageView extends PageView {
     });
     return div;
   }
+
   private createResetFiltersButton() {
     const params = {
       tag: 'button',
@@ -327,5 +368,37 @@ export default class CatalogPageView extends PageView {
       this.changeSectionCardProducts(productFilterReset);
     });
     return div;
+  }
+
+  private createBreadCrumbs(category?: string, subcategory?: string): IElementCreator {
+    const breadCrumbsContainer = SwiperView.createDivElement(constants.BREAD_CRUMBS_CONTAINER_CLASS);
+    const catalog: IElementCreator = this.createLinkElement('catalog >', 'catalog');
+    breadCrumbsContainer.addInnerElement(catalog);
+
+    if (category) {
+      const categoryLink: IElementCreator = this.createLinkElement(`${category} >`, `catalog/${category}`);
+      breadCrumbsContainer.addInnerElement(categoryLink);
+    }
+
+    if (subcategory) {
+      const categoryLink: IElementCreator = this.createLinkElement(
+        `${subcategory} >`,
+        `catalog/${category}/${subcategory}`
+      );
+      breadCrumbsContainer.addInnerElement(categoryLink);
+    }
+    console.log(breadCrumbsContainer.getElement());
+    return breadCrumbsContainer;
+  }
+
+  private createLinkElement(textContent: string, href: string): IElementCreator {
+    const params: ElementCreatorParams = {
+      tag: 'a',
+      classNames: [constants.BREAD_CRUMBS_CLASS],
+      textContent: textContent,
+      attributes: { [PAGE_NAME_ATTRIBUTE]: href },
+      listenersParams: [{ event: 'click', callback: (): void => this.router.navigate(href) }],
+    };
+    return new ElementCreator(params);
   }
 }

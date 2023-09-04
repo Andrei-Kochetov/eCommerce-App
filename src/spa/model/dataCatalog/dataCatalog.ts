@@ -59,6 +59,21 @@ export default class DataCatalog {
       .execute();
     return response.body.results[0];
   }
+
+  public async getCategoryByID(id: string) {
+    const queryArgs = {
+      filter: [`id:"${id}"`],
+    };
+    const apiRoot = this.createApiRoot();
+    const response = await apiRoot
+      .categories()
+      .get({
+        queryArgs: queryArgs,
+      })
+      .execute();
+    return response.body.results.find((items) => items.id === id);
+  }
+
   public async getProductsFromCategory(categoryName: string) {
     const category = await this.getCategory(categoryName);
     this.currentCategoryName = categoryName;

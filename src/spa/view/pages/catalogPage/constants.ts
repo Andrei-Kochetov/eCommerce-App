@@ -86,3 +86,6 @@ export const paramsPaginationsSection = {
   tag: SECTION_TAG,
   classNames: SECTION_PAGINATION_CLASS_NAME,
 };
+
+export const BREAD_CRUMBS_CONTAINER_CLASS = 'bread-crumbs-container';
+export const BREAD_CRUMBS_CLASS = 'bread-crumbs';

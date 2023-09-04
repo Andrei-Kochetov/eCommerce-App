@@ -88,14 +88,13 @@ export default class ProductPageView extends PageView implements IProductPage {
     const wrapper: IElementCreator = SwiperView.createDivElement(constants.PRICES_WRAPPER_CLASS);
     const price: IElementCreator = ProductPageView.createSpanElement(constants.PRICE_CLASS);
 
-    price.setTextContent(`${data.price} $`);
+    price.setTextContent(`${+data.price / 100} $`);
 
     wrapper.addInnerElement(price);
-    if (data.discountPrice) {
+    if (data.discountPrice && data.discountPrice !== 'undefined') {
       const discountPrice: IElementCreator = ProductPageView.createSpanElement(constants.DISCOUNT_PRICE_CLASS);
-
       price.setClasses(constants.PRICE_CROSSED_CLASS);
-      discountPrice.setTextContent(`${data.discountPrice} $`);
+      discountPrice.setTextContent(`${+data.discountPrice / 100} $`);
       wrapper.addInnerElement(discountPrice);
     }
     wrapper.addInnerElement(this.addToBasketBTN, this.removeFromBasketBTN);
