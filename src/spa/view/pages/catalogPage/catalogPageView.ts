@@ -387,7 +387,6 @@ export default class CatalogPageView extends PageView {
       );
       breadCrumbsContainer.addInnerElement(categoryLink);
     }
-    console.log(breadCrumbsContainer.getElement());
     return breadCrumbsContainer;
   }
 
