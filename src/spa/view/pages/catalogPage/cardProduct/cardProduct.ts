@@ -29,7 +29,7 @@ export default class CardProductView extends View {
         data.masterVariant.price?.value.centAmount,
         data.masterVariant.price?.discounted?.value.centAmount
       ).getElement(),
-      this.createDescriptionSection(`${data.description!['en-US']}`).getElement(),
+      this.createDescriptionSection(`${data.metaDescription!['en-US']}`).getElement(),
       this.createBasketAndOpenProductSection().getElement()
     );
   }

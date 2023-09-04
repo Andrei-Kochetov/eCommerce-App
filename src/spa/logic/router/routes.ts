@@ -75,19 +75,14 @@ export const routes: IRoute[] = [
     path: `${PageNames.CATALOG}`,
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
-      const state: IState = State.getInstance();
-      if (state.getRecord(APP_STATE_KEYS.AUTHORIZED) !== 'true') {
-        router.navigate(PageNames.LOGIN, true);
-      } else {
-        let params;
-        try {
-          params = await CatalogDataManager.getInstance().getCatalogData();
-        } catch {
-          PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
-        }
-        if (!params) return;
-        basePage.renderPage(new CatalogPageView(params));
+      let params;
+      try {
+        params = await CatalogDataManager.getInstance().getCatalogData();
+      } catch {
+        PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
       }
+      if (!params) return;
+      basePage.renderPage(new CatalogPageView(params));
     },
   },
   {

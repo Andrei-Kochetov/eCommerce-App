@@ -54,7 +54,6 @@ export default class DataCatalog {
         queryArgs: queryArgs,
       })
       .execute();
-    console.log(response.body.results[0].id, 'category by name');
     return response.body.results[0];
   }
   public async getProductsFromCategory(categoryName: string) {
@@ -124,8 +123,6 @@ export default class DataCatalog {
     if (allValue.sortPrice === 'Descending') {
       sort.push(`price desc`);
     }
-    console.log(filter, 'filter after if');
-    console.log(sort, 'sort');
     const apiRoot = this.createApiRoot();
     return apiRoot
       .productProjections()
@@ -146,7 +143,6 @@ export default class DataCatalog {
       const category = await this.getCategory(this.currentCategoryName);
       filter.push(`categories.id: subtree("${category.id}")`);
     }
-    console.log(searchText);
     const apiRoot = this.createApiRoot();
     return apiRoot
       .productProjections()
