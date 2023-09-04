@@ -200,10 +200,9 @@ export default class CatalogPageView extends PageView {
       textContent: textContent,
     };
     const button = new ElementCreator(params);
-    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: `catalog/${category}/${textContent}` });
-    button
-      .getElement()
-      .addEventListener('click', (): Promise<void> => this.downloadSubCategory(button.getElement().textContent || ''));
+    const path = `catalog/${category}/${textContent}`;
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: path });
+    button.getElement().addEventListener('click', (): void => this.router.navigate(path));
     return button;
   }
 
@@ -214,10 +213,9 @@ export default class CatalogPageView extends PageView {
       textContent: textContent,
     };
     const button = new ElementCreator(params);
-    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: `catalog/${textContent}` });
-    button
-      .getElement()
-      .addEventListener('click', (): Promise<void> => this.downloadCategory(button.getElement().textContent || ''));
+    const path = `catalog/${textContent}`;
+    button.setAttributes({ [PAGE_NAME_ATTRIBUTE]: path });
+    button.getElement().addEventListener('click', (): void => this.router.navigate(path));
     return button;
   }
 
@@ -233,7 +231,7 @@ export default class CatalogPageView extends PageView {
   }
 
   private createProductCard(product: ProductProjection) {
-    const card = new CardProductView(product);
+    const card = new CardProductView(product, this.router);
     return card;
   }
 
@@ -252,7 +250,7 @@ export default class CatalogPageView extends PageView {
   private createSelectColor() {
     const params = {
       classNames: ['catalog__select-color'],
-      optionNames: ['Color', 'Black', 'White', 'Blue', 'White', 'Silver', 'Red'],
+      optionNames: ['Color', 'Black', 'Blue', 'White', 'Silver', 'Red'],
       attributes: {
         name: 'color-select',
       },

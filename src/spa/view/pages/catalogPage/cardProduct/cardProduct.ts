@@ -6,16 +6,21 @@ import * as constants from '@src/spa/view/pages/catalogPage/cardProduct/constant
 import { Category, Image, ProductProjection } from '@commercetools/platform-sdk';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { PAGE_NAME_ATTRIBUTE } from '../../types';
+import { IRouter } from '@src/spa/logic/router/types';
 
 export default class CardProductView extends View {
   private id: string;
-  public constructor(data: ProductProjection) {
+
+  private readonly router: IRouter;
+
+  public constructor(data: ProductProjection, router: IRouter) {
     const params: ElementCreatorParams = {
       tag: 'div',
       classNames: ['catalog__card-product', `card-product`],
     };
     super(params);
     this.id = data.id;
+    this.router = router;
     this.configureView(data);
   }
 
@@ -93,7 +98,10 @@ export default class CardProductView extends View {
       textContent: 'Learn more...',
     };
     const openProductButton = new ElementCreator(paramsOpenProductButton);
-    this.getPass(data).then((res) => openProductButton.setAttributes({ [PAGE_NAME_ATTRIBUTE]: res }));
+    this.getPass(data).then((res) => {
+      openProductButton.setAttributes({ [PAGE_NAME_ATTRIBUTE]: res });
+      openProductButton.setListeners({ event: 'click', callback: (): void => this.router.navigate(res) });
+    });
     section.addInnerElement(basketButton.getElement(), openProductButton.getElement());
     return section;
   }
