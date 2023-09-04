@@ -11,6 +11,8 @@ import InputView from '../../input/inputView';
 import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
 import CardProductView from './cardProduct/cardProduct';
 import { IRouter } from '@src/spa/logic/router/types';
+import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
+import SwiperView from '../../swiper/swiperView';
 
 const CATALOG_PAGE_CLASS = 'catalog';
 
@@ -52,10 +54,10 @@ export default class CatalogPageView extends PageView {
     this.sectionCardsProduct = this.createSectionCardsProducts();
     this.router = router;
 
-    this.configureView(data);
+    this.configureView(data, category, subcategory);
     if (category && !subcategory) {
       this.downloadCategory(category);
-    } else if (subcategory && !category) {
+    } else if (subcategory && category) {
       this.downloadSubCategory(subcategory);
     } else {
       this.changeSectionCardProducts(this.initialState.allProducts);
@@ -104,7 +106,7 @@ export default class CatalogPageView extends PageView {
     (this.sortPrice.getView() as HTMLSelectElement).options.selectedIndex = 0;
   }
 
-  private configureView(data: CatalogData) {
+  private configureView(data: CatalogData, category?: string, subcategory?: string) {
     const leftContainerFixed = this.createLeftFixedContainer();
     const wrapperCategories = this.createWrapperCategories(data);
     const rightContentContainer = this.createRightContentContainer();
@@ -113,6 +115,7 @@ export default class CatalogPageView extends PageView {
     leftContainerFixed.addInnerElement(wrapperCategories.getElement());
     rightContentContainer.addInnerElement(
       searchSection.getElement(),
+      this.createBreadCrumbs(category, subcategory),
       this.sectionCategoryNesting.getElement(),
       this.sectionSubcategories.getElement(),
       this.sectionFilter.getElement(),
@@ -365,5 +368,37 @@ export default class CatalogPageView extends PageView {
       this.changeSectionCardProducts(productFilterReset);
     });
     return div;
+  }
+
+  private createBreadCrumbs(category?: string, subcategory?: string): IElementCreator {
+    const breadCrumbsContainer = SwiperView.createDivElement(constants.BREAD_CRUMBS_CONTAINER_CLASS);
+    const catalog: IElementCreator = this.createLinkElement('catalog >', 'catalog');
+    breadCrumbsContainer.addInnerElement(catalog);
+
+    if (category) {
+      const categoryLink: IElementCreator = this.createLinkElement(`${category} >`, `catalog/${category}`);
+      breadCrumbsContainer.addInnerElement(categoryLink);
+    }
+
+    if (subcategory) {
+      const categoryLink: IElementCreator = this.createLinkElement(
+        `${subcategory} >`,
+        `catalog/${category}/${subcategory}`
+      );
+      breadCrumbsContainer.addInnerElement(categoryLink);
+    }
+    console.log(breadCrumbsContainer.getElement());
+    return breadCrumbsContainer;
+  }
+
+  private createLinkElement(textContent: string, href: string): IElementCreator {
+    const params: ElementCreatorParams = {
+      tag: 'a',
+      classNames: [constants.BREAD_CRUMBS_CLASS],
+      textContent: textContent,
+      attributes: { [PAGE_NAME_ATTRIBUTE]: href },
+      listenersParams: [{ event: 'click', callback: (): void => this.router.navigate(href) }],
+    };
+    return new ElementCreator(params);
   }
 }

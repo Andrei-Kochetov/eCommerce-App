@@ -102,7 +102,7 @@ export const routes: IRoute[] = [
           basePage.renderPage(new CatalogPageView(params, router, parts[1]));
         } else if (parts.length === 3) {
           const params = await CatalogDataManager.getInstance().getCatalogData();
-          basePage.renderPage(new CatalogPageView(params, router, undefined, parts[2]));
+          basePage.renderPage(new CatalogPageView(params, router, parts[1], parts[2]));
         } else {
           const params = await CatalogDataManager.getInstance().getProductById(parts[3]);
           if (!params) router.redirectToNotFoundPage(path);
