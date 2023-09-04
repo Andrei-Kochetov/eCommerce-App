@@ -1,7 +1,6 @@
-//import {} from '@src/spa/logic/catalog/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { CatalogData, IAllFiltersValue } from './types';
-import { Category, ProductProjection } from '@commercetools/platform-sdk';
+import { Category, ProductProjection, Project } from '@commercetools/platform-sdk';
 
 export default class CatalogDataManager /* implements IProfileDataManager */ {
   private static readonly instance = new CatalogDataManager();
@@ -73,7 +72,22 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     const dataCatalogResponse = await DataCatalog.getInstance().getProducts();
     return dataCatalogResponse;
   }
-
+  public async getProductById(id: string) {
+    const product = (await DataCatalog.getInstance().getProductById(id)).body.results[0];
+    const urlsArr: string[] = [];
+    product.masterVariant.images?.forEach((el) => {
+      urlsArr.push(el.url);
+    });
+    return {
+      id: product.id,
+      name: `${product.name['en-US']}`,
+      description: `${product.description!['en-US']}`,
+      price: `${product.masterVariant.price?.value.centAmount}`,
+      discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
+      imgUrls: urlsArr,
+      path: 'нету))',
+    };
+  }
   public async getCategoryId(categoryName: string) {
     const dataCatalogResponse = await DataCatalog.getInstance().getCategory(categoryName);
     console.log(dataCatalogResponse, 'category by name');
@@ -98,10 +112,4 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     console.log(dataCatalogResponse.body.results, 'search response');
     return dataCatalogResponse.body.results;
   }
-
-  //private getToken(): TokenStore {
-  //  const state: IState = State.getInstance();
-  //  const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
-  //  return JSON.parse(token);
-  //}
 }

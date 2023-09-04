@@ -31,9 +31,7 @@ export default class DataCatalog {
 
   public getProducts() {
     const queryArgs = {
-      //filter: `categories.id:${id}`
       priceCurrency: 'USD',
-      //filter: [`variants.scopedPriceDiscounted: true`],
     };
     const apiRoot = this.createApiRoot();
     return apiRoot
@@ -63,8 +61,6 @@ export default class DataCatalog {
     const category = await this.getCategory(categoryName);
     this.currentCategoryName = categoryName;
     const queryArgs = {
-      //where: `categories(name="${categoryName}")`,
-      //filter: ['variants.attributes.test-id:"test"'],
       priceCurrency: 'USD',
       filter: [`categories.id: subtree("${category.id}")`],
     };
@@ -78,6 +74,20 @@ export default class DataCatalog {
       .execute();
   }
 
+  public async getProductById(id: string) {
+    const queryArgs = {
+      filter: [`id:"${id}"`],
+      priceCurrency: 'USD',
+    };
+    const apiRoot = this.createApiRoot();
+    return apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: queryArgs,
+      })
+      .execute();
+  }
   /* eslint-disable max-lines-per-function*/
   public async getProductWithFilters(allValue: IAllFiltersValue) {
     const filter: string[] = [];

@@ -9,6 +9,7 @@ import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
 import SelectAttributeView from './select/selectAttribute';
 import InputView from '../../input/inputView';
 import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
+import CardProductView from './cardProduct/cardProduct';
 
 const CATALOG_PAGE_CLASS = 'catalog';
 
@@ -59,16 +60,9 @@ export default class CatalogPageView extends PageView {
   }
   public changeSectionCardProducts(products: ProductProjection[]) {
     this.sectionCardsProduct.clearInnerHTML();
-    products.forEach(() => {
-      const card = this.createProductCard();
-      this.sectionCardsProduct.addInnerElement(card.getElement());
-    });
-  }
-  public changeSectionCategoryNesting(products: ProductProjection[]) {
-    this.sectionCardsProduct.clearInnerHTML();
-    products.forEach(() => {
-      const card = this.createProductCard();
-      this.sectionCardsProduct.addInnerElement(card.getElement());
+    products.forEach((product) => {
+      const card = this.createProductCard(product);
+      this.sectionCardsProduct.addInnerElement(card.getView());
     });
   }
 
@@ -77,14 +71,13 @@ export default class CatalogPageView extends PageView {
       brand: (this.selectBrand.getView() as HTMLSelectElement).value,
       color: (this.selectColor.getView() as HTMLSelectElement).value,
       rangePrice: [
-        +(this.startPriceInput.getElement() as HTMLInputElement).value,
-        +(this.endPriceInput.getElement() as HTMLInputElement).value,
+        +(this.startPriceInput.getElement() as HTMLInputElement).value * 100,
+        +(this.endPriceInput.getElement() as HTMLInputElement).value * 100,
       ],
       sale: (this.checkboxSale.getInput().getElement() as HTMLInputElement).checked,
       sortAlphabet: (this.sortAlphabet.getView() as HTMLSelectElement).value,
       sortPrice: (this.sortPrice.getView() as HTMLSelectElement).value,
     };
-    console.log(allValue, 'allValue filters');
     return allValue;
   }
   public resetAllValueFilters() {
@@ -137,7 +130,6 @@ export default class CatalogPageView extends PageView {
       this.resetAllValueFilters();
       const productResult = await CatalogDataManager.getInstance().getProductWithSearch(searchText);
       this.changeSectionCardProducts(productResult);
-      (this.searchInput.getElement() as HTMLInputElement).value = '';
     });
     container.addInnerElement(this.searchInput.getElement(), button.getElement());
     return container;
@@ -204,19 +196,19 @@ export default class CatalogPageView extends PageView {
     });
     return button;
   }
-  private createProductCard() {
+  private createProductCard(product: ProductProjection) {
     const params = {
       tag: 'div',
       classNames: ['catalog__card-product'],
     };
-    const card = new ElementCreator(params);
+    const card = new CardProductView(product);
     return card;
   }
 
   private createSelectBrand() {
     const params = {
       classNames: ['catalog__select-brand'],
-      optionNames: ['Brand', 'Lenovo', 'Samsung', 'HP'],
+      optionNames: ['Brand', 'Lenovo', 'Samsung', 'HP', 'Honor', 'Redme', 'Acer', 'LG', 'Sony'],
       attributes: {
         name: 'brand-select',
       },
@@ -228,7 +220,7 @@ export default class CatalogPageView extends PageView {
   private createSelectColor() {
     const params = {
       classNames: ['catalog__select-color'],
-      optionNames: ['Color', 'Black', 'White', 'Blue'],
+      optionNames: ['Color', 'Black', 'White', 'Blue', 'White', 'Silver', 'Red'],
       attributes: {
         name: 'color-select',
       },
@@ -330,7 +322,7 @@ export default class CatalogPageView extends PageView {
     const params = {
       tag: 'button',
       classNames: ['catalog__button-reset-filters'],
-      textContent: 'Reset filters',
+      textContent: 'Reset',
     };
     const div = new ElementCreator(params);
     div.getElement().addEventListener('click', async () => {
