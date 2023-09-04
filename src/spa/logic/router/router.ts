@@ -36,7 +36,12 @@ export default class Router implements IRouter {
       relativePath = `/${params.resource}${relativePath}`;
     }
 
-    pathForFind = `${params.path}${pathForFind}`;
+    if (params.path.includes('catalog/')) {
+      pathForFind = 'catalog/';
+    } else {
+      pathForFind = `${params.path}${pathForFind}`;
+    }
+
     relativePath = `${params.path}${relativePath}`;
     const route = routes.find((item) => item.path === pathForFind);
 
@@ -45,7 +50,11 @@ export default class Router implements IRouter {
       return;
     }
 
-    route.callback(this.basePage, this);
+    if (params.path.includes('catalog/')) {
+      route.callback(this.basePage, this, params.path);
+    } else {
+      route.callback(this.basePage, this);
+    }
   }
 
   public redirectToNotFoundPage(url: string): void {

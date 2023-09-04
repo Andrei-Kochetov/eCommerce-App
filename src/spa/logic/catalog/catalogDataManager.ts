@@ -98,7 +98,7 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
       description: product.description ? `${product.description['en-US']}` : '',
       price: `${product.masterVariant.price?.value.centAmount}`,
       discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
-      imgUrls: urlsArr,
+      imgURLs: urlsArr,
       path: '',
     };
   }

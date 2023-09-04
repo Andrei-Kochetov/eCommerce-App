@@ -9,10 +9,11 @@ import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 import { CustomProductData } from '@src/spa/logic/catalog/catalogDataManager/types';
+import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 
 export interface IRoute {
   path: string;
-  callback: (basePage: IBasePage, router: IRouter) => void;
+  callback: (basePage: IBasePage, router: IRouter, path?: string) => void;
 }
 
 export const routes: IRoute[] = [
@@ -72,7 +73,7 @@ export const routes: IRoute[] = [
   },
   {
     path: `${PageNames.CATALOG}`,
-    callback: async (basePage: IBasePage): Promise<void> => {
+    callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       let params;
       try {
@@ -81,7 +82,63 @@ export const routes: IRoute[] = [
         PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
       }
       if (!params) return;
-      basePage.renderPage(new CatalogPageView(params));
+      basePage.renderPage(new CatalogPageView(params, router));
+    },
+  },
+  {
+    path: `${PageNames.CATALOG}/`,
+    // eslint-disable-next-line max-lines-per-function
+    callback: async (basePage: IBasePage, router: IRouter, path?: string): Promise<void> => {
+      const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
+      if (!path) return;
+
+      const parts: string[] = path.split('/');
+      if (parts.length === 2) {
+        try {
+          await DataCatalog.getInstance().getCategory(parts[1]);
+          let params;
+          try {
+            params = await CatalogDataManager.getInstance().getCatalogData();
+          } catch {
+            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+          }
+          if (!params) return;
+          basePage.renderPage(new CatalogPageView(params, router, parts[1]));
+        } catch {
+          router.redirectToNotFoundPage(path);
+        }
+      } else if (parts.length === 3) {
+        try {
+          await DataCatalog.getInstance().getCategory(parts[1]);
+          await DataCatalog.getInstance().getCategory(parts[2]);
+          let params;
+          try {
+            params = await CatalogDataManager.getInstance().getCatalogData();
+          } catch {
+            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+          }
+          if (!params) return;
+          basePage.renderPage(new CatalogPageView(params, router, parts[1], parts[2]));
+        } catch {
+          router.redirectToNotFoundPage(path);
+        }
+      } else {
+        try {
+          await DataCatalog.getInstance().getCategory(parts[1]);
+          await DataCatalog.getInstance().getCategory(parts[2]);
+          let params;
+          try {
+            params = await CatalogDataManager.getInstance().getProductById(parts[3]);
+          } catch {
+            PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+          }
+          if (!params) return;
+          const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
+          basePage.renderPage(new ProductPageView(params));
+        } catch {
+          router.redirectToNotFoundPage(path);
+        }
+      }
     },
   },
   {

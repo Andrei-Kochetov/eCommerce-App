@@ -107,7 +107,7 @@ export default class CardProductView extends View {
     response = await DataCatalog.getInstance().getCategoryByID(response.ancestors[0].id);
     if (!response) throw new Error('Interaction with commerce tool error');
     const categoryName = response.name;
-    const path = `category/${categoryName['en-US']}/${subcategoryName['en-US']}`;
+    const path = `category/${categoryName['en-US']}/${subcategoryName['en-US']}/${this.id}`;
     return path;
   }
 }

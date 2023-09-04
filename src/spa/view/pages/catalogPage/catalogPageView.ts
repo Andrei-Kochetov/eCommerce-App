@@ -10,6 +10,7 @@ import SelectAttributeView from './select/selectAttribute';
 import InputView from '../../input/inputView';
 import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
 import CardProductView from './cardProduct/cardProduct';
+import { IRouter } from '@src/spa/logic/router/types';
 
 const CATALOG_PAGE_CLASS = 'catalog';
 
@@ -29,7 +30,10 @@ export default class CatalogPageView extends PageView {
   private sortPrice;
   private buttonApplyFilters;
   private buttonResetFilters;
-  public constructor(data: CatalogData, category?: string, subcategory?: string) {
+
+  private readonly router: IRouter;
+
+  public constructor(data: CatalogData, router: IRouter, category?: string, subcategory?: string) {
     super(PageNames.CATALOG, CATALOG_PAGE_CLASS);
     this.initialState = data;
     this.searchInput = this.createSearchInput();
@@ -46,6 +50,8 @@ export default class CatalogPageView extends PageView {
     this.buttonResetFilters = this.createResetFiltersButton();
     this.sectionFilter = this.createSectionFilter();
     this.sectionCardsProduct = this.createSectionCardsProducts();
+    this.router = router;
+
     this.configureView(data);
     if (category && !subcategory) {
       this.downloadCategory(category);
