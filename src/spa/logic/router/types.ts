@@ -1,5 +1,6 @@
 export interface IRouter {
   navigate(url: string, replace?: boolean): void;
+  redirectToNotFoundPage(url: string): void;
 }
 
 export const ID_TEMPLATE = '{id}';

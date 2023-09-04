@@ -48,7 +48,7 @@ export default class Router implements IRouter {
     route.callback(this.basePage, this);
   }
 
-  redirectToNotFoundPage(url: string) {
+  public redirectToNotFoundPage(url: string): void {
     const notFoundPage = routes.find((item) => item.path === PageNames.NOT_FOUND);
     if (notFoundPage) {
       window.history.pushState(null, '', `/${url}`);
