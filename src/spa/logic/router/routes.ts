@@ -11,6 +11,8 @@ import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { Category } from '@commercetools/platform-sdk';
 import { CustomBasketData } from '@src/spa/view/pages/basketPage/types';
+import { ILoadSpinner } from '@src/spa/view/loadSpinner/types';
+import LoadSpinnerView from '@src/spa/view/loadSpinner/loadSpinner';
 
 export interface IRoute {
   path: string;
@@ -77,6 +79,8 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       let params;
+      const spinner: ILoadSpinner = new LoadSpinnerView();
+      spinner.show();
       try {
         params = await CatalogDataManager.getInstance().getCatalogData();
       } catch {
@@ -84,6 +88,7 @@ export const routes: IRoute[] = [
       }
       if (!params) return;
       basePage.renderPage(new CatalogPageView(params, router));
+      spinner.hide();
     },
   },
   {
@@ -91,10 +96,14 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter, path?: string): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       if (!path) return;
-
+      const spinner: ILoadSpinner = new LoadSpinnerView();
+      spinner.show();
       const parts: string[] = path.split('/');
       const checkResult: boolean = await checkCatalogPass(parts, router);
-      if (!checkResult) return;
+      if (!checkResult) {
+        spinner.hide();
+        return;
+      }
 
       try {
         if (parts.length === 2) {
@@ -108,11 +117,12 @@ export const routes: IRoute[] = [
           const params = await CatalogDataManager.getInstance().getProductById(parts[3]);
           if (!params) router.redirectToNotFoundPage(path);
           const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
-          console.log(params);
           basePage.renderPage(new ProductPageView(params));
         }
+        spinner.hide();
       } catch {
         PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+        spinner.hide();
       }
     },
   },
@@ -134,13 +144,16 @@ export const routes: IRoute[] = [
         router.navigate(PageNames.LOGIN, true);
       } else {
         let params: ProfileData;
+        const spinner: ILoadSpinner = new LoadSpinnerView();
         try {
+          spinner.show();
           params = await ProfileDataManager.getInstance().getProfileData();
         } catch {
           params = DEFAULT_PROFILE_DATA;
           PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
         }
         basePage.renderPage(new ProfilePageView(params));
+        spinner.hide();
       }
     },
   },

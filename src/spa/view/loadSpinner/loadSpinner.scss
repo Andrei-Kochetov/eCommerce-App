@@ -1,0 +1,16 @@
+@import '@src/spa/basic-styles/_mixins';
+
+.spinner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  @include flex ($gap: 0, $align: center, $justify: center);
+  z-index: 3;
+  backdrop-filter: blur(2px);
+}
+
+.spinner {
+  z-index: 5;
+}
