@@ -4,8 +4,8 @@ import emptyBasketImgSRC from '@src/assets/basket-page/empty-cart.png';
 
 export const BASKET_PAGE_CLASS = 'basket';
 
+// page header
 export const PAGE_HEADER_CLASS = 'basket__header';
-
 export const PAGE_TITLE_PARAMS: ElementCreatorParams = {
   tag: 'h2',
   classNames: ['basket__title'],
@@ -26,6 +26,8 @@ export const PROMO_CODE_IMG_PARAMS: ElementCreatorParams = {
 };
 
 export const BASKET_CONTENT_WRAPPER_CLASS = 'basket__content-wrapper';
+
+// empty basket elements properties
 export const EMPTY_BASKET_CLASS = 'basket__empty-info';
 export const EMPTY_BASKET_IMG_PARAMS: ElementCreatorParams = {
   tag: 'img',
@@ -57,3 +59,21 @@ export const EMPTY_BASKET_TEXT_WRAPPER_PARAMS: ElementCreatorParams = {
   tag: 'p',
   classNames: ['basket__empty-info-text-wrapper'],
 };
+
+// not empty basket elements properties
+export const BASKET_CONTENT_CLASS = 'basket__content';
+export const PRICE_WRAPPER_CLASS = 'price-wrapper';
+export const PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
+  tag: 'span',
+  classNames: ['price'],
+};
+export const DISCOUNTED_PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
+  tag: 'span',
+  classNames: ['discounted-price'],
+};
+export const TOTAL_TEXT_PARAMS: ElementCreatorParams = {
+  tag: 'p',
+  classNames: ['total-text'],
+  textContent: 'Total:',
+};
+export const TOTAL_WRAPPER_CLASS = 'total-wrapper';
