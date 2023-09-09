@@ -20,6 +20,7 @@ body {
   position: relative;
   @include flex(column, 0);
   min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 button {
