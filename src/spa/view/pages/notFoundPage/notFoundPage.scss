@@ -8,7 +8,7 @@
   &__img {
     height: 25rem;
     width: 25rem;
-    @include background ($src: '@src/assets/404.png');
+    @include background ($src: '@src/assets/404-page/404.png');
   }
 
   &__title {

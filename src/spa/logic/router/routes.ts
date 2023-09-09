@@ -5,11 +5,14 @@ import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
 import { DEFAULT_PROFILE_DATA, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
-import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
+import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager/catalogDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { Category } from '@commercetools/platform-sdk';
+import { CustomBasketData } from '@src/spa/view/pages/basketPage/types';
+import { ILoadSpinner } from '@src/spa/view/loadSpinner/types';
+import LoadSpinnerView from '@src/spa/view/loadSpinner/loadSpinner';
 
 export interface IRoute {
   path: string;
@@ -76,6 +79,8 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       let params;
+      const spinner: ILoadSpinner = new LoadSpinnerView();
+      spinner.show();
       try {
         params = await CatalogDataManager.getInstance().getCatalogData();
       } catch {
@@ -83,6 +88,7 @@ export const routes: IRoute[] = [
       }
       if (!params) return;
       basePage.renderPage(new CatalogPageView(params, router));
+      spinner.hide();
     },
   },
   {
@@ -90,10 +96,14 @@ export const routes: IRoute[] = [
     callback: async (basePage: IBasePage, router: IRouter, path?: string): Promise<void> => {
       const { default: CatalogPageView } = await import('@src/spa/view/pages/catalogPage/catalogPageView');
       if (!path) return;
-
+      const spinner: ILoadSpinner = new LoadSpinnerView();
+      spinner.show();
       const parts: string[] = path.split('/');
       const checkResult: boolean = await checkCatalogPass(parts, router);
-      if (!checkResult) return;
+      if (!checkResult) {
+        spinner.hide();
+        return;
+      }
 
       try {
         if (parts.length === 2) {
@@ -109,16 +119,20 @@ export const routes: IRoute[] = [
           const { default: ProductPageView } = await import('@src/spa/view/pages/productPage/productPageView');
           basePage.renderPage(new ProductPageView(params));
         }
+        spinner.hide();
       } catch {
         PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
+        spinner.hide();
       }
     },
   },
   {
     path: `${PageNames.BASKET}`,
     callback: async (basePage: IBasePage): Promise<void> => {
+      // here firstly we get info of the interface type CustomBasketData from the server
+      // and then if that info is returned we put it into BasketPageView constructor
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
-      basePage.renderPage(new BasketPageView());
+      basePage.renderPage(new BasketPageView(data));
     },
   },
   {
@@ -130,13 +144,16 @@ export const routes: IRoute[] = [
         router.navigate(PageNames.LOGIN, true);
       } else {
         let params: ProfileData;
+        const spinner: ILoadSpinner = new LoadSpinnerView();
         try {
+          spinner.show();
           params = await ProfileDataManager.getInstance().getProfileData();
         } catch {
           params = DEFAULT_PROFILE_DATA;
           PopUpView.getRejectPopUp(UNKNOWN_REQUEST_ERROR).show();
         }
         basePage.renderPage(new ProfilePageView(params));
+        spinner.hide();
       }
     },
   },
@@ -158,3 +175,39 @@ async function checkCatalogPass(parts: string[], router: IRouter): Promise<boole
     return false;
   }
 }
+
+// temporary test data
+
+const data: CustomBasketData = {
+  basketID: 'basket_id',
+  products: [
+    {
+      productAmount: '2',
+      id: '45544b50-ea33-4fe7-b03f-30d4536bbae9',
+      path: '',
+      name: 'HP Mini 200-4252sr',
+      price: '14999',
+      discountPrice: 'undefined',
+      imgURLs: [
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/download-paEnFu2d.jpg',
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/download-nK_Q6EI7.jpg',
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/download-2s8zSs8m.jpg',
+      ],
+    },
+    {
+      productAmount: '3',
+      id: '00da1984-1a33-413d-a290-1817baa41915',
+      path: '',
+      name: 'SAMSUNG EO-EG920L',
+      price: '1999',
+      discountPrice: '1500',
+      imgURLs: [
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/525f4c0c93d111e88117-qWPSC3QC.jpg',
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/download-GV_md2ij.jpg',
+        'https://b314e449787212c0d6bd-e96837c33c84a4c58639e1d8e46e0570.ssl.cf3.rackcdn.com/download-XhWcdrfy.png',
+      ],
+    },
+  ],
+  totalPrice: '1000',
+  discountPrice: '900',
+};

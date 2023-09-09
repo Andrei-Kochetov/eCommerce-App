@@ -21,7 +21,7 @@
   &__logo-img{
     width: 8rem;
     height: 3rem;
-    @include background ($src: '@src/assets/onPlug.png');
+    @include background ($src: '@src/assets/header/onPlug.png');
   }
 }
 

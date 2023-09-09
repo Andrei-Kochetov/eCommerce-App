@@ -1,12 +1,14 @@
 import '@src/spa/view/pages/basketPage/basketPage.scss';
 import PageView from '@src/spa/view/pages/pageView';
 import { PageNames } from '@src/spa/view/pages/types';
-
-const BASKET_PAGE_CLASS = 'basket';
+import { CustomBasketData } from '@src/spa/view/pages/basketPage/types';
+import * as constants from '@src/spa/view/pages/basketPage/constants';
 
 export default class BasketPageView extends PageView {
-  public constructor() {
-    super(PageNames.CATALOG, BASKET_PAGE_CLASS);
-    this.getViewCreator().setTextContent('BASKET-PAGE');
+  private readonly data: CustomBasketData;
+
+  public constructor(data: CustomBasketData) {
+    super(PageNames.CATALOG, constants.BASKET_PAGE_CLASS);
+    this.data = data;
   }
 }
