@@ -71,6 +71,7 @@ export const DISCOUNTED_PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
   tag: 'span',
   classNames: ['discounted-price'],
 };
+export const CROSSED_PRICE_CLASS = 'price_crossed';
 export const TOTAL_TEXT_PARAMS: ElementCreatorParams = {
   tag: 'p',
   classNames: ['total-text'],

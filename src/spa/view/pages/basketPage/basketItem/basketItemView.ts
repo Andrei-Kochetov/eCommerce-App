@@ -7,6 +7,7 @@ import SwiperView from '@src/spa/view/swiper/swiperView';
 import ButtonView from '@src/spa/view/button/buttonView';
 import BasketPageView from '@src/spa/view/pages/basketPage/basketPageView';
 import {
+  CROSSED_PRICE_CLASS,
   DISCOUNTED_PRICE_ELEMENT_PARAMS,
   PRICE_ELEMENT_PARAMS,
   PRICE_WRAPPER_CLASS,
@@ -38,15 +39,16 @@ export default class BasketItemView extends View {
     const basketProduct: IElementCreator = SwiperView.createDivElement(constants.BASKET_PRODUCT_CLASS);
     const img: IElementCreator = new ElementCreator(constants.ITEM_IMG_PARAMS);
     const link: IElementCreator = this.createLink(data);
-    const amountWrapper: IElementCreator = this.createAmountWrapper();
+    const amountWrapper: IElementCreator = this.createAmountWrapper(data);
     const priceWrapper: IElementCreator = SwiperView.createDivElement(PRICE_WRAPPER_CLASS);
 
     img.setAttributes({ src: data.imgURLs[0] });
     basketProduct.addInnerElement(img, link, amountWrapper, this.removeItemBTN);
 
-    this.price.setTextContent(data.price);
+    this.price.setTextContent(`${+data.price / 100} $`);
     if (data.discountPrice && data.discountPrice !== 'undefined') {
-      this.discountedPrice.setTextContent(data.discountPrice);
+      this.discountedPrice.setTextContent(`${+data.discountPrice / 100} $`);
+      this.price.setClasses(CROSSED_PRICE_CLASS);
     } else {
       this.discountedPrice.setTextContent('');
       this.discountedPrice.setClasses(HIDDEN_CLASS);
@@ -68,8 +70,9 @@ export default class BasketItemView extends View {
     return new ElementCreator(params);
   }
 
-  private createAmountWrapper(): IElementCreator {
+  private createAmountWrapper(data: CustomBasketProductData): IElementCreator {
     const wrapper: IElementCreator = SwiperView.createDivElement(constants.AMOUNT_WRAPPER_CLASS);
+    this.amountInput.value = data.productAmount;
     wrapper.addInnerElement(this.reduceAmountBTN, this.amountInput, this.increaseAmountBTN);
     return wrapper;
   }

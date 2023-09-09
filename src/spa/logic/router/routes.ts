@@ -208,6 +208,6 @@ const data: CustomBasketData = {
       ],
     },
   ],
-  totalPrice: '1000',
-  discountPrice: '900',
+  totalPrice: '15000',
+  discountPrice: '9000',
 };

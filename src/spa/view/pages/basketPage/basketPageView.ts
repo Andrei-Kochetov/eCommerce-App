@@ -63,9 +63,10 @@ export default class BasketPageView extends PageView {
     const text: IElementCreator = new ElementCreator(constants.TOTAL_TEXT_PARAMS);
     const priceWrapper: IElementCreator = SwiperView.createDivElement(constants.PRICE_WRAPPER_CLASS);
 
-    this.total.setTextContent(data.totalPrice);
+    this.total.setTextContent(`${+data.totalPrice / 100} $`);
     if (data.discountPrice && data.discountPrice !== 'undefined') {
-      this.discountedTotal.setTextContent(data.discountPrice);
+      this.discountedTotal.setTextContent(`${+data.discountPrice / 100} $`);
+      this.total.setClasses(constants.CROSSED_PRICE_CLASS);
     } else {
       this.discountedTotal.setTextContent('');
       this.discountedTotal.setClasses(HIDDEN_CLASS);
