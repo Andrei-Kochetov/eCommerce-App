@@ -78,7 +78,7 @@ export default class ProductPageView extends PageView implements IProductPage {
     swiper.setClasses(constants.PRODUCT_SWIPER_SMALL_CLASS);
     this.getViewCreator().addInnerElement(swiper, pricesWrapper, infoWrapper);
 
-    if (data.discountPrice) {
+    if (data.discountPrice && data.discountPrice !== 'undefined') {
       const label: IElementCreator = ProductPageView.createSpanElement(constants.SALE_LABEL_CLASS);
       this.getViewCreator().addInnerElement(label);
     }

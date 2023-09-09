@@ -5,7 +5,7 @@ import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import State from '@src/spa/logic/state/state';
 import { DEFAULT_PROFILE_DATA, ProfileData } from '@src/spa/logic/profile/profileDataManager/types';
 import ProfileDataManager from '@src/spa/logic/profile/profileDataManager/profileDataManager';
-import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager';
+import CatalogDataManager from '@src/spa/logic/catalog/catalogDataManager/catalogDataManager';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import { UNKNOWN_REQUEST_ERROR } from '@src/spa/logic/modalLogic/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
