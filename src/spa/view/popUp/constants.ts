@@ -1,7 +1,7 @@
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
-import IMG_REJECT_SRC from '@src/assets/reject-mark.png';
-import IMG_APPROVE_SRC from '@src/assets/approve-mark.png';
+import IMG_REJECT_SRC from '@src/assets/popUp/reject-mark.png';
+import IMG_APPROVE_SRC from '@src/assets/popUp/approve-mark.png';
 
 function createImg(imgSrc: string): IElementCreator {
   const params: ElementCreatorParams = {

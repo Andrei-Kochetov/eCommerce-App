@@ -22,7 +22,7 @@
 .home-page__img {
   width: 43rem;
   height: 40rem;
-  @include background ($src: '@src/assets/mainPageImg.png', );
+  @include background ($src: '@src/assets/main-page/mainPageImg.png', );
 }
 
 .home-page__content-container {

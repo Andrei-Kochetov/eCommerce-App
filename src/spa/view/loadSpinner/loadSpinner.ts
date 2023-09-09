@@ -1,4 +1,4 @@
-import spinnerSRC from '@src/assets/spinner.gif';
+import spinnerSRC from '@src/assets/spinner/spinner.gif';
 import '@src/spa/view/loadSpinner/loadSpinner.scss';
 import '@src/spa/view/modal/modal.scss';
 import { ElementCreatorParams, IElementCreator } from '@src/spa/utils/elementCreator/types';
