@@ -7,7 +7,8 @@ import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import SwiperView from '@src/spa/view/swiper/swiperView';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import BasketItemView from '@src/spa/view/pages/basketPage/basketItem/basketItemView';
-import { HIDDEN_CLASS } from '../../header/types';
+import { HIDDEN_CLASS } from '@src/spa/view/header/types';
+import ButtonView from '../../button/buttonView';
 
 export default class BasketPageView extends PageView {
   private readonly data: CustomBasketData;
@@ -15,6 +16,7 @@ export default class BasketPageView extends PageView {
   private readonly contentWrapper: IElementCreator;
   private readonly total: IElementCreator;
   private readonly discountedTotal: IElementCreator;
+  private readonly clearBasketBTN: IElementCreator;
 
   public constructor(data: CustomBasketData) {
     super(PageNames.BASKET, constants.BASKET_PAGE_CLASS);
@@ -23,6 +25,7 @@ export default class BasketPageView extends PageView {
     this.contentWrapper = SwiperView.createDivElement(constants.BASKET_CONTENT_WRAPPER_CLASS);
     this.total = new ElementCreator(constants.PRICE_ELEMENT_PARAMS);
     this.discountedTotal = new ElementCreator(constants.DISCOUNTED_PRICE_ELEMENT_PARAMS);
+    this.clearBasketBTN = new ButtonView(constants.CLEAR_BASKET_BTN_PARAMS).getViewCreator();
     this.configureView(data);
   }
 
@@ -53,7 +56,7 @@ export default class BasketPageView extends PageView {
     data.products.forEach((product: CustomBasketProductData): void => {
       content.addInnerElement(new BasketItemView(product).getView());
     });
-    content.addInnerElement(totalSection);
+    content.addInnerElement(totalSection, this.clearBasketBTN);
 
     return content;
   }

@@ -178,3 +178,16 @@
   font-size: 2rem;
   font-weight: 700;
 }
+
+.basket__btn_clear {
+  background-color: $corporate-color;
+  color: $backgraund-dark;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+}

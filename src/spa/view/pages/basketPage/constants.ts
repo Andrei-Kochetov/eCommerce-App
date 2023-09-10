@@ -1,6 +1,7 @@
 import { ElementCreatorParams } from '@src/spa/utils/elementCreator/types';
 import promoCodeImgSRC from '@src/assets/basket-page/promo-code.png';
 import emptyBasketImgSRC from '@src/assets/basket-page/empty-cart.png';
+import { btnParams } from '@src/spa/view/button/types';
 
 export const BASKET_PAGE_CLASS = 'basket';
 
@@ -78,3 +79,8 @@ export const TOTAL_TEXT_PARAMS: ElementCreatorParams = {
   textContent: 'Total:',
 };
 export const TOTAL_WRAPPER_CLASS = 'total-wrapper';
+
+export const CLEAR_BASKET_BTN_PARAMS: btnParams = {
+  textContent: 'Clear basket',
+  classNames: ['basket__btn_clear'],
+};
