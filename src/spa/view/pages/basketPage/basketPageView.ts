@@ -1,7 +1,7 @@
 import '@src/spa/view/pages/basketPage/basketPage.scss';
 import PageView from '@src/spa/view/pages/pageView';
 import { PageNames } from '@src/spa/view/pages/types';
-import { CustomBasketData, CustomBasketProductData } from '@src/spa/view/pages/basketPage/types';
+import { CustomBasketData, CustomBasketProductData, IBasketPage } from '@src/spa/view/pages/basketPage/types';
 import * as constants from '@src/spa/view/pages/basketPage/constants';
 import { IElementCreator } from '@src/spa/utils/elementCreator/types';
 import SwiperView from '@src/spa/view/swiper/swiperView';
@@ -10,7 +10,7 @@ import BasketItemView from '@src/spa/view/pages/basketPage/basketItem/basketItem
 import { HIDDEN_CLASS } from '@src/spa/view/header/types';
 import ButtonView from '../../button/buttonView';
 
-export default class BasketPageView extends PageView {
+export default class BasketPageView extends PageView implements IBasketPage {
   private readonly data: CustomBasketData;
   private readonly promoCodeInput: HTMLInputElement;
   private readonly contentWrapper: IElementCreator;
@@ -27,6 +27,10 @@ export default class BasketPageView extends PageView {
     this.discountedTotal = new ElementCreator(constants.DISCOUNTED_PRICE_ELEMENT_PARAMS);
     this.clearBasketBTN = new ButtonView(constants.CLEAR_BASKET_BTN_PARAMS).getViewCreator();
     this.configureView(data);
+  }
+
+  public getData(): CustomBasketData {
+    return this.data;
   }
 
   public static createTextInput(...classes: string[]): HTMLInputElement {
