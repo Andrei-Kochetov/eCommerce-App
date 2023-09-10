@@ -13,8 +13,10 @@ import {
   PRICE_WRAPPER_CLASS,
 } from '@src/spa/view/pages/basketPage/constants';
 import { HIDDEN_CLASS } from '@src/spa/view/header/types';
+import { IBasketPageLogic } from '@src/spa/logic/basket/basketPageLogic/types';
+import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
 
-export default class BasketItemView extends View {
+export default class BasketItemView extends View implements IBasketItem {
   private readonly data: CustomBasketProductData;
   private readonly amountInput: HTMLInputElement;
   private readonly increaseAmountBTN: IElementCreator;
@@ -23,7 +25,9 @@ export default class BasketItemView extends View {
   private readonly price: IElementCreator;
   private readonly discountedPrice: IElementCreator;
 
-  public constructor(data: CustomBasketProductData) {
+  private readonly logic: IBasketPageLogic;
+
+  public constructor(data: CustomBasketProductData, logic: IBasketPageLogic) {
     super(constants.BASKET_ITEM_PARAMS);
     this.data = data;
     this.amountInput = BasketPageView.createTextInput(constants.INPUT_CLASS);
@@ -32,7 +36,12 @@ export default class BasketItemView extends View {
     this.removeItemBTN = new ButtonView(constants.REMOVE_ITEM_BTN_PARAMS).getViewCreator();
     this.price = new ElementCreator(PRICE_ELEMENT_PARAMS);
     this.discountedPrice = new ElementCreator(DISCOUNTED_PRICE_ELEMENT_PARAMS);
+    this.logic = logic;
     this.configureView(data);
+  }
+
+  public getData(): CustomBasketProductData {
+    return this.data;
   }
 
   private configureView(data: CustomBasketProductData): void {
@@ -56,6 +65,7 @@ export default class BasketItemView extends View {
     priceWrapper.addInnerElement(this.discountedPrice, this.price);
 
     this.getViewCreator().addInnerElement(basketProduct, priceWrapper);
+    this.setListeners();
   }
 
   private createLink(data: CustomBasketProductData): IElementCreator {
@@ -75,5 +85,20 @@ export default class BasketItemView extends View {
     this.amountInput.value = data.productAmount;
     wrapper.addInnerElement(this.reduceAmountBTN, this.amountInput, this.increaseAmountBTN);
     return wrapper;
+  }
+
+  private setListeners(): void {
+    this.reduceAmountBTN.setListeners({
+      event: 'click',
+      callback: (): void => this.logic.reduceProductAmountBTNHandler(this.amountInput),
+    });
+    this.increaseAmountBTN.setListeners({
+      event: 'click',
+      callback: (): void => this.logic.increaseProductAmountBTNHandler(this.amountInput),
+    });
+    this.removeItemBTN.setListeners({
+      event: 'click',
+      callback: (): void => this.logic.removeProductFromBasket(this),
+    });
   }
 }
