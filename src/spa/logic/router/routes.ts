@@ -184,7 +184,7 @@ const data: CustomBasketData = {
     {
       productAmount: '2',
       id: '45544b50-ea33-4fe7-b03f-30d4536bbae9',
-      path: '',
+      path: 'catalog/Laptops/Gaming/45544b50-ea33-4fe7-b03f-30d4536bbae9',
       name: 'HP Mini 200-4252sr',
       price: '14999',
       discountPrice: 'undefined',
@@ -197,7 +197,7 @@ const data: CustomBasketData = {
     {
       productAmount: '3',
       id: '00da1984-1a33-413d-a290-1817baa41915',
-      path: '',
+      path: 'catalog/Headphones/Wired/00da1984-1a33-413d-a290-1817baa41915',
       name: 'SAMSUNG EO-EG920L',
       price: '1999',
       discountPrice: '1500',
@@ -208,6 +208,6 @@ const data: CustomBasketData = {
       ],
     },
   ],
-  totalPrice: '1000',
-  discountPrice: '900',
+  totalPrice: '15000',
+  discountPrice: '9000',
 };

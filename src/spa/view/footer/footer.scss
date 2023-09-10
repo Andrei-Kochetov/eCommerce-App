@@ -6,17 +6,17 @@
     background-color: $backgraund-dark;
 
     &-rs-img {
-        width: 10rem;
-        height: 4rem;
+        width: 9rem;
+        height: 3.5rem;
         @include background ($src: '@src/assets/footer/rs_school.svg');
     }
     &-gh-img {
-        width: 4rem;
-        height: 4rem;
+        width: 3.5rem;
+        height: 3.5rem;
     }
     &__container {
         @include flex($justify: space-between, $align: center);
-        padding: 1.5rem 0;
+        padding: 0.5rem 0;
     }
     &__wrapper-link-gh{
         @include flex(row, 10px);
