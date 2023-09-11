@@ -8,7 +8,10 @@ import SwiperView from '@src/spa/view/swiper/swiperView';
 import ElementCreator from '@src/spa/utils/elementCreator/elementCreator';
 import BasketItemView from '@src/spa/view/pages/basketPage/basketItem/basketItemView';
 import { HIDDEN_CLASS } from '@src/spa/view/header/types';
-import ButtonView from '../../button/buttonView';
+import ButtonView from '@src/spa/view/button/buttonView';
+import { IBasketPageLogic } from '@src/spa/logic/basket/basketPageLogic/types';
+import { BasketPageLogic } from '@src/spa/logic/basket/basketPageLogic/basketPageLogic';
+import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
 
 export default class BasketPageView extends PageView implements IBasketPage {
   private readonly data: CustomBasketData;
@@ -18,6 +21,9 @@ export default class BasketPageView extends PageView implements IBasketPage {
   private readonly discountedTotal: IElementCreator;
   private readonly clearBasketBTN: IElementCreator;
 
+  private readonly items: Map<string, IBasketItem>;
+  private readonly logic: IBasketPageLogic = new BasketPageLogic(this);
+
   public constructor(data: CustomBasketData) {
     super(PageNames.BASKET, constants.BASKET_PAGE_CLASS);
     this.data = data;
@@ -26,11 +32,8 @@ export default class BasketPageView extends PageView implements IBasketPage {
     this.total = new ElementCreator(constants.PRICE_ELEMENT_PARAMS);
     this.discountedTotal = new ElementCreator(constants.DISCOUNTED_PRICE_ELEMENT_PARAMS);
     this.clearBasketBTN = new ButtonView(constants.CLEAR_BASKET_BTN_PARAMS).getViewCreator();
+    this.items = new Map();
     this.configureView(data);
-  }
-
-  public getData(): CustomBasketData {
-    return this.data;
   }
 
   public static createTextInput(...classes: string[]): HTMLInputElement {
@@ -39,6 +42,35 @@ export default class BasketPageView extends PageView implements IBasketPage {
     element.classList.add(...classes);
 
     return element;
+  }
+
+  public getData(): CustomBasketData {
+    return this.data;
+  }
+
+  // return false if no need to recalculate prices and total, otherwise true
+  public removeProduct(product: IBasketItem): boolean {
+    this.items.delete(product.getData().id);
+    const rest: number = Array.from(this.items.values()).length;
+
+    if (rest === 0) {
+      this.showEmptyBasketView();
+      return false;
+    } else {
+      product.getView().remove();
+      return true;
+    }
+  }
+
+  public clearBasket(): void {
+    this.items.clear();
+    this.showEmptyBasketView();
+  }
+
+  private showEmptyBasketView(): void {
+    this.contentWrapper.clearInnerHTML();
+    this.contentWrapper.addInnerElement(this.createEmptyBasketView());
+    this.promoCodeInput.value = '';
   }
 
   private configureView(data: CustomBasketData): void {
@@ -51,6 +83,7 @@ export default class BasketPageView extends PageView implements IBasketPage {
     }
 
     this.getViewCreator().addInnerElement(header, this.contentWrapper);
+    this.setListeners();
   }
 
   private createContent(data: CustomBasketData): IElementCreator {
@@ -58,10 +91,11 @@ export default class BasketPageView extends PageView implements IBasketPage {
     const totalSection: IElementCreator = this.createTotalSection(data);
 
     data.products.forEach((product: CustomBasketProductData): void => {
-      content.addInnerElement(new BasketItemView(product).getView());
+      const item: IBasketItem = new BasketItemView(product, this.logic);
+      this.items.set(product.id, item);
+      content.addInnerElement(item.getView());
     });
     content.addInnerElement(totalSection, this.clearBasketBTN);
-
     return content;
   }
 
@@ -116,5 +150,9 @@ export default class BasketPageView extends PageView implements IBasketPage {
     promoCode.addInnerElement(promoCodeImg, this.promoCodeInput);
 
     return promoCode;
+  }
+
+  private setListeners(): void {
+    this.clearBasketBTN.setListeners({ event: 'click', callback: (): void => this.logic.cleatBasket() });
   }
 }
