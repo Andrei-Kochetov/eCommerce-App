@@ -7,6 +7,7 @@ import { Category, Image, ProductProjection } from '@commercetools/platform-sdk'
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { PAGE_NAME_ATTRIBUTE } from '../../types';
 import { IRouter } from '@src/spa/logic/router/types';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class CardProductView extends View {
   private id: string;
@@ -99,6 +100,12 @@ export default class CardProductView extends View {
       textContent: 'Add to Basket',
     };
     const basketButton = new ElementCreator(paramsBasketButton);
+    basketButton.setListeners({
+      event: 'click',
+      callback: async () /* :void */ => {
+        const responseCart = await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
+      },
+    });
     const paramsOpenProductButton = {
       tag: 'button',
       classNames: ['card-product__open-product-button'],
