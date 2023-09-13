@@ -23,6 +23,13 @@ export default class AnonymousBasket {
     return this.token.get();
   }
 
+  public async getBasket() {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+    console.log(activeCart, 'active cart');
+    return activeCart;
+  }
+
   public async addProductInCart(id: string) /* : Promise<ClientResponse<CustomerSignInResult>> */ {
     const apiRoot = this.createApiRootForAddProductInCart();
     const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
@@ -46,9 +53,46 @@ export default class AnonymousBasket {
       .execute();
   }
 
+  public async removeProductInCart(id: string) /* : Promise<ClientResponse<CustomerSignInResult>> */ {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+    const lineItemId = activeCart.lineItems.filter((el) => el.productId === id)[0].id;
+
+    return apiRoot
+      .me()
+      .carts()
+      .withId({ ID: activeCart.id })
+      .post({
+        body: {
+          version: activeCart.version,
+          actions: [
+            {
+              action: 'removeLineItem',
+              lineItemId: lineItemId,
+              //quantity,
+            },
+          ],
+        },
+      })
+      .execute();
+  }
+
   public createAnonymousBasket() /* : Promise<ClientResponse<CustomerSignInResult>> */ {
     const apiRoot: ByProjectKeyRequestBuilder = this.createApiRootForCreateAnonymousBasket();
 
+    return apiRoot
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+      })
+      .execute();
+  }
+
+  public createAuthorizationBasket() /* : Promise<ClientResponse<CustomerSignInResult>> */ {
+    const apiRoot: ByProjectKeyRequestBuilder = this.createApiRootForCreateAuthorizationBasket();
     return apiRoot
       .me()
       .carts()
@@ -95,6 +139,21 @@ export default class AnonymousBasket {
       .withClientCredentialsFlow(options.authMiddlewareOptions)
       .withHttpMiddleware(options.httpMiddlewareOptions)
       .withAnonymousSessionFlow(anonymousAuthMiddlewareOptions)
+      //.withPasswordFlow(passwordMiddlewareOptions)
+      .build();
+
+    const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+      projectKey: options.projectKey,
+    });
+    return apiRoot;
+  }
+
+  private createApiRootForCreateAuthorizationBasket() {
+    const tokenStore: TokenStore = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.TOKEN));
+    const ctpClient: Client = new ClientBuilder()
+      .withClientCredentialsFlow(options.authMiddlewareOptions)
+      .withHttpMiddleware(options.httpMiddlewareOptions)
+      .withExistingTokenFlow(`Bearer ${tokenStore.token}`, options.existingTokenMiddlewareOptions)
       //.withPasswordFlow(passwordMiddlewareOptions)
       .build();
 

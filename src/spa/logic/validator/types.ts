@@ -15,4 +15,5 @@ export enum ErrorMessages {
   SPASE_START = 'The field must not start with a space',
   SPACE_END = 'The field must not end with a space',
   REGISTRATION = 'User with such an email is already exist',
+  REMOVE_PRODUCT_BASKET = 'Failed to remove item from cart',
 }

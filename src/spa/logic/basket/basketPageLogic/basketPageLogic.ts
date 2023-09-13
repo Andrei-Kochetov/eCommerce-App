@@ -1,6 +1,11 @@
 import { IBasketPage } from '@src/spa/view/pages/basketPage/types';
 import { IBasketPageLogic } from '@src/spa/logic/basket/basketPageLogic/types';
 import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { ErrorMessages } from '@src/spa/logic/validator/types';
+import State from '@src/spa/logic/state/state';
+import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 
 export class BasketPageLogic implements IBasketPageLogic {
   private page: IBasketPage;
@@ -33,12 +38,20 @@ export class BasketPageLogic implements IBasketPageLogic {
     // logic for updating prices and total
   }
 
-  public removeProductFromBasket(basketItem: IBasketItem): void {
+  public async removeProductFromBasket(basketItem: IBasketItem): Promise<void> {
     // logic for removing product from basket in commerce tools
     // if this operation failed show error message and return, else go further
-
-    const removingResult: boolean = this.page.removeProduct(basketItem);
-    if (!removingResult) return;
+    try {
+      await BasketManager.getInstance().removeProductInBasket(basketItem.getData().id);
+      const removingResult: boolean = this.page.removeProduct(basketItem);
+      const flagsObj = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS));
+      flagsObj[basketItem.getData().id] = false;
+      State.getInstance().setRecord(APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS, JSON.stringify(flagsObj));
+      console.log(flagsObj, 'flagsObj');
+      if (!removingResult) return;
+    } catch (err) {
+      PopUpView.getRejectPopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+    }
 
     // logic for updating prices and total
   }

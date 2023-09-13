@@ -8,9 +8,14 @@ import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { PAGE_NAME_ATTRIBUTE } from '../../types';
 import { IRouter } from '@src/spa/logic/router/types';
 import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import State from '@src/spa/logic/state/state';
+import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 
 export default class CardProductView extends View {
   private id: string;
+  private name: string;
+  //private isAddBasketFlag: boolean;
 
   private readonly router: IRouter;
 
@@ -21,7 +26,9 @@ export default class CardProductView extends View {
     };
     super(params);
     this.id = data.id;
+    this.name = data.name['en-US'];
     this.router = router;
+    //this.isAddBasketFlag = this.getFlagAddProductInBasket();
     this.configureView(data);
   }
 
@@ -92,18 +99,38 @@ export default class CardProductView extends View {
     return sale;
   }
 
+  /* eslint-disable max-lines-per-function*/
   private createBasketAndOpenProductSection(data: ProductProjection) {
     const section = new ElementCreator(constants.paramsBaskeAndOpenProductSection);
     const paramsBasketButton = {
       tag: 'button',
       classNames: ['card-product__basket-button'],
-      textContent: 'Add to Basket',
     };
     const basketButton = new ElementCreator(paramsBasketButton);
+    if (this.getFlagAddProductInBasket()) {
+      basketButton.setTextContent('Remove basket');
+      basketButton.setClasses('bc-silver');
+    } else {
+      basketButton.setTextContent('Add to Basket');
+      basketButton.removeClasses('bc-silver');
+    }
     basketButton.setListeners({
       event: 'click',
-      callback: async () /* :void */ => {
-        const responseCart = await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
+      callback: async (): Promise<void> => {
+        if (!this.getFlagAddProductInBasket()) {
+          await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
+          basketButton.setTextContent('Remove basket');
+          basketButton.setClasses('bc-silver');
+          this.setFlagProductInState(true);
+
+          PopUpView.getApprovePopUp(`${this.name} added to basket`).show();
+        } else {
+          await BasketManager.getInstance().removeProductInBasket(this.getIdProduct());
+          basketButton.setTextContent('Add to Basket');
+          basketButton.removeClasses('bc-silver');
+          this.setFlagProductInState(false);
+          PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
+        }
       },
     });
     const paramsOpenProductButton = {
@@ -124,7 +151,7 @@ export default class CardProductView extends View {
     section.addInnerElement(basketButton.getElement(), openProductButton.getElement());
     return section;
   }
-
+  /* eslint-enable max-lines-per-function*/
   private async getPass(data: ProductProjection): Promise<string> {
     const subcategoryID: string = data.categories[0].id;
     let response: Category | undefined = await DataCatalog.getInstance().getCategoryByID(subcategoryID);
@@ -136,5 +163,17 @@ export default class CardProductView extends View {
     const categoryName = response.name;
     const path = `catalog/${categoryName['en-US']}/${subcategoryName['en-US']}/${this.id}`;
     return path;
+  }
+
+  private getFlagAddProductInBasket(): boolean {
+    const flagsObj = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS));
+    const flag: boolean =
+      Object.entries(flagsObj).filter(([key, value]) => key === this.id && value === true).length > 0;
+    return flag;
+  }
+  private setFlagProductInState(flag: boolean) {
+    const flagsObj = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS));
+    flagsObj[this.id] = flag;
+    State.getInstance().setRecord(APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS, JSON.stringify(flagsObj));
   }
 }

@@ -13,7 +13,7 @@ import { Category } from '@commercetools/platform-sdk';
 import { CustomBasketData } from '@src/spa/view/pages/basketPage/types';
 import { ILoadSpinner } from '@src/spa/view/loadSpinner/types';
 import LoadSpinnerView from '@src/spa/view/loadSpinner/loadSpinner';
-
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 export interface IRoute {
   path: string;
   callback: (basePage: IBasePage, router: IRouter, path?: string) => void;
@@ -132,6 +132,8 @@ export const routes: IRoute[] = [
       // here firstly we get info of the interface type CustomBasketData from the server
       // and then if that info is returned we put it into BasketPageView constructor
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
+      const data: CustomBasketData = await BasketManager.getInstance().getBasketData();
+      console.log(data, 'data basket');
       basePage.renderPage(new BasketPageView(data));
     },
   },
@@ -178,7 +180,7 @@ async function checkCatalogPass(parts: string[], router: IRouter): Promise<boole
 
 // temporary test data
 
-const data: CustomBasketData = {
+/* const data: CustomBasketData = {
   basketID: 'basket_id',
   products: [
     {
@@ -211,3 +213,4 @@ const data: CustomBasketData = {
   totalPrice: '15000',
   discountPrice: '9000',
 };
+ */

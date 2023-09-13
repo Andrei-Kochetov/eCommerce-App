@@ -11,6 +11,7 @@ import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/p
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import State from '@src/spa/logic/state/state';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
@@ -43,6 +44,7 @@ export default class LoginController extends Controller implements ILoginControl
         state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
         state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
         state.setRecord(APP_STATE_KEYS.VERSION, `${customerVersion}`);
+        BasketManager.getInstance().createAuthorizationBasket();
         PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {

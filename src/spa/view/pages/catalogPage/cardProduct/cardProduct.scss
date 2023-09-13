@@ -57,6 +57,9 @@
           background-color: $backgraund-dark;
           color: black;
         }
+        &:active{
+            background-color: #f7b2b2;
+        }
       }
 }
 
@@ -66,4 +69,8 @@
 
 .hide{
     display: none;
+}
+
+.bc-silver{
+    background-color: rgb(180, 129, 129);
 }
