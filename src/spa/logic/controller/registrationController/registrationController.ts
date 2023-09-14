@@ -63,6 +63,7 @@ export default class RegistrationController extends Controller implements IRegis
       this.goTo(element);
     } catch (err) {
       if (err instanceof Error) {
+        State.getInstance().setRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED, JSON.stringify(false));
         console.log(err);
         PopUpView.getRejectPopUp(err.message).show();
       }
