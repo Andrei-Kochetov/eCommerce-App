@@ -23,7 +23,6 @@ export default class FooterView extends View implements IView {
     const wrapperLinkGitHub = this.createWrapper(constants.LINK_GH_WRAPPER_CLASS_NAME);
     wrapperLinkGitHub.addInnerElement(
       new ImgLinkView(constants.linkGHL).getView(),
-      new ImgLinkView(constants.linkGHV).getView(),
       new ImgLinkView(constants.linkGHA).getView()
     );
     container
