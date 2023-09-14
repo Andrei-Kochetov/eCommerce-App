@@ -99,7 +99,6 @@ export default class CardProductView extends View {
     return sale;
   }
 
-  /* eslint-disable max-lines-per-function*/
   private createBasketAndOpenProductSection(data: ProductProjection) {
     const section = new ElementCreator(constants.paramsBaskeAndOpenProductSection);
     const paramsBasketButton = {
@@ -151,7 +150,7 @@ export default class CardProductView extends View {
     section.addInnerElement(basketButton.getElement(), openProductButton.getElement());
     return section;
   }
-  /* eslint-enable max-lines-per-function*/
+
   private async getPass(data: ProductProjection): Promise<string> {
     const subcategoryID: string = data.categories[0].id;
     let response: Category | undefined = await DataCatalog.getInstance().getCategoryByID(subcategoryID);

@@ -24,6 +24,7 @@ export default class RegistrationController extends Controller implements IRegis
     const state: IState = State.getInstance();
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     const registration: IRegistration = Registration.getInstance();
+    const anonymousBasketFlag = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED));
     if (!validator.validate()) return;
 
     try {
@@ -40,7 +41,19 @@ export default class RegistrationController extends Controller implements IRegis
 
       const email = customerData.email;
       const password = this.page.getPasswordField().getValue();
-      await LoginClient.getInstance().authorization(email, password);
+
+      //
+      console.log(anonymousBasketFlag, 'anon flag registr');
+      if (anonymousBasketFlag === true) {
+        console.log('run anon basket login');
+        await LoginClient.getInstance().authorizationAnonumous(email, password);
+
+        await LoginClient.getInstance().authorization1(email, password);
+      } else {
+        console.log('run without basket login');
+        response = await LoginClient.getInstance().authorization(email, password);
+      }
+      //await LoginClient.getInstance().authorization(email, password);
 
       state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
       state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
@@ -50,6 +63,7 @@ export default class RegistrationController extends Controller implements IRegis
       this.goTo(element);
     } catch (err) {
       if (err instanceof Error) {
+        console.log(err);
         PopUpView.getRejectPopUp(err.message).show();
       }
     }

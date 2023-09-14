@@ -79,6 +79,8 @@ export default class AnonymousBasket {
 
   public createAnonymousBasket() /* : Promise<ClientResponse<CustomerSignInResult>> */ {
     const apiRoot: ByProjectKeyRequestBuilder = this.createApiRootForCreateAnonymousBasket();
+    State.getInstance().setRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED, JSON.stringify(true));
+    console.log(JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED)));
 
     return apiRoot
       .me()
@@ -145,11 +147,13 @@ export default class AnonymousBasket {
     const apiRoot: ByProjectKeyRequestBuilder = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
       projectKey: options.projectKey,
     });
+
     return apiRoot;
   }
 
   private createApiRootForCreateAuthorizationBasket() {
     const tokenStore: TokenStore = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.TOKEN));
+    console.log(tokenStore.token, 'token create auth basket');
     const ctpClient: Client = new ClientBuilder()
       .withClientCredentialsFlow(options.authMiddlewareOptions)
       .withHttpMiddleware(options.httpMiddlewareOptions)

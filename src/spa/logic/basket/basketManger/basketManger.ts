@@ -13,7 +13,6 @@ export default class BasketManager {
     return this.instance;
   }
 
-  /* eslint-disable max-lines-per-function*/
   public async getBasketData() {
     let responseBasket;
     try {
@@ -57,7 +56,7 @@ export default class BasketManager {
     }
     return responseBasket;
   }
-  /* eslint-enable max-lines-per-function*/
+
   public async addProductInBasket(idProduct: string) {
     const token: TokenStore = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.TOKEN));
     if (!token.token) {
@@ -75,6 +74,6 @@ export default class BasketManager {
     console.log(responseCart.body, 'basketManager remove product');
   }
   public async createAuthorizationBasket() {
-    const responseCreateCart = await AnonymousBasket.getInstance().createAnonymousBasket();
+    const responseCreateCart = await AnonymousBasket.getInstance().createAuthorizationBasket();
   }
 }

@@ -27,27 +27,40 @@ export default class LoginController extends Controller implements ILoginControl
     const emailInput = this.page.getEmailField().getInput().getElement();
     const passwordInput = this.page.getPasswordField().getInput().getElement();
     const loginClient = LoginClient.getInstance();
+    const anonymousBasketFlag = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED));
     if (!validator.validate()) return;
 
     if (emailInput instanceof HTMLInputElement && passwordInput instanceof HTMLInputElement) {
       try {
-        const response: ClientResponse<CustomerSignInResult> = await loginClient.authorization(
-          emailInput.value,
-          passwordInput.value
-        );
+        let response;
+        if (anonymousBasketFlag === true) {
+          console.log('run anon basket login');
+          response = await loginClient.authorizationAnonumous(emailInput.value, passwordInput.value);
+
+          await loginClient.authorization1(emailInput.value, passwordInput.value);
+        } else {
+          console.log('run without basket login');
+          response = await loginClient.authorization(emailInput.value, passwordInput.value);
+        }
+
         const customerToken: TokenStore = loginClient.getToken();
-        const customerData: Customer = response.body.customer;
+        console.log(customerToken, 'cust token');
+        const customerData: Customer = (await response).body.customer;
         const customerVersion: number = customerData.version;
         const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
-
+        console.log(anonymousBasketFlag, 'anon flag');
+        console.log(typeof anonymousBasketFlag, 'anon flag');
         state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
         state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
         state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
         state.setRecord(APP_STATE_KEYS.VERSION, `${customerVersion}`);
-        BasketManager.getInstance().createAuthorizationBasket();
+        /*         if(anonymousBasketFlag === false){
+          BasketManager.getInstance().createAuthorizationBasket();
+        } */
         PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {
+        console.log(err);
         PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
       }
     }

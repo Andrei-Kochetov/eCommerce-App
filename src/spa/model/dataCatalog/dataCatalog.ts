@@ -105,7 +105,7 @@ export default class DataCatalog {
       })
       .execute();
   }
-  /* eslint-disable max-lines-per-function*/
+
   public async getProductWithFilters(allValue: IAllFiltersValue) {
     const filter: string[] = [];
     if (this.currentCategoryName) {
@@ -154,7 +154,7 @@ export default class DataCatalog {
       })
       .execute();
   }
-  /* eslint-enable max-lines-per-function*/
+
   public async getProductWithSearch(searchText: string) {
     const filter: string[] = [];
     if (this.currentCategoryName) {
