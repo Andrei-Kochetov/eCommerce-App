@@ -1,4 +1,4 @@
-import AnonymousBasket from '@src/spa/model/basketApi/basket';
+import BasketApi from '@src/spa/model/basketApi/basket';
 import State from '@src/spa/logic/state/state';
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import { TokenStore } from '@commercetools/sdk-client-v2';
@@ -16,7 +16,7 @@ export default class BasketManager {
   public async getBasketData() {
     let responseBasket;
     try {
-      responseBasket = await AnonymousBasket.getInstance().getBasket();
+      responseBasket = await BasketApi.getInstance().getBasket();
       let totalPrice = 0;
       responseBasket.lineItems.forEach((el) => {
         if (el.variant.prices) {
@@ -46,7 +46,7 @@ export default class BasketManager {
         totalPrice: `${totalPrice}`,
       };
     } catch {
-      const responseCreateBasket = (await AnonymousBasket.getInstance().createAnonymousBasket()).body;
+      const responseCreateBasket = (await BasketApi.getInstance().createAnonymousBasket()).body;
       responseBasket = {
         basketID: responseCreateBasket.id,
         products: [],
@@ -57,23 +57,19 @@ export default class BasketManager {
     return responseBasket;
   }
 
-  public async addProductInBasket(idProduct: string) {
+  public async addProductInBasket(idProduct: string): Promise<void> {
     const token: TokenStore = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.TOKEN));
     if (!token.token) {
-      const responeCreateBasket = await AnonymousBasket.getInstance().createAnonymousBasket();
-      State.getInstance().setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(AnonymousBasket.getInstance().getToken()));
-      console.log(responeCreateBasket, 'responeCreateBasket');
-      console.log(AnonymousBasket.getInstance().getToken(), 'anon token');
+      await BasketApi.getInstance().createAnonymousBasket();
+      State.getInstance().setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(BasketApi.getInstance().getToken()));
     }
-    const responseCart = await AnonymousBasket.getInstance().addProductInCart(idProduct);
-    console.log(responseCart.body, 'basketManager add product');
+    await BasketApi.getInstance().addProductInCart(idProduct);
   }
 
-  public async removeProductInBasket(idProduct: string) {
-    const responseCart = await AnonymousBasket.getInstance().removeProductInCart(idProduct);
-    console.log(responseCart.body, 'basketManager remove product');
+  public async removeProductInBasket(idProduct: string): Promise<void> {
+    await BasketApi.getInstance().removeProductInCart(idProduct);
   }
-  public async createAuthorizationBasket() {
-    const responseCreateCart = await AnonymousBasket.getInstance().createAuthorizationBasket();
+  public async createAuthorizationBasket(): Promise<void> {
+    await BasketApi.getInstance().createAuthorizationBasket();
   }
 }

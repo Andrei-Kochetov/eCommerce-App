@@ -4,8 +4,6 @@ import { CustomerSignInResult, ClientResponse, Customer } from '@commercetools/p
 export interface ILoginClient {
   getToken(): TokenStore;
   authorization(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>>;
-
-  //
-  authorization1(email: string, password: string): Promise<ClientResponse<Customer>>;
+  getTokenAfterAnonymousAuthorization(email: string, password: string): Promise<ClientResponse<Customer>>;
   authorizationAnonumous(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>>;
 }

@@ -24,6 +24,7 @@ export default class RegistrationController extends Controller implements IRegis
     const state: IState = State.getInstance();
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     const registration: IRegistration = Registration.getInstance();
+    const loginClient = LoginClient.getInstance();
     const anonymousBasketFlag = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED));
     if (!validator.validate()) return;
 
@@ -42,20 +43,14 @@ export default class RegistrationController extends Controller implements IRegis
       const email = customerData.email;
       const password = this.page.getPasswordField().getValue();
 
-      //
-      console.log(anonymousBasketFlag, 'anon flag registr');
       if (anonymousBasketFlag === true) {
-        console.log('run anon basket login');
         await LoginClient.getInstance().authorizationAnonumous(email, password);
-
-        await LoginClient.getInstance().authorization1(email, password);
+        await LoginClient.getInstance().getTokenAfterAnonymousAuthorization(email, password);
       } else {
-        console.log('run without basket login');
-        response = await LoginClient.getInstance().authorization(email, password);
+        await loginClient.authorization(email, password);
       }
-      //await LoginClient.getInstance().authorization(email, password);
 
-      state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
+      state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(loginClient.getToken())}`);
       state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
       state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
       state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
@@ -64,7 +59,6 @@ export default class RegistrationController extends Controller implements IRegis
     } catch (err) {
       if (err instanceof Error) {
         State.getInstance().setRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED, JSON.stringify(false));
-        console.log(err);
         PopUpView.getRejectPopUp(err.message).show();
       }
     }
