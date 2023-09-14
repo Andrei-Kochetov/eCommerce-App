@@ -2,7 +2,7 @@ import { createApiBuilderFromCtpClient, Cart } from '@commercetools/platform-sdk
 import fetch from 'node-fetch';
 import { options } from '@src/spa/model/LoginClientApi/constants';
 import { IBasketApi } from './types';
-import { Client, ClientBuilder, TokenCache, TokenStore, ClientResponse } from '@commercetools/sdk-client-v2';
+import { Client, ClientBuilder, TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 import MyTokenCache from '@src/spa/model/LoginClientApi/tokenCache';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import State from '@src/spa/logic/state/state';

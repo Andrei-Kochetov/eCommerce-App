@@ -11,6 +11,7 @@ import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/p
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import State from '@src/spa/logic/state/state';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -44,8 +45,8 @@ export default class RegistrationController extends Controller implements IRegis
       const password = this.page.getPasswordField().getValue();
 
       if (anonymousBasketFlag === true) {
-        await LoginClient.getInstance().authorizationAnonumous(email, password);
-        await LoginClient.getInstance().getTokenAfterAnonymousAuthorization(email, password);
+        await loginClient.authorizationAnonumous(email, password);
+        await loginClient.getTokenAfterAnonymousAuthorization(email, password);
       } else {
         await loginClient.authorization(email, password);
       }
@@ -54,6 +55,9 @@ export default class RegistrationController extends Controller implements IRegis
       state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
       state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
       state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
+      if (anonymousBasketFlag === false) {
+        BasketManager.getInstance().createAuthorizationBasket();
+      }
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
