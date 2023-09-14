@@ -11,7 +11,6 @@ export enum APP_STATE_KEYS {
   USER_LOGIN = 'user_login',
   TOKEN = 'token',
   VERSION = 'version',
-  ADD_PRODUCTS_IN_BASKET_FLAGS = 'add_products_in_basket_flags',
   ANONYMOUS_BASKET_CREATED = 'anonymous_cart_created',
 }
 
@@ -21,6 +20,5 @@ export const DEFAULT_STATE: Record<string, string> = {
   [APP_STATE_KEYS.USER_LOGIN]: '',
   [APP_STATE_KEYS.TOKEN]: '{"token":"","expirationTime":0}',
   [APP_STATE_KEYS.VERSION]: '',
-  [APP_STATE_KEYS.ADD_PRODUCTS_IN_BASKET_FLAGS]: '{}',
   [APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED]: 'false',
 };

@@ -133,7 +133,6 @@ export const routes: IRoute[] = [
       // and then if that info is returned we put it into BasketPageView constructor
       const { default: BasketPageView } = await import('@src/spa/view/pages/basketPage/basketPageView');
       const data: CustomBasketData = await BasketManager.getInstance().getBasketData();
-      console.log(data, 'data basket');
       basePage.renderPage(new BasketPageView(data));
     },
   },

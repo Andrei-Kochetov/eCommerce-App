@@ -57,6 +57,21 @@ export default class BasketManager {
     return responseBasket;
   }
 
+  public async getProductsIdInBasket() {
+    let result: string[];
+    try {
+      const responseBasket = await BasketApi.getInstance().getBasket();
+      const productsId: string[] = [];
+      responseBasket.lineItems.forEach((el) => {
+        productsId.push(el.productId);
+      });
+      result = productsId;
+    } catch {
+      result = [];
+    }
+    return result;
+  }
+
   public async addProductInBasket(idProduct: string): Promise<void> {
     const token: TokenStore = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.TOKEN));
     if (!token.token) {
