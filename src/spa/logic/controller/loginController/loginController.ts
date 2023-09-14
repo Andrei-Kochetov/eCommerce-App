@@ -11,7 +11,6 @@ import { Customer } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import State from '@src/spa/logic/state/state';
-import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
