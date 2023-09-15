@@ -1,4 +1,4 @@
-import { IBasketPage } from '@src/spa/view/pages/basketPage/types';
+import { CustomBasketData, IBasketPage } from '@src/spa/view/pages/basketPage/types';
 import { IBasketPageLogic } from '@src/spa/logic/basket/basketPageLogic/types';
 import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
 import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
@@ -12,47 +12,125 @@ export class BasketPageLogic implements IBasketPageLogic {
     this.page = page;
   }
 
-  public reduceProductAmountBTNHandler(input: HTMLInputElement): void {
+  public async reduceProductAmountBTNHandler(basketItem: IBasketItem): Promise<void> {
+    const input = basketItem.getAmountInput();
+    const id = basketItem.getProductId();
     const value: number = +input.value;
 
     if (value === 1) return;
 
-    // logic for reducing amount of concrete product in commerce tools basket
-    // if this operation failed show error message and return, else go further
+    let customDataBasket: CustomBasketData;
+
+    try {
+      const cartResponse = await BasketManager.getInstance().changeQuantityProductInCart(value - 1, id);
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
+    } catch {
+      PopUpView.getRejectPopUp(ErrorMessages.CHANGE_QUANTITY_PRODUCT_ITEMS).show();
+      return;
+    }
 
     input.value = `${value - 1}`;
 
-    // logic for updating prices and total
+    const productFromCartResponse = customDataBasket.products.filter((el) => el.id === id)[0];
+    basketItem.changeProductPriceAndDiscountedPrice(
+      productFromCartResponse.price,
+      productFromCartResponse.discountPrice
+    );
+
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
   }
 
-  public increaseProductAmountBTNHandler(input: HTMLInputElement): void {
+  public async increaseProductAmountBTNHandler(basketItem: IBasketItem): Promise<void> {
+    const input = basketItem.getAmountInput();
+    const id = basketItem.getProductId();
     const value: number = +input.value;
 
-    // logic for increasing amount of concrete product in commerce tools basket
-    // if this operation failed show error message and return, else go further
+    if (value === 99) return;
+
+    let customDataBasket: CustomBasketData;
+
+    try {
+      const cartResponse = await BasketManager.getInstance().changeQuantityProductInCart(value + 1, id);
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
+    } catch {
+      PopUpView.getRejectPopUp(ErrorMessages.CHANGE_QUANTITY_PRODUCT_ITEMS).show();
+      return;
+    }
 
     input.value = `${value + 1}`;
 
-    // logic for updating prices and total
+    const productFromCartResponse = customDataBasket.products.filter((el) => el.id === id)[0];
+    basketItem.changeProductPriceAndDiscountedPrice(
+      productFromCartResponse.price,
+      productFromCartResponse.discountPrice
+    );
+
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
+  }
+
+  public async changheProductAmountInputHandler(basketItem: IBasketItem): Promise<void> {
+    const input = basketItem.getAmountInput();
+    const id = basketItem.getProductId();
+    let value: number;
+
+    if (+input.value > 99) {
+      value = 99;
+    } else if (+input.value < 1) {
+      value = 1;
+    } else {
+      value = +input.value;
+    }
+
+    let customDataBasket: CustomBasketData;
+
+    try {
+      const cartResponse = await BasketManager.getInstance().changeQuantityProductInCart(value, id);
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
+    } catch {
+      PopUpView.getRejectPopUp(ErrorMessages.CHANGE_QUANTITY_PRODUCT_ITEMS).show();
+      return;
+    }
+
+    input.value = `${value}`;
+
+    const productFromCartResponse = customDataBasket.products.filter((el) => el.id === id)[0];
+    basketItem.changeProductPriceAndDiscountedPrice(
+      productFromCartResponse.price,
+      productFromCartResponse.discountPrice
+    );
+
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
   }
 
   public async removeProductFromBasket(basketItem: IBasketItem): Promise<void> {
-    // logic for removing product from basket in commerce tools
-    // if this operation failed show error message and return, else go further
+    let customDataBasket: CustomBasketData;
+
     try {
-      await BasketManager.getInstance().removeProductInBasket(basketItem.getData().id);
-      const removingResult: boolean = this.page.removeProduct(basketItem);
-      if (!removingResult) return;
+      const cartResponse = await BasketManager.getInstance().removeProductInBasket(basketItem.getData().id);
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
     } catch (err) {
       PopUpView.getRejectPopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+      return;
     }
 
-    // logic for updating prices and total
+    PopUpView.getApprovePopUp(`${basketItem.getData().name} removed from cart`).show();
+
+    const removingResult: boolean = this.page.removeProduct(basketItem);
+
+    if (!removingResult) return;
+
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
   }
 
-  public cleatBasket(): void {
-    // logic to clear basket in commerce tools
-    // if this operation failed show error message and return, else go further
+  public async clearBasket(): Promise<void> {
+    try {
+      await BasketManager.getInstance().removeAllProductsInBasket();
+    } catch {
+      PopUpView.getRejectPopUp(ErrorMessages.CLEAR_BASKET).show();
+      return;
+    }
+
+    PopUpView.getApprovePopUp('All items have been removed from the cart').show();
 
     this.page.clearBasket();
   }

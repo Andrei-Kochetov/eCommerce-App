@@ -2,6 +2,7 @@ import BasketApi from '@src/spa/model/basketApi/basket';
 import State from '@src/spa/logic/state/state';
 import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
 import { TokenStore } from '@commercetools/sdk-client-v2';
+import { Cart } from '@commercetools/platform-sdk';
 
 export default class BasketManager {
   private static readonly instance = new BasketManager();
@@ -16,35 +17,7 @@ export default class BasketManager {
   public async getBasketData() {
     let responseBasket;
     try {
-      responseBasket = await BasketApi.getInstance().getBasket();
-      let totalPrice = 0;
-      responseBasket.lineItems.forEach((el) => {
-        if (el.variant.prices) {
-          totalPrice += el.variant.prices[0].value.centAmount;
-        } else {
-          totalPrice += 0;
-        }
-      });
-      const productsArr = responseBasket.lineItems.map((el) => {
-        return {
-          productAmount: '1',
-          id: el.productId,
-          path: el.productSlug ? el.productSlug['en-US'].replace(/_/g, '/') : '',
-          name: `${el.name['en-US']}`,
-          price: el.variant.prices ? `${el.variant.prices[0].value.centAmount}` : 'undefined',
-          discountPrice:
-            el.variant.prices && el.variant.prices[0].discounted
-              ? `${el.variant.prices[0].discounted.value.centAmount}`
-              : 'undefined',
-          imgURLs: el.variant.images ? el.variant.images.map((el) => el.url) : [],
-        };
-      });
-      responseBasket = {
-        basketID: responseBasket.id,
-        products: productsArr,
-        discountPrice: `${responseBasket.totalPrice.centAmount}`,
-        totalPrice: `${totalPrice}`,
-      };
+      responseBasket = this.adapterDataBasket(await BasketApi.getInstance().getBasket());
     } catch {
       const responseCreateBasket = (await BasketApi.getInstance().createAnonymousBasket()).body;
       responseBasket = {
@@ -81,10 +54,55 @@ export default class BasketManager {
     await BasketApi.getInstance().addProductInCart(idProduct);
   }
 
-  public async removeProductInBasket(idProduct: string): Promise<void> {
-    await BasketApi.getInstance().removeProductInCart(idProduct);
+  public async removeProductInBasket(idProduct: string) {
+    const responseBasket = (await BasketApi.getInstance().removeProductInCart(idProduct)).body;
+    return responseBasket;
   }
+
+  public async removeAllProductsInBasket(): Promise<void> {
+    await BasketApi.getInstance().removeAllProductsInCart();
+  }
+
   public async createAuthorizationBasket(): Promise<void> {
     await BasketApi.getInstance().createAuthorizationBasket();
+  }
+
+  public async changeQuantityProductInCart(quantity: number, id: string) {
+    return (await BasketApi.getInstance().changeQuantityProductInCart(quantity, id)).body;
+  }
+
+  public adapterDataBasket(responseBasket: Cart) {
+    const discountedPrice = responseBasket.totalPrice.centAmount;
+
+    let totalPrice = 0;
+    responseBasket.lineItems.forEach((el) => {
+      if (el.variant.prices) {
+        totalPrice += el.variant.prices[0].value.centAmount * el.quantity;
+      } else {
+        totalPrice += 0;
+      }
+    });
+
+    const productsArr = responseBasket.lineItems.map((el) => {
+      return {
+        productAmount: `${el.quantity}`,
+        id: el.productId,
+        path: el.productSlug ? el.productSlug['en-US'].replace(/_/g, '/') : '',
+        name: `${el.name['en-US']}`,
+        price: el.variant.prices ? `${el.variant.prices[0].value.centAmount * el.quantity}` : 'undefined',
+        discountPrice:
+          el.variant.prices && el.variant.prices[0].discounted
+            ? `${el.variant.prices[0].discounted.value.centAmount * el.quantity}`
+            : 'undefined',
+        imgURLs: el.variant.images ? el.variant.images.map((el) => el.url) : [],
+      };
+    });
+
+    return {
+      basketID: responseBasket.id,
+      products: productsArr,
+      discountPrice: discountedPrice === totalPrice ? null : `${discountedPrice}`,
+      totalPrice: `${totalPrice}`,
+    };
   }
 }

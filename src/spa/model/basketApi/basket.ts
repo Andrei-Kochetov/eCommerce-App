@@ -1,4 +1,4 @@
-import { createApiBuilderFromCtpClient, Cart } from '@commercetools/platform-sdk';
+import { createApiBuilderFromCtpClient, Cart, MyCartUpdateAction } from '@commercetools/platform-sdk';
 import fetch from 'node-fetch';
 import { options } from '@src/spa/model/LoginClientApi/constants';
 import { IBasketApi } from './types';
@@ -52,6 +52,30 @@ export default class BasketApi {
       .execute();
   }
 
+  public async changeQuantityProductInCart(quantity: number, id: string) {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+    const lineItemId = activeCart.lineItems.filter((el) => el.productId === id)[0].id;
+
+    return apiRoot
+      .me()
+      .carts()
+      .withId({ ID: activeCart.id })
+      .post({
+        body: {
+          version: activeCart.version,
+          actions: [
+            {
+              action: 'changeLineItemQuantity',
+              lineItemId: lineItemId,
+              quantity: quantity,
+            },
+          ],
+        },
+      })
+      .execute();
+  }
+
   public async removeProductInCart(id: string) {
     const apiRoot = this.createApiRootForAddProductInCart();
     const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
@@ -70,6 +94,29 @@ export default class BasketApi {
               lineItemId: lineItemId,
             },
           ],
+        },
+      })
+      .execute();
+  }
+  public async removeAllProductsInCart() {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+    const lineItemsIdArr = activeCart.lineItems.map((el) => el.id);
+    const actions: MyCartUpdateAction[] = [];
+    lineItemsIdArr.forEach((el) => {
+      actions.push({
+        action: 'removeLineItem',
+        lineItemId: el,
+      });
+    });
+    return apiRoot
+      .me()
+      .carts()
+      .withId({ ID: activeCart.id })
+      .post({
+        body: {
+          version: activeCart.version,
+          actions: actions,
         },
       })
       .execute();

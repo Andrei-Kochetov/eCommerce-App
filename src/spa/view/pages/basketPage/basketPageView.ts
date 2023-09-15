@@ -44,6 +44,14 @@ export default class BasketPageView extends PageView implements IBasketPage {
     return element;
   }
 
+  public static createNumberInput(...classes: string[]): HTMLInputElement {
+    const element: HTMLInputElement = document.createElement('input');
+    element.setAttribute('type', 'number');
+    element.classList.add(...classes);
+
+    return element;
+  }
+
   public getData(): CustomBasketData {
     return this.data;
   }
@@ -65,6 +73,17 @@ export default class BasketPageView extends PageView implements IBasketPage {
   public clearBasket(): void {
     this.items.clear();
     this.showEmptyBasketView();
+  }
+
+  public changeTotalAndDiscountedTotalPrices(totalPrice: string, discountedTotal: string | null): void {
+    this.total.setTextContent(`${+totalPrice / 100} $`);
+    if (discountedTotal && discountedTotal !== 'undefined') {
+      this.discountedTotal.setTextContent(`${+discountedTotal / 100} $`);
+      this.total.setClasses(constants.CROSSED_PRICE_CLASS);
+    } else {
+      this.discountedTotal.setTextContent('');
+      this.discountedTotal.setClasses(HIDDEN_CLASS);
+    }
   }
 
   private showEmptyBasketView(): void {
@@ -153,6 +172,6 @@ export default class BasketPageView extends PageView implements IBasketPage {
   }
 
   private setListeners(): void {
-    this.clearBasketBTN.setListeners({ event: 'click', callback: (): void => this.logic.cleatBasket() });
+    this.clearBasketBTN.setListeners({ event: 'click', callback: (): void => this.logic.clearBasket() });
   }
 }

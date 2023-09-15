@@ -33,3 +33,12 @@ button {
 .not-active {
   display: none;
 }
+
+
+// Styles for removing arrows in input with type number
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+

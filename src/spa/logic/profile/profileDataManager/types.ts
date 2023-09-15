@@ -1,5 +1,6 @@
 import { SetNameAndDateBirthObj } from '@src/spa/model/dataCustomer/types';
 import { SetPasswordObj, AddAddressObj } from '@src/spa/model/dataCustomer/types';
+import { CustomBasketData } from '@src/spa/view/pages/basketPage/types';
 
 export interface ProfileData {
   email: string;
@@ -40,6 +41,13 @@ export const DEFAULT_PROFILE_DATA: ProfileData = {
   lastName: 'Not found',
   dateBirth: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
   addresses: [],
+};
+
+export const DEFAULT_BASKET_DATA: CustomBasketData = {
+  basketID: '',
+  products: [],
+  discountPrice: ``,
+  totalPrice: ``,
 };
 
 export const DEFAULT_ADDRESS: Omit<CustomAddress, 'id'> = {

@@ -1,8 +1,9 @@
 import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
 
 export interface IBasketPageLogic {
-  reduceProductAmountBTNHandler(input: HTMLInputElement): void;
-  increaseProductAmountBTNHandler(input: HTMLInputElement): void;
+  reduceProductAmountBTNHandler(basketItem: IBasketItem): void;
+  increaseProductAmountBTNHandler(basketItem: IBasketItem): void;
   removeProductFromBasket(basketItem: IBasketItem): void;
-  cleatBasket(): void;
+  changheProductAmountInputHandler(basketItem: IBasketItem): void;
+  clearBasket(): void;
 }

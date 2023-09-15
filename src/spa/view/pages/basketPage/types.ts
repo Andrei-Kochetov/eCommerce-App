@@ -16,5 +16,6 @@ export interface CustomBasketData {
 export interface IBasketPage extends IView {
   getData(): CustomBasketData;
   removeProduct(product: IBasketItem): boolean;
+  changeTotalAndDiscountedTotalPrices(totalPrice: string, discountedTotal: string | null): void;
   clearBasket(): void;
 }

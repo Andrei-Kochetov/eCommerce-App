@@ -135,7 +135,7 @@ export default class CardProductView extends View {
             this.isAddBasketFlag = false;
             PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
           } catch {
-            PopUpView.getApprovePopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+            PopUpView.getRejectPopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
           }
         }
       },
