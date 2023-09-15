@@ -1,3 +1,101 @@
+@import '@src/spa/basic-styles/_variables';
+@import '@src/spa/basic-styles/_mixins';
+
 .about-us {
-  font-size: 5rem;
+  width: 100%;
+}
+
+.about-us__members {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.about-us__title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.about-us__members-cards {
+  margin-top: 1rem;
+  @include flex($gap: 3rem, $justify: space-evenly);
+  flex-wrap: wrap;
+}
+
+.card {
+  @include flex($gap: 0, $direction: column, $align: center);
+  width: 30rem;
+}
+
+.card__img {
+  width: 100%;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.card__content {
+  @include flex($gap: 0.5rem, $direction: column);
+  padding: 1rem;
+  border-radius: 0 0 1rem 1rem;
+  border: 2px solid $indifferent-color;
+  background-color: $backgraund-dark;
+}
+
+.card__title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.card__subtitle {
+  font-size: 1.6rem;
+}
+
+.card__text {
+  @include flex($gap: 0.5rem, $direction: column);
+  font-size: 1.4rem;
+}
+
+.link {
+  @include flex($gap: 0.5rem, $align: center);
+  text-decoration: none;
+  color: $dark;
+  transition: all .3s ease;
+
+  &:hover {
+    filter: drop-shadow(0px 0px 1px black);
+  }
+}
+
+.link__img {
+  width: 2.5rem;
+  height: 2.5rem;
+  @include background ($src: "@src/assets/footer/github_1.svg");
+}
+
+.link__text {
+  font-size: 1.4rem;
+}
+
+.about-us__contributions {
+  @include flex($gap: 0.5rem, $direction: column);
+  margin-bottom: 1rem;
+}
+
+.about-us__container {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid $indifferent-color;
+  background-color: $backgraund-dark;
+  @include flex($gap: 0.5rem, $direction: column);
+}
+
+.about-us__subtitle {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-us__text {
+  font-size: 1.4rem;
+}
+
+.about-us__collaboration {
+  gap: 1rem;
 }
