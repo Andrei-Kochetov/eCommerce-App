@@ -1,6 +1,6 @@
 # eCommerce-Application
 
-We are a team of 3 developers ([Leonid](https://github.com/leanidrymkevich), [Vladimir](https://github.com/kushalvova), [Andrey](https://github.com/andrei-kochetov)) created a training project eCommerce application - a full-fledged online store.
+We are a team of 2 developers ([Leonid](https://github.com/leanidrymkevich), [Andrey](https://github.com/andrei-kochetov)) created a training project eCommerce application - a full-fledged online store.
 
 Users can view a wide range of products, view detailed descriptions, add the products they like to the shopping cart, and proceed to checkout. The online store includes features such as user registration and login, product search, product categorization and sorting.
 
