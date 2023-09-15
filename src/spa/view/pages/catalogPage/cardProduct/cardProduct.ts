@@ -9,6 +9,7 @@ import { PAGE_NAME_ATTRIBUTE } from '../../types';
 import { IRouter } from '@src/spa/logic/router/types';
 import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 import PopUpView from '@src/spa/view/popUp/popUpView';
+import { ErrorMessages } from '@src/spa/logic/validator/types';
 
 export default class CardProductView extends View {
   private id: string;
@@ -117,18 +118,25 @@ export default class CardProductView extends View {
       event: 'click',
       callback: async (): Promise<void> => {
         if (!this.isAddBasketFlag) {
-          await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
-          basketButton.setTextContent('Remove basket');
-          basketButton.setClasses('bc-silver');
-          this.isAddBasketFlag = true;
-
-          PopUpView.getApprovePopUp(`${this.name} added to basket`).show();
+          try {
+            await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
+            basketButton.setTextContent('Remove basket');
+            basketButton.setClasses('bc-silver');
+            this.isAddBasketFlag = true;
+            PopUpView.getApprovePopUp(`${this.name} added to basket`).show();
+          } catch {
+            PopUpView.getRejectPopUp(ErrorMessages.ADD_PRODUCT_BASKET).show();
+          }
         } else {
-          await BasketManager.getInstance().removeProductInBasket(this.getIdProduct());
-          basketButton.setTextContent('Add to Basket');
-          basketButton.removeClasses('bc-silver');
-          this.isAddBasketFlag = false;
-          PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
+          try {
+            await BasketManager.getInstance().removeProductInBasket(this.getIdProduct());
+            basketButton.setTextContent('Add to Basket');
+            basketButton.removeClasses('bc-silver');
+            this.isAddBasketFlag = false;
+            PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
+          } catch {
+            PopUpView.getApprovePopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+          }
         }
       },
     });

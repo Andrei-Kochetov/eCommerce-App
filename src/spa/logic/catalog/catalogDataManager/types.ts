@@ -19,6 +19,7 @@ export interface CustomProductData {
   price: string;
   discountPrice: string | null;
   imgURLs: string[];
+  isProductInBasket: boolean;
 }
 
 export type IAllFiltersValue = {

@@ -2,7 +2,7 @@ import { CustomProductData } from '@src/spa/logic/catalog/catalogDataManager/typ
 import IView from 'src/spa/view/types';
 import { IBasketItem } from '@src/spa/view/pages/basketPage/basketItem/types';
 
-export interface CustomBasketProductData extends Omit<CustomProductData, 'description'> {
+export interface CustomBasketProductData extends Omit<CustomProductData, 'description' | 'isProductInBasket'> {
   productAmount: string;
 }
 

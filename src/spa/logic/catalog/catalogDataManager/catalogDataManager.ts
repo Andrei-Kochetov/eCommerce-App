@@ -92,6 +92,7 @@ export default class CatalogDataManager {
 
   public async getProductById(id: string) {
     const product = (await DataCatalog.getInstance().getProductById(id)).body.results[0];
+    const productsIdInBasket = await BasketManager.getInstance().getProductsIdInBasket();
     const urlsArr: string[] = [];
     product.masterVariant.images?.forEach((el) => {
       urlsArr.push(el.url);
@@ -104,6 +105,7 @@ export default class CatalogDataManager {
       discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
       imgURLs: urlsArr,
       path: '',
+      isProductInBasket: productsIdInBasket.includes(product.id),
     };
   }
   public async getCategoryId(categoryName: string) {
