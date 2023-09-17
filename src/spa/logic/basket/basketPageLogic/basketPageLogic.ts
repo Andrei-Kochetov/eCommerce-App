@@ -122,9 +122,10 @@ export class BasketPageLogic implements IBasketPageLogic {
     this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
   }
 
-  public async clearBasket(): Promise<void> {
+  public async clearBasket(applyPromocode: boolean): Promise<void> {
     try {
       await BasketManager.getInstance().removeAllProductsInBasket();
+      if (applyPromocode) await BasketManager.getInstance().deletePromoCode();
     } catch {
       PopUpView.getRejectPopUp(ErrorMessages.CLEAR_BASKET).show();
       return;
@@ -135,8 +136,33 @@ export class BasketPageLogic implements IBasketPageLogic {
     this.page.clearBasket();
   }
 
-  // after understanding how to changing product amount, it deleting, it is necessary
-  // to set logic for updating prices and total according to commerce tools response
+  public async setPromoCode(promocodeInput: HTMLInputElement): Promise<void> {
+    const promocode = promocodeInput.value;
+    let customDataBasket: CustomBasketData;
+    try {
+      const cartResponse = await BasketManager.getInstance().setPromoCode(promocode);
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
+    } catch (err) {
+      if (!(err instanceof Error)) return;
+      PopUpView.getRejectPopUp(err.message).show();
+      return;
+    }
 
-  // and here will be placed logic for promo code handling
+    promocodeInput.value = '';
+    PopUpView.getApprovePopUp(`You used a promotional code`).show();
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
+  }
+
+  public async deletePromoCode(): Promise<void> {
+    let customDataBasket: CustomBasketData;
+    try {
+      const cartResponse = await BasketManager.getInstance().deletePromoCode();
+      customDataBasket = BasketManager.getInstance().adapterDataBasket(cartResponse);
+    } catch {
+      PopUpView.getRejectPopUp(`An error occurred when resetting the promotional code`).show();
+      return;
+    }
+    PopUpView.getApprovePopUp(`You have reset your promo code`).show();
+    this.page.changeTotalAndDiscountedTotalPrices(customDataBasket.totalPrice, customDataBasket.discountPrice);
+  }
 }

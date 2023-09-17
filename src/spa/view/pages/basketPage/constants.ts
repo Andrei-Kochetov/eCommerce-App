@@ -26,6 +26,7 @@ export const PROMO_CODE_IMG_PARAMS: ElementCreatorParams = {
   },
 };
 
+export const RESET_PROMOCODE_BTN_DISABLED_CLASS = 'basket__reset-btn_promocode_disabled';
 export const BASKET_CONTENT_WRAPPER_CLASS = 'basket__content-wrapper';
 
 // empty basket elements properties
@@ -63,6 +64,7 @@ export const EMPTY_BASKET_TEXT_WRAPPER_PARAMS: ElementCreatorParams = {
 
 // not empty basket elements properties
 export const BASKET_CONTENT_CLASS = 'basket__content';
+export const BASKET_WRAPPER_BTN_CLASS = 'basket__wrapper-btn';
 export const PRICE_WRAPPER_CLASS = 'price-wrapper';
 export const PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
   tag: 'span',
@@ -71,6 +73,10 @@ export const PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
 export const DISCOUNTED_PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
   tag: 'span',
   classNames: ['discounted-price'],
+};
+export const PROMOCODE_PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
+  tag: 'span',
+  classNames: ['promocode-price'],
 };
 export const CROSSED_PRICE_CLASS = 'price_crossed';
 export const TOTAL_TEXT_PARAMS: ElementCreatorParams = {
@@ -83,4 +89,14 @@ export const TOTAL_WRAPPER_CLASS = 'total-wrapper';
 export const CLEAR_BASKET_BTN_PARAMS: btnParams = {
   textContent: 'Clear basket',
   classNames: ['basket__btn_clear'],
+};
+
+export const PROMO_CODE_BTN_PARAMS: btnParams = {
+  textContent: 'Apply',
+  classNames: ['basket__btn_promocode'],
+};
+
+export const RESET_PROMO_CODE_BTN_PARAMS: btnParams = {
+  textContent: 'Reset promocode',
+  classNames: ['basket__reset-btn_promocode'],
 };

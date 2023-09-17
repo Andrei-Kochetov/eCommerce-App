@@ -11,6 +11,7 @@ export interface CustomBasketData {
   products: CustomBasketProductData[];
   totalPrice: string;
   discountPrice: string | null;
+  hasPromocode: boolean;
 }
 
 export interface IBasketPage extends IView {

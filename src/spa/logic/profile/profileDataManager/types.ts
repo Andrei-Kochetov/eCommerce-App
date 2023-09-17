@@ -48,6 +48,7 @@ export const DEFAULT_BASKET_DATA: CustomBasketData = {
   products: [],
   discountPrice: ``,
   totalPrice: ``,
+  hasPromocode: false,
 };
 
 export const DEFAULT_ADDRESS: Omit<CustomAddress, 'id'> = {

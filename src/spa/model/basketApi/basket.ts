@@ -30,6 +30,54 @@ export default class BasketApi {
     return activeCart;
   }
 
+  public async setPromoCode(promocode: string) {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+
+    return apiRoot
+      .me()
+      .carts()
+      .withId({ ID: activeCart.id })
+      .post({
+        body: {
+          version: activeCart.version,
+          actions: [
+            {
+              action: 'addDiscountCode',
+              code: `${promocode}`,
+            },
+          ],
+        },
+      })
+      .execute();
+  }
+
+  public async deletePromoCode() {
+    const apiRoot = this.createApiRootForAddProductInCart();
+    const activeCart = (await apiRoot.me().activeCart().get().execute()).body;
+    const promocodeId = activeCart.discountCodes[0].discountCode.id;
+
+    return apiRoot
+      .me()
+      .carts()
+      .withId({ ID: activeCart.id })
+      .post({
+        body: {
+          version: activeCart.version,
+          actions: [
+            {
+              action: 'removeDiscountCode',
+              discountCode: {
+                typeId: 'discount-code',
+                id: `${promocodeId}`,
+              },
+            },
+          ],
+        },
+      })
+      .execute();
+  }
+
   public async addProductInCart(id: string) {
     const apiRoot = this.createApiRootForAddProductInCart();
     const activeCart = (await apiRoot.me().activeCart().get().execute()).body;

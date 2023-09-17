@@ -27,6 +27,9 @@
 .promo-code__input {
   padding: 0.5rem;
   font-size: 1.5rem;
+  height: 3rem;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .promo-code__img {
@@ -147,6 +150,19 @@
   border-radius: 0.5rem;
 }
 
+.basket__btn_promocode{
+  background-color: $corporate-color;
+  color: $backgraund-dark;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 3rem;
+  &:hover{
+    color: white;
+  }
+}
+
 .price-wrapper {
   @include flex ($gap: 1rem, $align: center);
   font-size: 2rem;
@@ -165,6 +181,13 @@
 
 .discounted-price {
   color: $corporate-color;
+  &_crossed {
+    text-decoration: line-through;
+  }
+}
+
+.promocode-price{
+  color: orange
 }
 
 .total-wrapper {
@@ -179,7 +202,7 @@
   font-weight: 700;
 }
 
-.basket__btn_clear {
+.basket__btn_clear, .basket__reset-btn_promocode {
   background-color: $corporate-color;
   color: $backgraund-dark;
   padding: 0.5rem 1rem;
@@ -190,4 +213,15 @@
     color: white;
     cursor: pointer;
   }
+  &_disabled{
+    pointer-events: none;
+    background-color: #707070;
+    color: #000000;
+    cursor: not-allowed;
+  }
+} 
+
+.basket__wrapper-btn{
+  display: flex;
+  column-gap: 1rem;
 }

@@ -20,7 +20,9 @@ export default class BasketPageView extends PageView implements IBasketPage {
   private readonly total: IElementCreator;
   private readonly discountedTotal: IElementCreator;
   private readonly clearBasketBTN: IElementCreator;
-
+  private readonly resetPromocodetBTN: IElementCreator;
+  private readonly promoCodeBTN: IElementCreator;
+  private applyPromocode: boolean;
   private readonly items: Map<string, IBasketItem>;
   private readonly logic: IBasketPageLogic = new BasketPageLogic(this);
 
@@ -28,10 +30,13 @@ export default class BasketPageView extends PageView implements IBasketPage {
     super(PageNames.BASKET, constants.BASKET_PAGE_CLASS);
     this.data = data;
     this.promoCodeInput = BasketPageView.createTextInput(constants.PROMO_CODE_INPUT_CLASS);
+    this.promoCodeBTN = new ButtonView(constants.PROMO_CODE_BTN_PARAMS).getViewCreator();
     this.contentWrapper = SwiperView.createDivElement(constants.BASKET_CONTENT_WRAPPER_CLASS);
     this.total = new ElementCreator(constants.PRICE_ELEMENT_PARAMS);
     this.discountedTotal = new ElementCreator(constants.DISCOUNTED_PRICE_ELEMENT_PARAMS);
     this.clearBasketBTN = new ButtonView(constants.CLEAR_BASKET_BTN_PARAMS).getViewCreator();
+    this.resetPromocodetBTN = new ButtonView(constants.RESET_PROMO_CODE_BTN_PARAMS).getViewCreator();
+    this.applyPromocode = data.hasPromocode;
     this.items = new Map();
     this.configureView(data);
   }
@@ -77,12 +82,17 @@ export default class BasketPageView extends PageView implements IBasketPage {
 
   public changeTotalAndDiscountedTotalPrices(totalPrice: string, discountedTotal: string | null): void {
     this.total.setTextContent(`${+totalPrice / 100} $`);
-    if (discountedTotal && discountedTotal !== 'undefined') {
+    if (discountedTotal && discountedTotal !== 'undefined' && this.applyPromocode) {
+      this.discountedTotal.setTextContent(`With promocode ${+discountedTotal / 100} $`);
+      this.discountedTotal.removeClasses(HIDDEN_CLASS);
+      this.total.setClasses(constants.CROSSED_PRICE_CLASS);
+    } else if (discountedTotal && discountedTotal !== 'undefined' && !this.applyPromocode) {
       this.discountedTotal.setTextContent(`${+discountedTotal / 100} $`);
       this.total.setClasses(constants.CROSSED_PRICE_CLASS);
     } else {
       this.discountedTotal.setTextContent('');
       this.discountedTotal.setClasses(HIDDEN_CLASS);
+      this.total.removeClasses(constants.CROSSED_PRICE_CLASS);
     }
   }
 
@@ -114,7 +124,11 @@ export default class BasketPageView extends PageView implements IBasketPage {
       this.items.set(product.id, item);
       content.addInnerElement(item.getView());
     });
-    content.addInnerElement(totalSection, this.clearBasketBTN);
+
+    const wrapper = SwiperView.createDivElement(constants.BASKET_WRAPPER_BTN_CLASS);
+    if (!this.applyPromocode) this.resetPromocodetBTN.setClasses(constants.RESET_PROMOCODE_BTN_DISABLED_CLASS);
+    wrapper.addInnerElement(this.clearBasketBTN, this.resetPromocodetBTN);
+    content.addInnerElement(totalSection, wrapper.getElement());
     return content;
   }
 
@@ -124,12 +138,18 @@ export default class BasketPageView extends PageView implements IBasketPage {
     const priceWrapper: IElementCreator = SwiperView.createDivElement(constants.PRICE_WRAPPER_CLASS);
 
     this.total.setTextContent(`${+data.totalPrice / 100} $`);
-    if (data.discountPrice && data.discountPrice !== 'undefined') {
+
+    if (data.discountPrice && data.discountPrice !== 'undefined' && this.applyPromocode) {
+      this.discountedTotal.setTextContent(`With promocode ${+data.discountPrice / 100} $`);
+      this.discountedTotal.removeClasses(HIDDEN_CLASS);
+      this.total.setClasses(constants.CROSSED_PRICE_CLASS);
+    } else if (data.discountPrice && data.discountPrice !== 'undefined' && !this.applyPromocode) {
       this.discountedTotal.setTextContent(`${+data.discountPrice / 100} $`);
       this.total.setClasses(constants.CROSSED_PRICE_CLASS);
     } else {
       this.discountedTotal.setTextContent('');
       this.discountedTotal.setClasses(HIDDEN_CLASS);
+      this.total.removeClasses(constants.CROSSED_PRICE_CLASS);
     }
     priceWrapper.addInnerElement(this.discountedTotal, this.total);
     wrapper.addInnerElement(text, priceWrapper);
@@ -166,12 +186,36 @@ export default class BasketPageView extends PageView implements IBasketPage {
     const promoCodeImg: IElementCreator = new ElementCreator(constants.PROMO_CODE_IMG_PARAMS);
 
     this.promoCodeInput.setAttribute('placeholder', constants.PROMO_CODE_INPUT_PLACEHOLDER);
-    promoCode.addInnerElement(promoCodeImg, this.promoCodeInput);
+    promoCode.addInnerElement(promoCodeImg, this.promoCodeInput, this.promoCodeBTN);
 
     return promoCode;
   }
 
   private setListeners(): void {
-    this.clearBasketBTN.setListeners({ event: 'click', callback: (): void => this.logic.clearBasket() });
+    this.clearBasketBTN.setListeners({
+      event: 'click',
+      callback: (): void => this.logic.clearBasket(this.applyPromocode),
+    });
+    this.promoCodeBTN.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (!this.promoCodeInput.value) return;
+        this.applyPromocode = true;
+        this.logic.setPromoCode(this.promoCodeInput);
+        this.resetPromocodetBTN.removeClasses(constants.RESET_PROMOCODE_BTN_DISABLED_CLASS);
+      },
+    });
+    this.resetPromocodetBTN.setListeners({
+      event: 'click',
+      callback: (): void => {
+        if (this.applyPromocode) {
+          this.logic.deletePromoCode();
+          this.applyPromocode = false;
+          this.resetPromocodetBTN.setClasses(constants.RESET_PROMOCODE_BTN_DISABLED_CLASS);
+        } else {
+          return;
+        }
+      },
+    });
   }
 }

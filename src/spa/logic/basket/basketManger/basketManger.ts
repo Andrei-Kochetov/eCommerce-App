@@ -25,6 +25,7 @@ export default class BasketManager {
         products: [],
         discountPrice: `${responseCreateBasket.totalPrice.centAmount}`,
         totalPrice: `${0}`,
+        hasPromocode: false,
       };
     }
     return responseBasket;
@@ -56,6 +57,16 @@ export default class BasketManager {
 
   public async removeProductInBasket(idProduct: string) {
     const responseBasket = (await BasketApi.getInstance().removeProductInCart(idProduct)).body;
+    return responseBasket;
+  }
+
+  public async setPromoCode(promocode: string) {
+    const responseBasket = (await BasketApi.getInstance().setPromoCode(promocode)).body;
+    return responseBasket;
+  }
+
+  public async deletePromoCode() {
+    const responseBasket = (await BasketApi.getInstance().deletePromoCode()).body;
     return responseBasket;
   }
 
@@ -103,6 +114,7 @@ export default class BasketManager {
       products: productsArr,
       discountPrice: discountedPrice === totalPrice ? null : `${discountedPrice}`,
       totalPrice: `${totalPrice}`,
+      hasPromocode: responseBasket.discountCodes.length > 0,
     };
   }
 }

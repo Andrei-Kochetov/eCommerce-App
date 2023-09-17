@@ -10,4 +10,6 @@ export interface IBasketApi {
   createAuthorizationBasket(): Promise<ClientResponse<Cart>>;
   removeAllProductsInCart(): Promise<ClientResponse<Cart>>;
   changeQuantityProductInCart(quantity: number, id: string): Promise<ClientResponse<Cart>>;
+  setPromoCode(promocode: string): Promise<ClientResponse<Cart>>;
+  deletePromoCode(): Promise<ClientResponse<Cart>>;
 }
