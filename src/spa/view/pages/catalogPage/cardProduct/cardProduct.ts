@@ -108,10 +108,10 @@ export default class CardProductView extends View {
     };
     const basketButton = new ElementCreator(paramsBasketButton);
     if (this.isAddBasketFlag) {
-      basketButton.setTextContent('Remove basket');
+      basketButton.setTextContent('remove');
       basketButton.setClasses('bc-silver');
     } else {
-      basketButton.setTextContent('Add to Basket');
+      basketButton.setTextContent('add to basket');
       basketButton.removeClasses('bc-silver');
     }
     basketButton.setListeners({
@@ -120,7 +120,7 @@ export default class CardProductView extends View {
         if (!this.isAddBasketFlag) {
           try {
             await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
-            basketButton.setTextContent('Remove basket');
+            basketButton.setTextContent('remove');
             basketButton.setClasses('bc-silver');
             this.isAddBasketFlag = true;
             PopUpView.getApprovePopUp(`${this.name} added to basket`).show();
@@ -130,7 +130,7 @@ export default class CardProductView extends View {
         } else {
           try {
             await BasketManager.getInstance().removeProductInBasket(this.getIdProduct());
-            basketButton.setTextContent('Add to Basket');
+            basketButton.setTextContent('add to basket');
             basketButton.removeClasses('bc-silver');
             this.isAddBasketFlag = false;
             PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
@@ -143,7 +143,7 @@ export default class CardProductView extends View {
     const paramsOpenProductButton = {
       tag: 'button',
       classNames: ['card-product__open-product-button'],
-      textContent: 'Learn more...',
+      textContent: 'learn more...',
     };
     const openProductButton = new ElementCreator(paramsOpenProductButton);
     this.getPass(data).then((res) => {
