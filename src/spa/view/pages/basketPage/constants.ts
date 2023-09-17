@@ -66,6 +66,7 @@ export const EMPTY_BASKET_TEXT_WRAPPER_PARAMS: ElementCreatorParams = {
 export const BASKET_CONTENT_CLASS = 'basket__content';
 export const BASKET_WRAPPER_BTN_CLASS = 'basket__wrapper-btn';
 export const PRICE_WRAPPER_CLASS = 'price-wrapper';
+export const PRICE_TOTAL_WRAPPER_CLASS = 'price-total-wrapper';
 export const PRICE_ELEMENT_PARAMS: ElementCreatorParams = {
   tag: 'span',
   classNames: ['price'],

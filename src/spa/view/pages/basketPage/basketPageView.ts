@@ -135,7 +135,7 @@ export default class BasketPageView extends PageView implements IBasketPage {
   private createTotalSection(data: CustomBasketData): IElementCreator {
     const wrapper: IElementCreator = SwiperView.createDivElement(constants.TOTAL_WRAPPER_CLASS);
     const text: IElementCreator = new ElementCreator(constants.TOTAL_TEXT_PARAMS);
-    const priceWrapper: IElementCreator = SwiperView.createDivElement(constants.PRICE_WRAPPER_CLASS);
+    const priceWrapper: IElementCreator = SwiperView.createDivElement(constants.PRICE_TOTAL_WRAPPER_CLASS);
 
     this.total.setTextContent(`${+data.totalPrice / 100} $`);
 
