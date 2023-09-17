@@ -1,6 +1,7 @@
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { CatalogData, IAllFiltersValue } from './types';
 import { Category, ProductProjection } from '@commercetools/platform-sdk';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class CatalogDataManager {
   private static readonly instance = new CatalogDataManager();
@@ -19,6 +20,8 @@ export default class CatalogDataManager {
     const categories = allCategories.filter((el) => !el.parent);
     const subcategories = allCategories.filter((el) => el.parent);
     const categoriesThree: Record<string, Category[]> = {};
+    const productsIdInBasket = await BasketManager.getInstance().getProductsIdInBasket();
+
     for (let i = 0; i < categories.length; i++) {
       const categoryName = Object.values(categories[i].name)[0];
       const subcategory = [];
@@ -55,6 +58,7 @@ export default class CatalogDataManager {
       categoriesThree: categoriesThree,
       categoriesThreeText: categoriesThreeText,
       attributesArr: attributesArr,
+      productsIdInBasket: productsIdInBasket,
     };
   }
 
@@ -88,6 +92,7 @@ export default class CatalogDataManager {
 
   public async getProductById(id: string) {
     const product = (await DataCatalog.getInstance().getProductById(id)).body.results[0];
+    const productsIdInBasket = await BasketManager.getInstance().getProductsIdInBasket();
     const urlsArr: string[] = [];
     product.masterVariant.images?.forEach((el) => {
       urlsArr.push(el.url);
@@ -100,6 +105,7 @@ export default class CatalogDataManager {
       discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
       imgURLs: urlsArr,
       path: '',
+      isProductInBasket: productsIdInBasket.includes(product.id),
     };
   }
   public async getCategoryId(categoryName: string) {

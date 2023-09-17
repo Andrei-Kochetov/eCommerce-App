@@ -61,15 +61,15 @@
   border-radius: 0.5rem;
   font-size: 1.5rem;
 
+  &_add {
+    background-color: $modal-accept-btn-background;
+  }
+
   &_disabled {
     pointer-events: none;
     background-color: $indifferent-color;
     color: $dark;
     cursor: not-allowed;
-  }
-
-  &_add {
-    background-color: $modal-accept-btn-background;
   }
 
   &:hover {

@@ -60,7 +60,7 @@ export default class CatalogPageView extends PageView {
     } else if (subcategory && category) {
       this.downloadSubCategory(subcategory);
     } else {
-      this.changeSectionCardProducts(this.initialState.allProducts);
+      this.changeSectionCardProducts(this.initialState.allProducts, this.initialState.productsIdInBasket);
     }
     this.getAllValueFilters();
   }
@@ -73,10 +73,10 @@ export default class CatalogPageView extends PageView {
     });
   }
 
-  public changeSectionCardProducts(products: ProductProjection[]) {
+  public changeSectionCardProducts(products: ProductProjection[], productsIdInBasket: string[]) {
     this.sectionCardsProduct.clearInnerHTML();
     products.forEach((product) => {
-      const card = this.createProductCard(product);
+      const card = this.createProductCard(product, productsIdInBasket);
       this.sectionCardsProduct.addInnerElement(card.getView());
     });
   }
@@ -151,7 +151,7 @@ export default class CatalogPageView extends PageView {
       const searchText: string = (this.searchInput.getElement() as HTMLInputElement).value;
       this.resetAllValueFilters();
       const productResult = await CatalogDataManager.getInstance().getProductWithSearch(searchText);
-      this.changeSectionCardProducts(productResult);
+      this.changeSectionCardProducts(productResult, this.initialState.productsIdInBasket);
     });
     container.addInnerElement(this.searchInput.getElement(), button.getElement());
     return container;
@@ -225,16 +225,16 @@ export default class CatalogPageView extends PageView {
   private async downloadCategory(category: string): Promise<void> {
     const productsFromCategory = await CatalogDataManager.getInstance().getProductsFromCategory(category);
     this.changeSubcategoriesSection(this.initialState.categoriesThreeText[category], category);
-    this.changeSectionCardProducts(productsFromCategory);
+    this.changeSectionCardProducts(productsFromCategory, this.initialState.productsIdInBasket);
   }
 
   private async downloadSubCategory(category: string): Promise<void> {
     const productsFromSubctegory = await CatalogDataManager.getInstance().getProductsFromCategory(category);
-    this.changeSectionCardProducts(productsFromSubctegory);
+    this.changeSectionCardProducts(productsFromSubctegory, this.initialState.productsIdInBasket);
   }
 
-  private createProductCard(product: ProductProjection) {
-    const card = new CardProductView(product, this.router);
+  private createProductCard(product: ProductProjection, productsIdInBasket: string[]) {
+    const card = new CardProductView(product, this.router, productsIdInBasket);
     return card;
   }
 
@@ -350,7 +350,7 @@ export default class CatalogPageView extends PageView {
     div.getElement().addEventListener('click', async () => {
       const allValues = this.getAllValueFilters();
       const filterProducts = await CatalogDataManager.getInstance().getProductWithFilters(allValues);
-      this.changeSectionCardProducts(filterProducts);
+      this.changeSectionCardProducts(filterProducts, this.initialState.productsIdInBasket);
     });
     return div;
   }
@@ -365,7 +365,7 @@ export default class CatalogPageView extends PageView {
     div.getElement().addEventListener('click', async () => {
       this.resetAllValueFilters();
       const productFilterReset = await CatalogDataManager.getInstance().getProductResetWithFilters();
-      this.changeSectionCardProducts(productFilterReset);
+      this.changeSectionCardProducts(productFilterReset, this.initialState.productsIdInBasket);
     });
     return div;
   }

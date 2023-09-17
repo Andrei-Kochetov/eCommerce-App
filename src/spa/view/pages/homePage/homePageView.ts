@@ -20,13 +20,16 @@ const TITLE_TAG = 'p';
 const TITLE_CLASS_NAME = 'home-page__title';
 const CONTENT_TAG = 'p';
 const CONTENT_CLASS_NAME = 'home-page__content';
+const CONTENT_PROMO_CODE = 'home-page__content-promocode';
 
 // text content
 const TEXT_TITLE = 'Hello!';
 const TEXT_CONTENT_FIRST = `We are glad to welcome you on the pages of our online store! 
 Here you can find quality products for every taste.`;
 const TEXT_CONTENT_SECOND = 'We hope that shopping in our store will leave you only positive impressions.';
-
+const TEXT_PROMO_CODE_INFO =
+  'We have a promotion, enter the promotional code in the cart and get a 33% discount on all products: ';
+const TEXT_PROMO_CODE = 'sale_33_percent_on_everything';
 export default class HomePageView extends View {
   constructor() {
     const params: ElementCreatorParams = {
@@ -63,6 +66,10 @@ export default class HomePageView extends View {
       tag: CONTENT_TAG,
       classNames: [CONTENT_CLASS_NAME],
     };
+    const contentPromocodeParams: ElementCreatorParams = {
+      tag: CONTENT_TAG,
+      classNames: [CONTENT_PROMO_CODE],
+    };
     const imgContainer = new ElementCreator(imgtContainerParams);
     const img = new ElementCreator(imgParams);
     imgContainer.addInnerElement(img);
@@ -73,7 +80,11 @@ export default class HomePageView extends View {
     contentFirst.setTextContent(TEXT_CONTENT_FIRST);
     const contentSecond = new ElementCreator(contentSecondParams);
     contentSecond.setTextContent(TEXT_CONTENT_SECOND);
-    contentContainer.addInnerElement(title, contentFirst, contentSecond);
+    const contentPromocodeInfo = new ElementCreator(contentSecondParams);
+    contentPromocodeInfo.setTextContent(TEXT_PROMO_CODE_INFO);
+    const promocode = new ElementCreator(contentPromocodeParams);
+    promocode.setTextContent(TEXT_PROMO_CODE);
+    contentContainer.addInnerElement(title, contentFirst, contentSecond, contentPromocodeInfo, promocode);
     this.getViewCreator().setClasses(CONTAINER_CLASS_NAME);
     this.getViewCreator().addInnerElement(imgContainer, contentContainer);
   }

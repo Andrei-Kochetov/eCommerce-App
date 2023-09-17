@@ -8,16 +8,18 @@ export type CatalogData = {
   categoriesThree: Record<string, Category[]>;
   categoriesThreeText: Record<string, string[]>;
   attributesArr: string[];
+  productsIdInBasket: string[];
 };
 
 export interface CustomProductData {
   id: string;
-  path: string; // catalog/category/subcategory/product_id
+  path: string;
   name: string;
   description: string;
   price: string;
   discountPrice: string | null;
   imgURLs: string[];
+  isProductInBasket: boolean;
 }
 
 export type IAllFiltersValue = {

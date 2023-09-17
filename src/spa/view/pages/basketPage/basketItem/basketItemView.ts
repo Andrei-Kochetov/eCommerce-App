@@ -30,7 +30,7 @@ export default class BasketItemView extends View implements IBasketItem {
   public constructor(data: CustomBasketProductData, logic: IBasketPageLogic) {
     super(constants.BASKET_ITEM_PARAMS);
     this.data = data;
-    this.amountInput = BasketPageView.createTextInput(constants.INPUT_CLASS);
+    this.amountInput = BasketPageView.createNumberInput(constants.INPUT_CLASS);
     this.increaseAmountBTN = new ButtonView(constants.INCREASE_AMOUNT_BTN_PARAMS).getViewCreator();
     this.reduceAmountBTN = new ButtonView(constants.REDUCE_AMOUNT_BTN_PARAMS).getViewCreator();
     this.removeItemBTN = new ButtonView(constants.REMOVE_ITEM_BTN_PARAMS).getViewCreator();
@@ -42,6 +42,25 @@ export default class BasketItemView extends View implements IBasketItem {
 
   public getData(): CustomBasketProductData {
     return this.data;
+  }
+
+  public getAmountInput(): HTMLInputElement {
+    return this.amountInput;
+  }
+
+  public getProductId(): string {
+    return this.data.id;
+  }
+
+  public changeProductPriceAndDiscountedPrice(price: string, discountedPrice: string | null): void {
+    this.price.setTextContent(`${+price / 100} $`);
+    if (discountedPrice !== 'undefined' && discountedPrice) {
+      this.discountedPrice.setTextContent(`${+discountedPrice / 100} $`);
+      this.price.setClasses(CROSSED_PRICE_CLASS);
+    } else {
+      this.discountedPrice.setTextContent('');
+      this.discountedPrice.setClasses(HIDDEN_CLASS);
+    }
   }
 
   private configureView(data: CustomBasketProductData): void {
@@ -88,13 +107,19 @@ export default class BasketItemView extends View implements IBasketItem {
   }
 
   private setListeners(): void {
+    this.amountInput.addEventListener('blur', (): void => {
+      this.logic.changheProductAmountInputHandler(this);
+    });
+    this.amountInput.addEventListener('keyup', (event): void => {
+      if (event.code === 'Enter') this.logic.changheProductAmountInputHandler(this);
+    });
     this.reduceAmountBTN.setListeners({
       event: 'click',
-      callback: (): void => this.logic.reduceProductAmountBTNHandler(this.amountInput),
+      callback: (): void => this.logic.reduceProductAmountBTNHandler(this),
     });
     this.increaseAmountBTN.setListeners({
       event: 'click',
-      callback: (): void => this.logic.increaseProductAmountBTNHandler(this.amountInput),
+      callback: (): void => this.logic.increaseProductAmountBTNHandler(this),
     });
     this.removeItemBTN.setListeners({
       event: 'click',

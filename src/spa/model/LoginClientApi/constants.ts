@@ -22,4 +22,7 @@ export const options = {
     host: 'https://api.europe-west1.gcp.commercetools.com',
     fetch,
   },
+  existingTokenMiddlewareOptions: {
+    force: true,
+  },
 };

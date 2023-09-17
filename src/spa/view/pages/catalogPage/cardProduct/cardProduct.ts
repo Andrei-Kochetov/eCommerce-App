@@ -7,20 +7,29 @@ import { Category, Image, ProductProjection } from '@commercetools/platform-sdk'
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
 import { PAGE_NAME_ATTRIBUTE } from '../../types';
 import { IRouter } from '@src/spa/logic/router/types';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { ErrorMessages } from '@src/spa/logic/validator/types';
 
 export default class CardProductView extends View {
   private id: string;
+  private name: string;
+  private produtsIdInBasket: string[];
+  private isAddBasketFlag: boolean;
 
   private readonly router: IRouter;
 
-  public constructor(data: ProductProjection, router: IRouter) {
+  public constructor(data: ProductProjection, router: IRouter, productIdInbasket: string[]) {
     const params: ElementCreatorParams = {
       tag: 'div',
       classNames: ['catalog__card-product', `card-product`],
     };
     super(params);
     this.id = data.id;
+    this.name = data.name['en-US'];
     this.router = router;
+    this.produtsIdInBasket = productIdInbasket;
+    this.isAddBasketFlag = this.produtsIdInBasket.includes(this.getIdProduct());
     this.configureView(data);
   }
 
@@ -96,13 +105,45 @@ export default class CardProductView extends View {
     const paramsBasketButton = {
       tag: 'button',
       classNames: ['card-product__basket-button'],
-      textContent: 'Add to Basket',
     };
     const basketButton = new ElementCreator(paramsBasketButton);
+    if (this.isAddBasketFlag) {
+      basketButton.setTextContent('remove');
+      basketButton.setClasses('bc-silver');
+    } else {
+      basketButton.setTextContent('add to basket');
+      basketButton.removeClasses('bc-silver');
+    }
+    basketButton.setListeners({
+      event: 'click',
+      callback: async (): Promise<void> => {
+        if (!this.isAddBasketFlag) {
+          try {
+            await BasketManager.getInstance().addProductInBasket(this.getIdProduct());
+            basketButton.setTextContent('remove');
+            basketButton.setClasses('bc-silver');
+            this.isAddBasketFlag = true;
+            PopUpView.getApprovePopUp(`${this.name} added to basket`).show();
+          } catch {
+            PopUpView.getRejectPopUp(ErrorMessages.ADD_PRODUCT_BASKET).show();
+          }
+        } else {
+          try {
+            await BasketManager.getInstance().removeProductInBasket(this.getIdProduct());
+            basketButton.setTextContent('add to basket');
+            basketButton.removeClasses('bc-silver');
+            this.isAddBasketFlag = false;
+            PopUpView.getApprovePopUp(`${this.name} removed from basket`).show();
+          } catch {
+            PopUpView.getRejectPopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+          }
+        }
+      },
+    });
     const paramsOpenProductButton = {
       tag: 'button',
       classNames: ['card-product__open-product-button'],
-      textContent: 'Learn more...',
+      textContent: 'learn more...',
     };
     const openProductButton = new ElementCreator(paramsOpenProductButton);
     this.getPass(data).then((res) => {
