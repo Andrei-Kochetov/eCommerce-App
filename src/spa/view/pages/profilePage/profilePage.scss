@@ -1,3 +1,119 @@
-.profile {
-  font-size: 5rem;
+@import '@src/spa/basic-styles/_mixins.scss';
+@import '@src/spa/basic-styles/variables.scss';
+
+.profile-page {
+  // min-height = 100vh - header_height - footer_height - main_paddings)
+  min-height: calc(100vh - 6rem - 7rem - 4rem);
+  max-width: 83rem;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+
+  @media screen and (max-width: 959px) {
+    max-width: 49rem;
+  }
+
+  @media screen and (max-width: 700px) {
+    max-width: 32rem;
+  }
+}
+
+.profile-page,
+.profile-page__authorization-info-block {
+  @include flex($direction: column, $gap: 1rem);
+}
+
+.profile-page__title {
+  font-size: 1.8rem;
+}
+
+.profile-page__top-info-block {
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.profile-page__top-info-block,
+.profile-page__user-info,
+.profile-page__password,
+.profile-page__mail {
+  @include flex($direction: row, $gap: 2rem, $justify: center, $align: center);
+}
+
+.profile-page__password-img,
+.profile-page__mail-img,
+.profile-page__user-info-img {
+  width: 10rem;
+}
+
+.profile-page__user-info-img {
+  height: 10rem;
+  @include background($src: '@src/assets/user.png');
+}
+
+.profile-page__user-info-content-container,
+.profile-page__mail-content-container,
+.profile-page__password-content-container {
+  min-width: 20rem;
+}
+
+.profile-page__user-info-content-container,
+.profile-page__mail-content-container,
+.profile-page__password-content-container,
+.profile-page__address-container {
+  @include flex($direction: column, $gap: 0.5rem);
+}
+
+.profile-page__address-container {
+  width: 15rem;
+}
+
+.profile-page__text,
+.profile-page__mail-link {
+  font-size: 1.4rem;
+}
+
+.profile-page__mail-link {
+  text-decoration:none;
+}
+
+.profile-page__mail-link::before {
+  content: 'Email: ';
+  color: $dark;
+}
+
+.profile-page__password-img,
+.profile-page__mail-img {
+  height: 5rem;
+}
+
+.profile-page__password-img {
+  height: 5rem;
+  @include background($src: '@src/assets/key.png');
+}
+
+.profile-page__mail-img {
+  height: 5rem;
+  @include background($src: '@src/assets/mail.png');
+}
+
+.profile-page__bottom-info-block {
+  @include flex($direction: row, $gap: 2rem, $justify: flex-start);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.profile-page__address {
+  color: $indifferent-color;
+  border-color: $indifferent-color;
+}
+.profile-page__default-address {
+  color: $corporate-color;
+  border-color: $corporate-color;
+}
+
+.profile-page__address,
+.profile-page__default-address {
+  padding: 0 0.5rem;
+  border: 1px solid;
+  border-radius: 0.5rem;
 }

@@ -1,0 +1,27 @@
+@import '@src/spa/basic-styles/mixins';
+@import '@src/spa/basic-styles/variables.scss';
+
+.address-item {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 2px solid $pop-up-text-color;
+  border-radius: 1rem;
+
+  &:not(:first-child) {
+    margin-top: 1rem;
+  }
+}
+
+.address-item__wrapper {
+  @include flex($direction: column, $gap: 0.5rem);
+}
+
+.address-item__checkbox-wrapper {
+  width: 100%;
+  @include flex($align: center, $gap: 0.8rem);
+  font-size: 1.4rem;
+}
+
+.address-item__inputs-wrapper {
+  width: 100%;
+}

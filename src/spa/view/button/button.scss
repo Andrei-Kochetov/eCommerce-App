@@ -4,6 +4,7 @@
 .btn {
   font-size: 1.4rem;
   background-color: transparent;
+  transition: color 0.3s;
 }
 
 .btn {
@@ -43,6 +44,7 @@
   background-color: transparent;
 }
 
+.btn_edit,
 .btn_to-main-page {
   height: 2.5rem;
   padding-left: 1rem;

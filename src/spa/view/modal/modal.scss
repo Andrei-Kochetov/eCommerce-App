@@ -1,0 +1,140 @@
+@import '@src/spa/basic-styles/_mixins';
+@import '@src/spa/basic-styles/_variables';
+
+.underlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  backdrop-filter: blur(2px);
+  z-index: 2;
+  transform-origin: 0 100%;
+  animation: show_modal .4s;
+
+  &_hidden {
+    transform-origin: 0 100%;
+    animation: hide_modal .5s;
+  }
+}
+
+.modal {
+  position: fixed;
+  z-index: 3;
+  width: 40rem;
+  height: 70vh;
+  left: calc(50% - 20rem);
+  top: 15vh;
+  @include flex ($gap: 0, $align: center, $direction: column);
+  background: $modal-background;
+  border-radius: 1rem;
+  transform-origin: 0 100%;
+  animation: show_modal .5s;
+
+  &_hidden {
+    transform-origin: 0 100%;
+    animation: hide_modal .5s;
+  }
+}
+
+@keyframes show_modal {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hide_modal {
+  from {
+    transform: scale(1);
+  }
+  to {
+    display: none;
+    transform: scale(0);
+  }
+}
+
+.modal__wrapper {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  @include flex ($gap: 0, $align: center, $direction: column);
+  color: $pop-up-text-color;
+  padding-bottom: 1rem;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: $modal-scroll-track-background;
+    border-radius: 0.5rem;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.5rem;
+    background: $modal-exit-btn-background;
+  }
+}
+
+.modal__top-bar,
+.modal__bottom-bar {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: $pop-up-background;
+}
+
+.modal__top-bar {
+  border-radius: 1rem 1rem 0 0;
+  text-align: right;
+}
+
+.modal__bottom-bar {
+  border-radius: 0 0 1rem 1rem;
+  @include flex ($gap: 2rem, $align: center, $justify: center);
+}
+
+.modal__btn {
+  background-color: $modal-exit-btn-background;
+  color: $backgraund-dark;
+
+  &_close {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    color: white;
+  }
+
+  &_cancel,
+  &_accept {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  &_accept {
+    background-color: $modal-accept-btn-background;
+  }
+}
+
+._lock {
+  overflow: hidden;
+
+  @media screen and (min-width: $scroll-compensation-min-width) {  // compensation of laptop scroll width in Chrome
+    padding-right: 16.5px;
+  }
+}
+
+.btn_yes {
+  background-color: $modal-exit-btn-background;
+  color: $backgraund-dark;
+  padding: 0.5rem;
+  border-radius: 1rem;
+
+  &:hover {
+    color: white;
+  }
+}

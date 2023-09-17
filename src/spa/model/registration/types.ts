@@ -22,5 +22,10 @@ export interface IRegistrationInputValue {
 
 export interface IRegistration {
   getToken(): TokenStore;
-  registration(registrationInputValue: IRegistrationInputValue): Promise<ClientResponse<CustomerSignInResult>>;
+  registrationTwoAddress(
+    registrationInputValue: IRegistrationInputValue
+  ): Promise<ClientResponse<CustomerSignInResult>>;
+  registrationSingleAddress(
+    registrationInputValue: IRegistrationInputValue
+  ): Promise<ClientResponse<CustomerSignInResult>>;
 }

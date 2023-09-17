@@ -1,0 +1,64 @@
+@import '@src/spa/basic-styles/_mixins';
+@import '@src/spa/basic-styles/_variables';
+
+.product-modal {
+  position: fixed;
+    z-index: 3;
+    height: 100vh;
+    width: 100vw;
+    @include flex ($gap: 0, $align: center, $justify: center);
+    backdrop-filter: blur(2px);
+    background-color: $product-page-underlay-background;
+
+    .swiper-img {
+      width: 50rem;
+    }
+}
+
+.product-modal__container {
+  overflow: hidden;
+  position: relative;
+  padding: 3rem;
+
+  .swiper-pagination-bullet {
+    background-color: $light;
+    opacity: 1;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: $pagination-bullet-active-color;
+  }
+}
+
+.product-modal__btn {
+  font-size: 2rem;
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  color: $light;
+  font-weight: 700;
+  z-index: 5;
+}
+
+._lock {
+  overflow: hidden;
+
+  @media screen and (min-width: $scroll-compensation-min-width) {  // compensation of laptop scroll width in Chrome
+    padding-right: 16.5px;
+  }
+}
+
+.product-modal__swiper {
+  width: 100%;
+  border-radius: 2rem;
+  background-color: $product-page-swiper-background;
+
+  .swiper-wrapper {
+    align-items: center;
+    padding: 3rem 0;
+  }
+
+  .swiper-slide {
+    @include flex ($gap: 0, $align: center, $justify: center);
+  }
+}

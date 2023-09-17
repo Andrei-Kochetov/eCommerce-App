@@ -4,12 +4,13 @@ import Controller from '@src/spa/logic/controller/controller';
 import { ILoginPage } from '@src/spa/view/pages/loginPage/types';
 import ILoginValidator from '@src/spa/logic/validator/loginValidator/types';
 import LoginValidator from '@src/spa/logic/validator/loginValidator/loginValidator';
-import { APP_STATE_KEYS } from '@src/spa/logic/state/types';
+import { APP_STATE_KEYS, IState } from '@src/spa/logic/state/types';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import { ErrorMessages } from '@src/spa/logic/validator/types';
 import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { TokenStore } from '@commercetools/sdk-client-v2';
 import PopUpView from '@src/spa/view/popUp/popUpView';
+import State from '@src/spa/logic/state/state';
 
 export default class LoginController extends Controller implements ILoginController {
   private readonly page: ILoginPage;
@@ -20,6 +21,7 @@ export default class LoginController extends Controller implements ILoginControl
   }
 
   public async login(element: HTMLElement): Promise<void> {
+    const state: IState = State.getInstance();
     const validator: ILoginValidator = new LoginValidator(this.page);
     const emailInput = this.page.getEmailField().getInput().getElement();
     const passwordInput = this.page.getPasswordField().getInput().getElement();
@@ -34,15 +36,16 @@ export default class LoginController extends Controller implements ILoginControl
         );
         const customerToken: TokenStore = loginClient.getToken();
         const customerData: Customer = response.body.customer;
+        const customerVersion: number = customerData.version;
         const user_login: string = customerData.firstName || customerData.lastName || 'Anonymous';
 
-        this.state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
-        this.state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
-        this.state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+        state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
+        state.setRecord(APP_STATE_KEYS.TOKEN, JSON.stringify(customerToken));
+        state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
+        state.setRecord(APP_STATE_KEYS.VERSION, `${customerVersion}`);
         PopUpView.getApprovePopUp('You are signed in to the app!').show();
         this.goTo(element);
       } catch (err) {
-        this.page.getPasswordField().setTextError(ErrorMessages.AUTHORIZATION);
         PopUpView.getRejectPopUp(ErrorMessages.AUTHORIZATION).show();
       }
     }
