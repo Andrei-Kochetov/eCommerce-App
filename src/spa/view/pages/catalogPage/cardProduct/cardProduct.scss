@@ -1,18 +1,18 @@
 @import '@src/spa/basic-styles/_variables';
 
 .card-product{
-    font-size: 1.4rem;
+    font-size: 16px;
     display: flex;
-    padding: 0.5rem;
+    padding: 10px;
     flex-direction: column;
     align-items: center;
     row-gap: 5px;
-    height: 330px;
     width: 220px;
     transition: all 0.3s;
+    border-radius: 10px;
     &:hover{
-        transform: scale(1.05);
-        box-shadow: 0 0 5px $corporate-color;
+        transform: scale(1.03);
+        box-shadow: 0 0 5px black;
     }
     &__basket-product{
         display: flex;
@@ -22,7 +22,7 @@
     &__wrapper-sale{
         display: flex;
         width: 90%;
-        height: 1.5rem;
+        height: 20px;
         justify-content: end;
     }
     &__sale{
@@ -36,6 +36,7 @@
     }
     &__price{
         display: flex;
+        font-size: 14px;
         width: 90%;
         justify-content: space-between;
     }
@@ -45,17 +46,21 @@
     }
     &__description{
         width: 90%;
+        flex-grow: 1;
         text-align: start;
     }
     &__basket-button, &__open-product-button{
         background-color: $corporate-color;
         color: $backgraund-dark;
-        padding: 0.3rem;
+        padding: 3px;
+        width: 87px;
         border-radius: 5px;
         transition: all 0.3s;
         &:hover{
-          background-color: $backgraund-dark;
-          color: black;
+          color: white;
+        }
+        &:active{
+            background-color: #f7b2b2;
         }
       }
 }
@@ -66,4 +71,8 @@
 
 .hide{
     display: none;
+}
+
+.bc-silver{
+    background-color: rgb(180, 129, 129);
 }

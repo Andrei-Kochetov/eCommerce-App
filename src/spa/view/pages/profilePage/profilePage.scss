@@ -47,7 +47,7 @@
 
 .profile-page__user-info-img {
   height: 10rem;
-  @include background($src: '@src/assets/user.png');
+  @include background($src: '@src/assets/profile-page/user.png');
 }
 
 .profile-page__user-info-content-container,
@@ -88,12 +88,12 @@
 
 .profile-page__password-img {
   height: 5rem;
-  @include background($src: '@src/assets/key.png');
+  @include background($src: '@src/assets/profile-page/key.png');
 }
 
 .profile-page__mail-img {
   height: 5rem;
-  @include background($src: '@src/assets/mail.png');
+  @include background($src: '@src/assets/profile-page/mail.png');
 }
 
 .profile-page__bottom-info-block {

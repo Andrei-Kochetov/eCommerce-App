@@ -34,7 +34,7 @@
   left: 0.5rem;
   width: 10rem;
   aspect-ratio: 1/1.3;
-  @include background ($src: '@src/assets/sale.png');
+  @include background ($src: '@src/assets/product-page/sale.png');
 }
 
 .product__prices-wrapper {
@@ -61,15 +61,15 @@
   border-radius: 0.5rem;
   font-size: 1.5rem;
 
+  &_add {
+    background-color: $modal-accept-btn-background;
+  }
+
   &_disabled {
     pointer-events: none;
     background-color: $indifferent-color;
     color: $dark;
     cursor: not-allowed;
-  }
-
-  &_add {
-    background-color: $modal-accept-btn-background;
   }
 
   &:hover {

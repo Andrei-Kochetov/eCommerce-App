@@ -11,6 +11,7 @@ import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/p
 import PopUpView from '@src/spa/view/popUp/popUpView';
 import LoginClient from '@src/spa/model/LoginClientApi/LoginClient';
 import State from '@src/spa/logic/state/state';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
 export default class RegistrationController extends Controller implements IRegistrationController {
   private readonly page: IRegistrationPage;
@@ -24,6 +25,8 @@ export default class RegistrationController extends Controller implements IRegis
     const state: IState = State.getInstance();
     const validator: IRegistrationValidator = new RegistrationValidator(this.page);
     const registration: IRegistration = Registration.getInstance();
+    const loginClient = LoginClient.getInstance();
+    const anonymousBasketFlag = JSON.parse(State.getInstance().getRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED));
     if (!validator.validate()) return;
 
     try {
@@ -40,16 +43,26 @@ export default class RegistrationController extends Controller implements IRegis
 
       const email = customerData.email;
       const password = this.page.getPasswordField().getValue();
-      await LoginClient.getInstance().authorization(email, password);
 
-      state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(LoginClient.getInstance().getToken())}`);
+      if (anonymousBasketFlag === true) {
+        await loginClient.authorizationAnonumous(email, password);
+        await loginClient.getTokenAfterAnonymousAuthorization(email, password);
+      } else {
+        await loginClient.authorization(email, password);
+      }
+
+      state.setRecord(APP_STATE_KEYS.TOKEN, `${JSON.stringify(loginClient.getToken())}`);
       state.setRecord(APP_STATE_KEYS.AUTHORIZED, 'true');
       state.setRecord(APP_STATE_KEYS.USER_LOGIN, user_login);
       state.setRecord(APP_STATE_KEYS.VERSION, `${cutomerVersion}`);
+      if (anonymousBasketFlag === false) {
+        BasketManager.getInstance().createAuthorizationBasket();
+      }
       PopUpView.getApprovePopUp('You are signed up to the app!').show();
       this.goTo(element);
     } catch (err) {
       if (err instanceof Error) {
+        State.getInstance().setRecord(APP_STATE_KEYS.ANONYMOUS_BASKET_CREATED, JSON.stringify(false));
         PopUpView.getRejectPopUp(err.message).show();
       }
     }

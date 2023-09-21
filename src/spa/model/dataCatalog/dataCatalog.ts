@@ -2,7 +2,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { options } from '@src/spa/model/LoginClientApi/constants';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
-import { IAllFiltersValue } from '@src/spa/logic/catalog/types';
+import { IAllFiltersValue } from '@src/spa/logic/catalog/catalogDataManager/types';
 
 export default class DataCatalog {
   private static readonly instance = new DataCatalog();
@@ -105,7 +105,7 @@ export default class DataCatalog {
       })
       .execute();
   }
-  /* eslint-disable max-lines-per-function*/
+
   public async getProductWithFilters(allValue: IAllFiltersValue) {
     const filter: string[] = [];
     if (this.currentCategoryName) {
@@ -154,7 +154,7 @@ export default class DataCatalog {
       })
       .execute();
   }
-  /* eslint-enable max-lines-per-function*/
+
   public async getProductWithSearch(searchText: string) {
     const filter: string[] = [];
     if (this.currentCategoryName) {

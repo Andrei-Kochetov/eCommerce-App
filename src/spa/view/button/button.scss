@@ -40,7 +40,7 @@
 .btn_basket {
   height: 2.2rem;
   width: 2.2rem;
-  @include background($src: '@src/assets/basket.png');
+  @include background($src: '@src/assets/header/basket.png');
   background-color: transparent;
 }
 

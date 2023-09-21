@@ -1,9 +1,9 @@
-//import {} from '@src/spa/logic/catalog/types';
 import DataCatalog from '@src/spa/model/dataCatalog/dataCatalog';
-import { CatalogData } from './types';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import { CatalogData, IAllFiltersValue } from './types';
+import { Category, ProductProjection } from '@commercetools/platform-sdk';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
 
-export default class CatalogDataManager /* implements IProfileDataManager */ {
+export default class CatalogDataManager {
   private static readonly instance = new CatalogDataManager();
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -13,18 +13,76 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     return this.instance;
   }
 
+  /* eslint-disable max-lines-per-function*/
   public async getCatalogData(): Promise<CatalogData> {
     const allCategories = await this.getCatalogs();
     const allProducts: ProductProjection[] = (await this.getProducts()).body.results;
-    console.log(allCategories, allProducts);
+    const categories = allCategories.filter((el) => !el.parent);
+    const subcategories = allCategories.filter((el) => el.parent);
+    const categoriesThree: Record<string, Category[]> = {};
+    const productsIdInBasket = await BasketManager.getInstance().getProductsIdInBasket();
+
+    for (let i = 0; i < categories.length; i++) {
+      const categoryName = Object.values(categories[i].name)[0];
+      const subcategory = [];
+      for (let j = 0; j < subcategories.length; j++) {
+        if (categories[i].id === subcategories[j].parent?.id) {
+          subcategory.push(subcategories[j]);
+        }
+      }
+      categoriesThree[categoryName] = subcategory;
+    }
+    const categoriesThreeText: Record<string, string[]> = {};
+    for (let i = 0; i < categories.length; i++) {
+      const categoryName = Object.values(categories[i].name)[0];
+      const subcategory = [];
+      for (let j = 0; j < subcategories.length; j++) {
+        if (categories[i].id === subcategories[j].parent?.id) {
+          subcategory.push(Object.values(subcategories[j].name)[0]);
+        }
+      }
+      categoriesThreeText[categoryName] = subcategory;
+    }
+    const attributesAllSet: Set<string> = new Set();
+    allProducts.forEach((el) => {
+      const attributes = el.masterVariant.attributes;
+      attributes?.forEach((el) => {
+        attributesAllSet.add(el.name);
+      });
+    });
+    const attributesArr = Array.from(attributesAllSet);
     return {
       allCategories: allCategories,
       allProducts: allProducts,
+      categories: categories,
+      categoriesThree: categoriesThree,
+      categoriesThreeText: categoriesThreeText,
+      attributesArr: attributesArr,
+      productsIdInBasket: productsIdInBasket,
     };
   }
+
   public async getCatalogs() {
     const dataCatalogResponse = await DataCatalog.getInstance().getCatalogs();
     return dataCatalogResponse.body.results;
+  }
+
+  public async getCategoriesThree() {
+    const allCategories = await this.getCatalogs();
+    const categories = allCategories.filter((el) => !el.parent);
+    const subcategories = allCategories.filter((el) => el.parent);
+    const categoriesThreeText: Record<string, string[]> = {};
+    for (let i = 0; i < categories.length; i++) {
+      const categoryName = Object.values(categories[i].name)[0];
+      const subcategory = [];
+      for (let j = 0; j < subcategories.length; j++) {
+        if (categories[i].id === subcategories[j].parent?.id) {
+          subcategory.push(Object.values(subcategories[j].name)[0]);
+        }
+      }
+      categoriesThreeText[categoryName] = subcategory;
+    }
+    return categoriesThreeText;
   }
 
   public async getProducts() {
@@ -32,18 +90,46 @@ export default class CatalogDataManager /* implements IProfileDataManager */ {
     return dataCatalogResponse;
   }
 
+  public async getProductById(id: string) {
+    const product = (await DataCatalog.getInstance().getProductById(id)).body.results[0];
+    const productsIdInBasket = await BasketManager.getInstance().getProductsIdInBasket();
+    const urlsArr: string[] = [];
+    product.masterVariant.images?.forEach((el) => {
+      urlsArr.push(el.url);
+    });
+    return {
+      id: product.id,
+      name: `${product.name['en-US']}`,
+      description: product.description ? `${product.description['en-US']}` : '',
+      price: `${product.masterVariant.price?.value.centAmount}`,
+      discountPrice: `${product.masterVariant.price?.discounted?.value.centAmount}`,
+      imgURLs: urlsArr,
+      path: '',
+      isProductInBasket: productsIdInBasket.includes(product.id),
+    };
+  }
   public async getCategoryId(categoryName: string) {
     const dataCatalogResponse = await DataCatalog.getInstance().getCategory(categoryName);
-    console.log(dataCatalogResponse);
-  }
-  public async getProductsFromCategory(categoryName: string) {
-    const dataCatalogResponse = await DataCatalog.getInstance().getProductsFromCategory(categoryName);
-    console.log(dataCatalogResponse.body.results);
+    return dataCatalogResponse;
   }
 
-  //private getToken(): TokenStore {
-  //  const state: IState = State.getInstance();
-  //  const token: string = state.getRecord(APP_STATE_KEYS.TOKEN);
-  //  return JSON.parse(token);
-  //}
+  public async getProductsFromCategory(categoryName: string) {
+    const dataCatalogResponse = await DataCatalog.getInstance().getProductsFromCategory(categoryName);
+    return dataCatalogResponse.body.results;
+  }
+
+  public async getProductWithFilters(allValue: IAllFiltersValue) {
+    const dataCatalogResponse = await DataCatalog.getInstance().getProductWithFilters(allValue);
+    return dataCatalogResponse.body.results;
+  }
+
+  public async getProductResetWithFilters() {
+    const dataCatalogResponse = await DataCatalog.getInstance().getProductResetFilters();
+    return dataCatalogResponse.body.results;
+  }
+
+  public async getProductWithSearch(searchText: string) {
+    const dataCatalogResponse = await DataCatalog.getInstance().getProductWithSearch(searchText);
+    return dataCatalogResponse.body.results;
+  }
 }

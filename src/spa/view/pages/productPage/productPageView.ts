@@ -12,6 +12,9 @@ import ButtonView from '@src/spa/view/button/buttonView';
 import { IProductPage } from '@src/spa/view/pages/productPage/types';
 import { IProductPageLogic } from '@src/spa/logic/product/types';
 import ProductPageLogic from '@src/spa/logic/product/productPageLogic';
+import BasketManager from '@src/spa/logic/basket/basketManger/basketManger';
+import PopUpView from '@src/spa/view/popUp/popUpView';
+import { ErrorMessages } from '@src/spa/logic/validator/types';
 
 export default class ProductPageView extends PageView implements IProductPage {
   private readonly data: CustomProductData;
@@ -19,13 +22,15 @@ export default class ProductPageView extends PageView implements IProductPage {
   private readonly addToBasketBTN: IElementCreator;
   private readonly removeFromBasketBTN: IElementCreator;
   private readonly logic: IProductPageLogic = new ProductPageLogic(this);
+  private isProductInBasket: boolean;
 
   public constructor(data: CustomProductData) {
     super(PageNames.PRODUCT, constants.PRODUCT_PAGE_CLASS);
     this.data = data;
     this.swiper = new SwiperView(data.imgURLs, (): void => this.logic.imgOnClickHandler());
-    this.addToBasketBTN = this.createAddToBasketBTN();
-    this.removeFromBasketBTN = this.createRemoveFromBasketBTN();
+    this.isProductInBasket = data.isProductInBasket;
+    this.addToBasketBTN = this.createAddToBasketBTN(this.isProductInBasket);
+    this.removeFromBasketBTN = this.createRemoveFromBasketBTN(this.isProductInBasket);
     this.configureView(data);
   }
 
@@ -78,7 +83,7 @@ export default class ProductPageView extends PageView implements IProductPage {
     swiper.setClasses(constants.PRODUCT_SWIPER_SMALL_CLASS);
     this.getViewCreator().addInnerElement(swiper, pricesWrapper, infoWrapper);
 
-    if (data.discountPrice) {
+    if (data.discountPrice && data.discountPrice !== 'undefined') {
       const label: IElementCreator = ProductPageView.createSpanElement(constants.SALE_LABEL_CLASS);
       this.getViewCreator().addInnerElement(label);
     }
@@ -125,25 +130,53 @@ export default class ProductPageView extends PageView implements IProductPage {
     return wrapper;
   }
 
-  private createAddToBasketBTN(): IElementCreator {
+  private createAddToBasketBTN(isProductInBasket: boolean): IElementCreator {
     const params: btnParams = {
       textContent: constants.ADD_TO_BASKET_BTN_TEXT,
       classNames: [constants.PRODUCT_BTN_CLASS, constants.ADD_TO_BASKET_BTN_CLASS],
     };
     const btn: IElementCreator = new ButtonView(params).getViewCreator();
+    isProductInBasket
+      ? btn.setClasses(constants.PRODUCT_BTN_DISABLED_CLASS)
+      : btn.removeClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+    btn.getElement().addEventListener('click', async () => {
+      if (!this.isProductInBasket) {
+        try {
+          await BasketManager.getInstance().addProductInBasket(this.data.id);
+          btn.setClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+          this.removeFromBasketBTN.removeClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+          this.isProductInBasket = true;
+          PopUpView.getApprovePopUp(`${this.data.name} added to basket`).show();
+        } catch {
+          PopUpView.getRejectPopUp(ErrorMessages.ADD_PRODUCT_BASKET).show();
+        }
+      }
+    });
     return btn;
   }
 
-  private createRemoveFromBasketBTN(): IElementCreator {
+  private createRemoveFromBasketBTN(isProductInBasket: boolean): IElementCreator {
     const params: btnParams = {
       textContent: constants.REMOVE_FROM_BASKET_BTN_TEXT,
-      classNames: [
-        constants.PRODUCT_BTN_CLASS,
-        constants.REMOVE_FROM_BASKET_BTN_CLASS,
-        constants.PRODUCT_BTN_DISABLED_CLASS,
-      ],
+      classNames: [constants.PRODUCT_BTN_CLASS, constants.REMOVE_FROM_BASKET_BTN_CLASS],
     };
     const btn: IElementCreator = new ButtonView(params).getViewCreator();
+    isProductInBasket
+      ? btn.removeClasses(constants.PRODUCT_BTN_DISABLED_CLASS)
+      : btn.setClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+    btn.getElement().addEventListener('click', async () => {
+      if (this.isProductInBasket) {
+        try {
+          await BasketManager.getInstance().removeProductInBasket(this.data.id);
+          btn.setClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+          this.addToBasketBTN.removeClasses(constants.PRODUCT_BTN_DISABLED_CLASS);
+          this.isProductInBasket = false;
+          PopUpView.getApprovePopUp(`${this.data.name} removed from basket`).show();
+        } catch {
+          PopUpView.getApprovePopUp(ErrorMessages.REMOVE_PRODUCT_BASKET).show();
+        }
+      }
+    });
     return btn;
   }
 }
