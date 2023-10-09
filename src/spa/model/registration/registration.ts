@@ -116,12 +116,14 @@ export default class Registration implements IRegistration {
   private getCtpClient(): Client {
     const authMiddlewareOptions: AuthMiddlewareOptions = {
       host: 'https://auth.europe-west1.gcp.commercetools.com',
-      projectKey: 'ecommerce-app2023',
+      projectKey: 'ecommerce-app-pet-project',
       credentials: {
-        clientId: 'E0OJyOolk7JN4wsyvsGe3hNl',
-        clientSecret: 'fv31BsGLqlnSr18dwX69PNlAV9qUBkxO',
+        clientId: 'cgsy-3PSsDNG9EY9DseWh-Y4',
+        clientSecret: 'm8b5g3qGio7yOzPR6MDdZPLXiDtokwBt',
       },
-      scopes: ['manage_customers:ecommerce-app2023'],
+      scopes: [
+        'manage_my_shopping_lists:ecommerce-app-pet-project view_published_products:ecommerce-app-pet-project manage_my_orders:ecommerce-app-pet-project create_anonymous_token:ecommerce-app-pet-project manage_my_profile:ecommerce-app-pet-project view_categories:ecommerce-app-pet-project manage_my_payments:ecommerce-app-pet-project manage_customers:ecommerce-app-pet-project manage_my_quote_requests:ecommerce-app-pet-project manage_my_quotes:ecommerce-app-pet-project view_project_settings:ecommerce-app-pet-project manage_my_business_units:ecommerce-app-pet-project',
+      ],
       fetch,
       tokenCache: this.token,
     };
