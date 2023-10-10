@@ -1,17 +1,17 @@
 *** Instructions for updating the trial period in Commerce Tools
 
-- создать новый аккаунт в комерс тулс на новую почту.
+- создать новый аккаунт в комерс тулс на новую почту, указать в нем европейский сервер , в настройках указать одну страну en-us и валюту usd.
 - создать ApiClient по предварительному шаблону mobile and spa client и дополнительно добавить manage_customers , view_project_settings, в итоге будет общий скоуп : manage_my_shopping_lists:ecommerce-app-pet-project view_published_products:ecommerce-app-pet-project manage_my_orders:ecommerce-app-pet-project create_anonymous_token:ecommerce-app-pet-project manage_my_profile:ecommerce-app-pet-project view_categories:ecommerce-app-pet-project manage_my_payments:ecommerce-app-pet-project manage_customers:ecommerce-app-pet-project manage_my_quote_requests:ecommerce-app-pet-project manage_my_quotes:ecommerce-app-pet-project view_project_settings:ecommerce-app-pet-project manage_my_business_units:ecommerce-app-pet-project
 
 - Заменить данные api client старого  аккаунта (scopes, clientid,secretid, host - обрати внимание, что host где-то начинается с 'auth' а где то с 'api') на новые в 3 файлах: constants.ts в папке LoginClientApi, в папке registration в файлах constants.ts и registration.ts
 - Логин и регистрация уже готовы.
 - создать категории(достаточно полей имя (должно быть одним словом без пробелов) и order category)
-- создать один product type електроник для всех продуктов(в поле атрибутов указывать только первый атрибут поиска, название атриута с маленкоф буквы color brand)
+- создать один product type електроник для всех продуктов(в поле атрибутов указывать только первый атрибут поиска можно и последний, название атриута с маленкоф буквы color brand)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/21e3b232-7537-494e-8d1c-379f59587425)
-![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/16208094-b38d-4458-9529-9c121f66d585)
-![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/d62b30f6-a793-4c51-ae91-936863e376a3)
-![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/5593bb18-8f7a-46b0-abc0-7e8240f99711)
-![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/730a6b50-3f66-41a7-bb95-17f21915fce4)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/16208094-b38d-4458-9529-9c121f66d585)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/d62b30f6-a793-4c51-ae91-936863e376a3)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/5593bb18-8f7a-46b0-abc0-7e8240f99711)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/730a6b50-3f66-41a7-bb95-17f21915fce4)
 
 
 - создать один дискаунт для продуктов со скидкой и в нем указать к каким продуктам применяется (если выполнены все условия пункт)
