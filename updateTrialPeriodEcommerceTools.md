@@ -14,11 +14,12 @@
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/730a6b50-3f66-41a7-bb95-17f21915fce4)
 
 
-- создать один дискаунт для продуктов со скидкой и в нем указать к каким продуктам применяется (если выполнены все условия пункт)
+- создать один дискаунт для продуктов со скидкой и в нем указать к каким продуктам применяется (если выполнено любое из условий вариант "или")
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/990b3047-4e7d-4c06-bbd4-20355eed663d)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/bb31ef38-788f-41fb-b94f-e927eb14cffa)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/ea1be542-8bba-41e2-9f28-9e7f1a4eeff2)
-  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/009366d0-4afb-4124-8499-b72c04f150d8)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/e13dda30-6597-476e-9d20-4e5b74a76bc0)
+
 
 
 
@@ -45,13 +46,13 @@
 
 
 
-- создать продукты(ссылка в корзине на отдельную страницу продукта указывается полностью но не через / а через _ , создать просто второй вариант продукта чтобы был он будет пустой аттрибуты не нужно в нем указывать, картры указывал через юрл)
+- создать продукты(ссылка в корзине на отдельную страницу продукта указывается полностью но не через / а через _ , создать один ваиант продукта, картинки указывал через юрл)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/34b86e7b-6159-4c04-812f-4a7609586661)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/09e05f0b-5dee-4141-9bcb-3a948eacc655)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/a45e6f19-c251-45e1-a744-563620330d64)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/2620078a-eb43-42eb-a380-0ed187bb299d)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/c40840fd-0081-4007-a58c-dc3f31554712)
-  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/a60d7d08-02b9-4367-a83f-947c8107b7ce)
+  ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/b1b871b4-69d9-4309-b3b3-d6682c520b75)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/4d1c1aca-6b45-49b7-993c-82a5c43baf2c)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/614068f9-9e83-46ac-b594-eaf572e95216)
   ![image](https://github.com/Andrei-Kochetov/eCommerce-App/assets/118794264/f1eb0a57-225d-415b-b6e1-9e634c1161bf)
