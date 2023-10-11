@@ -15,7 +15,7 @@
       width: 100%;
       height: 100%;
       padding: 15px;
-      background: #FFEFBA;
+      background: $backgraund-dark;
       transform: translateX(100%);
       transition: transform 0.5s; 
     &.active {
