@@ -45,6 +45,7 @@ export default class TopMenuView extends View {
   private readonly registerBTN: IElementCreator;
   private readonly userBar: IElementCreator;
   private readonly basket: IElementCreator;
+
   private controller: IHeaderController | null = null;
 
   constructor() {

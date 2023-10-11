@@ -17,7 +17,9 @@
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border-radius: 0.5rem;
-
+  @media(max-width: 768px){
+    font-size: 24px;
+  }
   &:hover {
     color: $corporate-color;
     cursor: pointer;
@@ -31,7 +33,10 @@
   background-color: $corporate-color;
   border-radius: 0.5rem;
   color: $backgraund-dark;
-
+  @media(max-width: 768px){
+    height: 30px;
+    font-size: 24px;
+  }
   &:hover {
     color: white;
   }
@@ -41,6 +46,10 @@
   height: 2.2rem;
   width: 2.2rem;
   @include background($src: '@src/assets/header/basket.png');
+  @media(max-width: 768px){
+    height: 4rem;
+    width: 4rem;
+  }
   background-color: transparent;
 }
 

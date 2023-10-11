@@ -34,6 +34,7 @@ export default class HeaderView extends View implements IHeaderView {
   private readonly container: IView;
   private readonly homePageLink: IElementCreator;
   private readonly navigation: ITopMenu;
+  private readonly humburgerMenu: IElementCreator;
   private controller: IController | null = null;
 
   public constructor() {
@@ -45,6 +46,7 @@ export default class HeaderView extends View implements IHeaderView {
     this.container = new ContainerView();
     this.homePageLink = this.createHomePageLink(LOGO_LINK_ATTRIBUTES, LOGO_LINK_CLASS_NAME);
     this.navigation = new TopMenuView();
+    this.humburgerMenu = this.createHumburgerMenu();
     this.configureView();
   }
 
@@ -58,6 +60,10 @@ export default class HeaderView extends View implements IHeaderView {
   }
   public getHeaderContainer(): IView {
     return this.container;
+  }
+
+  public getHumburgerMenu(): IElementCreator {
+    return this.humburgerMenu;
   }
 
   public getNavigation(): ITopMenu {
@@ -88,17 +94,21 @@ export default class HeaderView extends View implements IHeaderView {
 
   private hideNavigation(): void {
     this.navigation.getViewCreator().setClasses(HIDDEN_CLASS);
+    this.humburgerMenu.setClasses(HIDDEN_CLASS);
   }
 
   private showNavigation(): void {
     this.navigation.getViewCreator().removeClasses(HIDDEN_CLASS);
+    this.humburgerMenu.removeClasses(HIDDEN_CLASS);
   }
 
   private configureView(): void {
     this.container.getViewCreator().setClasses(HEADER_CONTAINER_CLASS_NAME);
     this.homePageLink.addInnerElement(this.createLogoImg(LOGO_IMG_CLASS_NAME).getElement());
     this.updateHeader();
-    this.container.getViewCreator().addInnerElement(this.homePageLink.getElement(), this.navigation.getView());
+    this.container
+      .getViewCreator()
+      .addInnerElement(this.homePageLink.getElement(), this.navigation.getView(), this.humburgerMenu);
     this.getViewCreator().addInnerElement(this.container.getViewCreator());
   }
 
@@ -126,5 +136,29 @@ export default class HeaderView extends View implements IHeaderView {
     };
     const logoImg: IElementCreator = new ElementCreator(params);
     return logoImg;
+  }
+
+  private createHumburgerMenu(): IElementCreator {
+    const params = {
+      tag: 'div',
+      classNames: ['humburger-menu'],
+    };
+    const paramsSpan = {
+      tag: 'span',
+    };
+
+    const div: IElementCreator = new ElementCreator(params);
+    for (let i = 0; i < 3; i++) {
+      const span: IElementCreator = new ElementCreator(paramsSpan);
+      div.addInnerElement(span);
+    }
+    div.setListeners({
+      event: 'click',
+      callback: (): void => {
+        div.getElement().classList.toggle('active');
+        this.navigation.getView().classList.toggle('active');
+      },
+    });
+    return div;
   }
 }

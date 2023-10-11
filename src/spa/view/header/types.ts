@@ -7,6 +7,7 @@ export interface IHeaderView {
   getHomePageLink(): IElementCreator;
   getHeaderContainer(): IView;
   getNavigation(): ITopMenu;
+  getHumburgerMenu(): IElementCreator;
   updateHeader(): void;
   setControllers(router: IRouter): void;
 }
