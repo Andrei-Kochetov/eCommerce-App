@@ -34,7 +34,8 @@ export default class BasePage implements IBasePage {
 
   public renderPage(page: IView): void {
     const state: IState = State.getInstance();
-
+    this.header.getHumburgerMenu().removeClasses('active');
+    this.header.getNavigation().getViewCreator().removeClasses('active');
     if (page instanceof LoginPageView || page instanceof RegistrationPageView) {
       state.setRecord(APP_STATE_KEYS.IS_SPECIAL_PAGE, 'true');
     } else {

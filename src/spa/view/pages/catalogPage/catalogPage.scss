@@ -8,13 +8,17 @@
   height: 100%;
   position: relative;
   font-size: 1.6rem;
+  @media (max-width:600px){
+    flex-direction: column;
+  }
   &__container-fixed{
     width: 20rem;
     background-color: $backgraund-dark;
     padding: 1rem;
     height: 100%;
-    @media (max-width:450px){
-      width: 13rem;
+    @media (max-width:600px){
+      width: 100%;
+      height: 13rem;
     }
     
   }
@@ -55,6 +59,9 @@
     width: 20rem;
     flex-grow: 1;
     padding: 1rem;
+    @media (max-width:600px){
+      width: 100%;
+    }
   }
   &__input-search{
     width: 70%;
@@ -95,7 +102,7 @@
     display: none;
   }
   &__section-subcategories{
-    min-height: 2rem;
+    min-height: 2.4rem;
     display: flex;
     column-gap: 1rem;
   }
@@ -113,7 +120,8 @@
     row-gap: 1.5rem;
     column-gap: 1.5rem;
     min-height: 2rem;
-    @media (max-width:450px){
+    justify-content: start;
+    @media (max-width: 970px){
       justify-content: center;
     }
   }
