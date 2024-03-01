@@ -26,24 +26,3 @@ export const options = {
     force: true,
   },
 };
-
-// Use these credentials to access the project via API:
-// ecommerce-app03
-
-// project_key
-// ecommerce-app03
-
-// client_id
-// ptStBcuESc7kMr51yfPYl8Od
-
-// secret
-// QVUWep4zCgloQX9rUnD6hBXgrGmbJiTV
-
-// scope
-// manage_my_profile:ecommerce-app03 manage_my_orders:ecommerce-app03 manage_my_shopping_lists:ecommerce-app03 manage_my_payments:ecommerce-app03 manage_my_business_units:ecommerce-app03 view_project_settings:ecommerce-app03 create_anonymous_token:ecommerce-app03 manage_my_quotes:ecommerce-app03 view_published_products:ecommerce-app03 view_categories:ecommerce-app03 view_orders:ecommerce-app03 view_states:ecommerce-app03 view_products:ecommerce-app03 manage_customers:ecommerce-app03 manage_my_quote_requests:ecommerce-app03
-
-// API URL
-// https://api.us-central1.gcp.commercetools.com
-
-// Auth URL
-// https://auth.us-central1.gcp.commercetools.com
