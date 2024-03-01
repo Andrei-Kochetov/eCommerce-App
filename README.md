@@ -1,6 +1,6 @@
 # eCommerce-Application
 
-## Project deployment: https://ecommerce-app-pet-project.netlify.app/
+## [Project deployment](https://ecommerce-app-pet-project.netlify.app/)
 
 We are a team of 2 developers ([Leonid](https://github.com/leanidrymkevich), [Andrey](https://github.com/andrei-kochetov)) created a training project eCommerce application - a full-fledged online store.
 
